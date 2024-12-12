@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/communitycharts
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://community-charts.github.io
+  * I am communitycharts (https://keybase.io/communitycharts) on keybase.
+  * I have a public key ASDCKJWfVGCgdmoBg-0HvuJ5SC3oE-J7UKFa9tNBUfqsNgo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120c228959f5460a0766a0183ed07bee279482de813e27b50a15af6d34151faac360a",
+      "host": "keybase.io",
+      "kid": "0120c228959f5460a0766a0183ed07bee279482de813e27b50a15af6d34151faac360a",
+      "uid": "aff80c39c8bd76751d0345e51a2f9619",
+      "username": "communitycharts"
+    },
+    "merkle_root": {
+      "ctime": 1733993147,
+      "hash": "46d84c33c34f906590d7cdd2cacabdedfd1782e76ddc2e3584ad8e9119e0af3a9904f8c34ffa6063a8cd4ed12e1698d55aed14bde9e8d57e822e68c9bafbc1fe",
+      "hash_meta": "a16de40c4c3b46a4706d5e747a8ccf39f0129d6d365c1e7104047cf56c05ce9b",
+      "seqno": 26371230
+    },
+    "service": {
+      "entropy": "ZsZQw1OgijD5XSKDCgwA2f23",
+      "hostname": "community-charts.github.io",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.5.0"
+  },
+  "ctime": 1733993300,
+  "expire_in": 504576000,
+  "prev": "8ecfa0d344dfd20fb95cf43b905954f32f551ff5d36476127aff525bd4cd47d0",
+  "seqno": 5,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgwiiVn1RgoHZqAYPtB77ieUgt6BPie1ChWvbTQVH6rDYKp3BheWxvYWTESpcCBcQgjs+g00Tf0g+5XPQ7kFlU8y9VH/XTZHYSev9SW9TNR9DEIFpmCUiVqXe5i+JkHiFGcVdGS1fQDK2Cnro5N6V93DYdAgHCo3NpZ8RApQiS3NDUtXwKJV8hKf8oYfg/jT4WCi3Efc9Jqcutdc7WQ3HvMjdX7obX6D+nxiZBLUX48cgtn/YH2g9VHQjLB6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIFsNu51Gk096TUYNNH2pXurC+0dxIPY5ODJsVL8e7hCHo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/communitycharts
+
+==================================================================
