@@ -1,43 +1,27 @@
-import type {ReactNode} from 'react';
-import clsx from 'clsx';
-import Link from '@docusaurus/Link';
+import type { ReactNode } from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import Heading from '@theme/Heading';
+import HomepageHeader from '@site/src/components/HomepageHeader';
+import HomepageWhatWeOffer from '@site/src/components/HomepageWhatWeOffer';
+import HomepageFeaturedCharts from '@site/src/components/HomepageFeaturedCharts';
+import HomepageHowToGetStarted from '@site/src/components/HomepageHowToGetStarted';
+import HomepageCommunity from '@site/src/components/HomepageCommunity';
 
-import styles from './index.module.css';
-
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
-
+// --- Main Home Component ---
 export default function Home(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={`Home | ${siteConfig.title}`}
+      description="Community-maintained Helm Charts for open-source projects lacking official support. Deploy your applications easily on Kubernetes.">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
+        <HomepageWhatWeOffer />
+        <HomepageFeaturedCharts />
+        <HomepageHowToGetStarted />
+        <HomepageCommunity />
+        {/* Potentially add a latest blog posts section here if you have a blog */}
+        {/* <HomepageLatestBlogPosts /> */}
       </main>
     </Layout>
   );

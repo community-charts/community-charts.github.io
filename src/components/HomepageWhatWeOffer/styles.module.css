@@ -1,0 +1,27 @@
+.whatWeOffer {
+  padding: 4rem 0;
+  background-color: var(--ifm-background-color); /* Lighter background */
+  text-align: center;
+}
+
+.featureItem {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align text to top */
+  padding: 1rem;
+}
+
+.featureItem svg {
+  color: var(--ifm-color-primary); /* Icon color */
+  margin-bottom: 1rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .featureItem {
+    flex-basis: 100%; /* Stack columns on small screens */
+    max-width: 100%;
+  }
+}

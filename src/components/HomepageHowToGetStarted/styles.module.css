@@ -1,0 +1,55 @@
+.howToGetStarted {
+  padding: 4rem 0;
+  background-color: var(--ifm-background-color);
+  text-align: center;
+}
+
+.stepCard {
+  background-color: var(--ifm-card-background-color); /* Use Docusaurus card color */
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: var(--ifm-shadow-sm);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  height: 100%; /* Make cards same height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.stepCard:hover {
+  transform: translateY(-5px);
+}
+
+.stepNumber {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.stepCard pre {
+  background-color: var(--ifm-code-background);
+  border-radius: var(--ifm-code-border-radius);
+  padding: 1rem;
+  font-size: 0.9rem;
+  text-align: left; /* Align code left */
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .howToGetStarted .col {
+    flex-basis: 100%; /* Stack columns on small screens */
+    max-width: 100%;
+  }
+}

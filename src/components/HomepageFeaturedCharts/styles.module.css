@@ -1,0 +1,63 @@
+.featuredCharts {
+  padding: 4rem 0;
+  background-color: var(--ifm-background-color-dark); /* Slightly darker background */
+  color: var(--ifm-heading-color); /* Ensure heading color is readable */
+}
+
+.featuredCharts .text--center {
+  color: inherit; /* Ensure text color is inherited */
+}
+
+.chartCardWrapper {
+  padding: 1rem;
+}
+
+.chartCard {
+  background-color: var(--ifm-card-background-color); /* Use Docusaurus card color */
+  border-radius: var(--ifm-card-border-radius);
+  box-shadow: var(--ifm-shadow-md);
+  padding: 1.5rem;
+  height: 100%; /* Make cards same height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.chartCard:hover {
+  transform: translateY(-5px);
+}
+
+.chartImage {
+  max-width: 100px; /* Adjust as needed */
+  max-height: 100px;
+  margin-bottom: 1rem;
+  object-fit: contain;
+}
+
+.chartCardButtons {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  gap: 0.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.chartCardButtons .button {
+  flex-grow: 1; /* Allow buttons to grow */
+  min-width: 120px; /* Minimum width for buttons */
+}
+
+@media screen and (max-width: 768px) {
+  .chartCardButtons {
+    flex-direction: column;
+  }
+
+  .chartCardWrapper {
+    flex-basis: 100%; /* Stack columns on small screens */
+    max-width: 100%;
+  }
+}
