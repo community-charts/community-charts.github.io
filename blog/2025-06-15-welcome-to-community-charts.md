@@ -18,14 +18,14 @@ Many open-source projects lose official Helm chart support when companies shift 
 
 ### Featured Chart: MLflow
 
-One of our flagship offerings is the [MLflow Helm chart](/docs/charts/mlflow), which enables seamless deployment of [MLflow](https://mlflow.org), an open-source platform for managing the machine learning lifecycle. Whether you're tracking experiments, managing models, or deploying ML pipelines, our chart supports:
+One of our flagship offerings is the [MLflow Helm chart](/docs/category/mlflow), which enables seamless deployment of [MLflow](https://mlflow.org), an open-source platform for managing the machine learning lifecycle. Whether you're tracking experiments, managing models, or deploying ML pipelines, our chart supports:
 
 - **Multiple Backends**: PostgreSQL, MySQL, or SQLite for flexible storage.
 - **Cloud Integration**: AWS S3, Azure Blob Storage, and Google Cloud Storage for artifacts.
 - **Authentication**: Basic auth, LDAP, or centralized PostgreSQL for secure access.
 - **Autoscaling**: Horizontal Pod Autoscaling (HPA) for production workloads.
 
-Check out our [MLflow documentation](/docs/charts/mlflow) for step-by-step guides on [basic installation](/docs/charts/mlflow/basic-installation), [PostgreSQL setup](/docs/charts/mlflow/postgres-installation), [AWS S3 integration](/docs/charts/mlflow/aws-s3-installation), and more.
+Check out our [MLflow documentation](/docs/category/mlflow) for step-by-step guides on [basic installation](/docs/charts/mlflow/basic-installation), [PostgreSQL setup](/docs/charts/mlflow/postgresql-backend-installation), [AWS S3 integration](/docs/charts/mlflow/aws-s3-integration), and more.
 
 ## Our Current Chart Lineup
 
@@ -39,14 +39,14 @@ We currently support the following Helm charts, each crafted to meet the needs o
 - **Outline**: Collaborate on knowledge bases with a modern wiki solution.
 - **Pypiserver**: Host your own Python package repository.
 
-Explore all our charts in the [Charts section](/docs/charts/all-charts) and let us know which projects you'd like us to support next!
+Explore all our charts in the [Charts section](/docs/category/charts) and let us know which projects you'd like us to support next!
 
 ## Get Involved
 
 GitHub Community Charts is built by the community, for the community. We welcome contributions, whether you're fixing bugs, improving documentation, or proposing new charts. Here's how you can get started:
 
-1. **Browse Our Charts**: Visit our [documentation](/docs/charts/all-charts) to explore installation guides and configuration options.
-2. **Contribute**: Check out our [contribution guide](/docs/contributing) and submit pull requests to our [GitHub repository](https://github.com/community-charts/helm-charts).
+1. **Browse Our Charts**: Visit our [documentation](/docs/category/charts) to explore installation guides and configuration options.
+2. **Contribute**: Check out our [contribution guide](https://github.com/community-charts/helm-charts/blob/main/CONTRIBUTING.md) and submit pull requests to our [GitHub repository](https://github.com/community-charts/helm-charts).
 3. **Suggest a Chart**: Have an open-source project in mind? [Submit a chart request](https://github.com/community-charts/helm-charts/issues/new?template=chart_request.yml).
 4. **Report Issues**: Found a bug? [Let us know](https://github.com/community-charts/helm-charts/issues) so we can improve.
 
