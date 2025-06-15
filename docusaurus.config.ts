@@ -46,7 +46,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/community-charts/community-charts.github.io/tree/main/docs',
+            'https://github.com/community-charts/community-charts.github.io/tree/main',
         },
         blog: {
           showReadingTime: true,
@@ -56,7 +56,7 @@ const config: Config = {
           },
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/community-charts/community-charts.github.io/tree/main/blog',
+            'https://github.com/community-charts/community-charts.github.io/tree/main',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
