@@ -24,7 +24,7 @@ export default function HomepageHowToGetStarted(): ReactNode {
               <div className={styles.stepNumber}>2</div>
               <Heading as="h3">Find Your Chart</Heading>
               <p>Browse our extensive documentation to find the chart you need, with detailed configuration options.</p>
-              <Link className="button button--outline button--primary" to="/docs/charts/all-charts">
+              <Link className="button button--outline button--primary" to="/docs/category/charts">
                 Browse All Charts
               </Link>
             </div>

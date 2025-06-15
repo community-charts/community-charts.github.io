@@ -22,7 +22,7 @@ export default function HomepageCommunity(): ReactNode {
           </Link>
           <Link
             className="button button--outline button--secondary button--lg"
-            to="/docs/contributing"> {/* Link to your contribution guide */}
+            to="https://github.com/community-charts/helm-charts/blob/main/CONTRIBUTING.md">
             <FaHandsHelping /> Contribute to an Existing Chart
           </Link>
           <Link

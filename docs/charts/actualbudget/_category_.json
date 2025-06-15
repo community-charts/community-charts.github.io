@@ -1,0 +1,9 @@
+{
+  "label": "Actual Budget",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "title": "Actual Budget Helm Chart",
+    "description": "Documentation for deploying Actual Budget on Kubernetes using the community-maintained Helm chart."
+  }
+}

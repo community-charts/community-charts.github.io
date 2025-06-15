@@ -1,0 +1,9 @@
+{
+  "label": "Mlflow",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "title": "MLflow Helm Chart",
+    "description": "Documentation for deploying MLflow on Kubernetes using the community-maintained Helm chart."
+  }
+}

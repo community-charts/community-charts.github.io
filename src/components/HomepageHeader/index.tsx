@@ -20,12 +20,12 @@ export default function HomepageHeader(): ReactNode {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/charts/all-charts"> {/* Update this path to your chart index */}
+            to="/docs/category/charts">
             Browse Charts
           </Link>
           <Link
             className="button button--outline button--secondary button--lg"
-            to="/docs/getting-started"> {/* Update this path to your getting started guide */}
+            to="/docs/getting-started">
             Get Started
           </Link>
         </div>

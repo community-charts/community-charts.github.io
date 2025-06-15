@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Community Charts',
-  tagline: 'Community Charts',
+  tagline: 'Community-Maintained Helm Charts for Your Favorite Open Source Projects',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -44,7 +44,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/community-charts/community-charts.github.io/tree/main/docs',
@@ -55,7 +54,6 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/community-charts/community-charts.github.io/tree/main/blog',
@@ -71,9 +69,30 @@ const config: Config = {
     ],
   ],
 
+  headTags: [
+    {
+      tagName: 'script',
+      attributes: {
+        type: 'application/ld+json',
+      },
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org/',
+        '@type': 'Organization',
+        name: 'Community Charts',
+        url: 'https://community-charts.github.io/',
+        logo: 'https://community-charts.github.io/img/logo.png',
+      }),
+    },
+  ],
+
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    metadata: [
+      {name: 'keywords', content: 'helm, charts, community, open source'},
+      {name: 'twitter:card', content: 'summary_large_image'},
+      {name: 'twitter:image', content: 'img/social-card.png'},
+    ],
+    image: 'img/social-card.png',
     navbar: {
       title: 'Community Charts',
       logo: {
@@ -83,9 +102,9 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'guideSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Guide',
         },
         {
           to: '/blog',
@@ -106,8 +125,8 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'Getting Started',
+              to: '/docs/getting-started',
             },
           ],
         },

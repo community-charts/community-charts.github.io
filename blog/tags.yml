@@ -1,19 +1,34 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+helm:
+  label: Helm
+  permalink: /helm
+  description: Helm tag description
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+kubernetes:
+  label: Kubernetes
+  permalink: /kubernetes
+  description: Kubernetes tag description
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+mlflow:
+  label: Mlflow
+  permalink: /mlflow
+  description: Mlflow tag description
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+n8n:
+  label: n8n
+  permalink: /n8n
+  description: n8n tag description
+
+actualbudget:
+  label: Actual Budget
+  permalink: /actual-budget
+  description: Actual Budget tag description
+
+open-source:
+  label: Open Source
+  permalink: /open-source
+  description: Open Source tag description
+
+community:
+  label: Community
+  permalink: /community
+  description: Community tag description
