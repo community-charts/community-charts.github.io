@@ -1,2 +1,5 @@
 User-agent: *
 Disallow:
+
+# Sitemaps
+Sitemap: https://community-charts.github.io/sitemap.xml
