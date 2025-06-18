@@ -33,7 +33,7 @@ const FeaturedCharts: FeaturedChart[] = [
   {
     name: 'Actual Budget',
     description: 'Privacy-focused, self-hosted personal finance tracker for managing budgets and transactions.',
-    docLink: '/docs/category/actual-budget',
+    docLink: '/docs/category/actualbudget',
     githubLink: 'https://github.com/community-charts/helm-charts/tree/main/charts/actualbudget',
     image: 'https://raw.githubusercontent.com/actualbudget/docs/refs/heads/master/static/img/actual.png',
   },
