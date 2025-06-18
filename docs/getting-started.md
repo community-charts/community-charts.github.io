@@ -108,7 +108,7 @@ Here’s a quick overview of our current charts and their use cases:
 | Cloudflared    | Secure tunneling with Cloudflare for Kubernetes services | [/docs/charts/cloudflared](/docs/category/cloudflared)    |
 | Drone          | Continuous integration and deployment system             | [/docs/charts/drone](/docs/category/drone)                |
 | Outline        | Modern wiki for collaborative knowledge management       | [/docs/charts/outline](/docs/category/outline)            |
-| Pypiserver     | Private Python package repository                        | [/docs/charts/pypiserver](/docs/category/pypiserver)      |
+| PyPI server    | Private minimal Python package repository                | [/docs/charts/pypiserver](/docs/category/pypiserver)      |
 
 Explore the [Charts section](/docs/category/charts) for detailed installation guides and configuration options.
 
