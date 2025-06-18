@@ -1,0 +1,9 @@
+{
+  "label": "drone",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "title": "Drone CI Helm Chart",
+    "description": "Documentation for deploying Drone CI on Kubernetes using the community-maintained Helm chart."
+  }
+}

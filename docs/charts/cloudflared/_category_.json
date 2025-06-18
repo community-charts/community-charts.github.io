@@ -1,0 +1,9 @@
+{
+  "label": "cloudflared",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "title": "Cloudflared Tunnel Helm Chart",
+    "description": "Documentation for deploying Cloudflared Tunnel on Kubernetes using the community-maintained Helm chart."
+  }
+}

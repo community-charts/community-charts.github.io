@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# n8n chart usage
+# Outline chart usage
 
 This page is still under construction

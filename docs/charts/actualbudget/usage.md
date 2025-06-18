@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# Actual chart
+# Actual Budget chart usage
 
 This page is still under construction

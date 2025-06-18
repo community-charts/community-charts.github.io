@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# n8n chart usage
+# Drone CI chart usage
 
 This page is still under construction
