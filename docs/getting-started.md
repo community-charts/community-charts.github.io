@@ -53,9 +53,9 @@ This lists all charts in our repository, including:
 - **MLflow**: Manage machine learning workflows with experiment tracking and model deployment.
 - **n8n**: Automate tasks with a no-code/low-code workflow platform.
 - **Actual Budget**: Track personal finances in a secure, self-hosted environment.
+- **Outline**: Build collaborative knowledge bases with a modern wiki.
 - **Cloudflared**: Create secure tunnels to your Kubernetes services using Cloudflare.
 - **Drone**: Run continuous integration and deployment pipelines.
-- **Outline**: Build collaborative knowledge bases with a modern wiki.
 - **Pypiserver**: Host your own Python package repository.
 
 For detailed descriptions and installation guides, visit the [Charts documentation](/docs/category/charts).
