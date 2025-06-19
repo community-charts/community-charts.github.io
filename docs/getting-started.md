@@ -104,10 +104,10 @@ Here’s a quick overview of our current charts and their use cases:
 | -------------- | -------------------------------------------------------- | --------------------------------------------------------- |
 | MLflow         | Platform for managing the machine learning lifecycle     | [/docs/charts/mlflow](/docs/category/mlflow)              |
 | n8n            | Workflow automation tool for integrating apps            | [/docs/charts/n8n](/docs/category/n8n)                    |
-| Actual Budget  | Self-hosted personal finance tracker                     | [/docs/charts/actualbudget](/docs/category/actualbudget) |
+| Actual Budget  | Self-hosted personal finance tracker                     | [/docs/charts/actualbudget](/docs/category/actualbudget)  |
+| Outline        | Modern wiki for collaborative knowledge management       | [/docs/charts/outline](/docs/category/outline)            |
 | Cloudflared    | Secure tunneling with Cloudflare for Kubernetes services | [/docs/charts/cloudflared](/docs/category/cloudflared)    |
 | Drone          | Continuous integration and deployment system             | [/docs/charts/drone](/docs/category/drone)                |
-| Outline        | Modern wiki for collaborative knowledge management       | [/docs/charts/outline](/docs/category/outline)            |
 | PyPI server    | Private minimal Python package repository                | [/docs/charts/pypiserver](/docs/category/pypiserver)      |
 
 Explore the [Charts section](/docs/category/charts) for detailed installation guides and configuration options.
