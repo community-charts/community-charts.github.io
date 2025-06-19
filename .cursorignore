@@ -1,0 +1,6 @@
+.docusaurus
+build
+node_modules
+.github/CODEOWNERS
+static/.nojekyll
+static/keybase.txt
