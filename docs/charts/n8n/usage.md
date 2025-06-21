@@ -291,12 +291,18 @@ architecture-beta
 ```mermaid
 architecture-beta
   group k8s(cloud)[Kubernetes Cluster]
-  group pod(blank)[Pod] in k8s
 
-  service main(server)[Main Node] in pod
-  service runner(server)[External Runner] in pod
+  group mainpod(blank)[Main Pod] in k8s
+  service main(server)[Main Node] in mainpod
+  service mainrunner(server)[External Runner] in mainpod
 
-  main:R <--> L:runner
+  main:B <--> T:mainrunner
+
+  group workerpod(blank)[Worker Pods] in k8s
+  service worker(server)[Worker Node] in workerpod
+  service workerrunner(server)[External Runner] in workerpod
+
+  worker:B <--> T:workerrunner
 ```
 
 :::tip
