@@ -1,13 +1,13 @@
 ---
 id: usage
-title: Usage Guide
+title: Actual Budget Chart Usage Guide
 sidebar_label: Usage
 sidebar_position: 1
 description: Get started with Actual Budget Helm chart deployment and basic usage
-keywords: [actualbudget, usage, deployment, helm, kubernetes, quickstart]
+keywords: [actual, actualbudget, personal finance, usage, deployment, helm, kubernetes, quickstart]
 ---
 
-# Usage Guide
+# Actual Budget Chart Usage Guide
 
 [Actual Budget](https://actualbudget.org) is a self-hosted personal finance manager that helps you track your spending, set budgets, and gain control over your finances. This Helm chart makes it easy to deploy Actual Budget on Kubernetes.
 

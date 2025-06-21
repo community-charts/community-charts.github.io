@@ -4,7 +4,7 @@ title: Configuration Guide
 sidebar_label: Configuration
 sidebar_position: 2
 description: Learn how to configure the Actual Budget Helm chart for your deployment
-keywords: [actualbudget, configuration, helm, kubernetes, deployment]
+keywords: [actual, actualbudget, personal finance, configuration, helm, kubernetes, deployment]
 ---
 
 # Configuration Guide

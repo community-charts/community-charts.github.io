@@ -4,7 +4,7 @@ title: Authentication Setup
 sidebar_label: Authentication
 sidebar_position: 3
 description: Configure authentication methods for Actual Budget including password, header-based, and OpenID Connect
-keywords: [actualbudget, authentication, openid, oauth, password, header]
+keywords: [actual, actualbudget, personal finance, authentication, openid, oauth, password, header]
 ---
 
 # Authentication Setup

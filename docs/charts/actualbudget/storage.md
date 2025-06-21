@@ -4,7 +4,7 @@ title: Storage and Persistence
 sidebar_label: Storage
 sidebar_position: 4
 description: Configure persistent storage and data management for Actual Budget deployments
-keywords: [actualbudget, storage, persistence, pvc, kubernetes, data]
+keywords: [actual, actualbudget, personal finance, storage, persistence, pvc, kubernetes, data]
 ---
 
 # Storage and Persistence

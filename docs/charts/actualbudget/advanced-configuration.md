@@ -4,7 +4,7 @@ title: Advanced Configuration
 sidebar_label: Advanced Configuration
 sidebar_position: 5
 description: Advanced configuration options for Actual Budget including security, networking, and customization
-keywords: [actualbudget, advanced, security, networking, customization, kubernetes]
+keywords: [actual, actualbudget, personal finance, advanced, security, networking, customization, kubernetes]
 ---
 
 # Advanced Configuration

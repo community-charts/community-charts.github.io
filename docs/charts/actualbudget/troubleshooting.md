@@ -4,7 +4,7 @@ title: Troubleshooting
 sidebar_label: Troubleshooting
 sidebar_position: 6
 description: Common issues and solutions for Actual Budget Helm chart deployments
-keywords: [actualbudget, troubleshooting, issues, problems, kubernetes, helm]
+keywords: [actual, actualbudget, personal finance, troubleshooting, issues, problems, kubernetes, helm]
 ---
 
 # Troubleshooting
