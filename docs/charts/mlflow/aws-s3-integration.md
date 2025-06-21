@@ -201,8 +201,6 @@ artifactRoot:
     awsSecretAccessKey: ""  # Will use IAM role or secret
 
 extraEnvVars:
-  AWS_ACCESS_KEY_ID: ""  # Will use secret
-  AWS_SECRET_ACCESS_KEY: ""  # Will use secret
   AWS_DEFAULT_REGION: us-west-2
   MLFLOW_S3_ENDPOINT_URL: ""  # For MinIO compatibility
   MLFLOW_S3_IGNORE_TLS: "false"

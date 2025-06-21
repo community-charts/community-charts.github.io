@@ -9,7 +9,7 @@ keywords: [mlflow, authentication, ldap, kubernetes, helm, security, basic auth,
 
 # Authentication Configuration
 
-This guide covers configuring authentication for MLflow to secure access to your MLflow tracking server. MLflow supports various authentication methods including basic authentication, OAuth, and LDAP integration.
+This guide covers configuring authentication for MLflow to secure access to your MLflow tracking server. MLflow supports various authentication methods including basic authentication, and LDAP integration.
 
 :::warning
 **Security Requirement:** Authentication should always be enabled in production environments to secure your MLflow instance and protect sensitive ML data.
@@ -27,7 +27,7 @@ This guide covers configuring authentication for MLflow to secure access to your
 
 - MLflow deployed on Kubernetes
 - Access to MLflow configuration
-- Authentication provider setup (if using OAuth/LDAP)
+- Authentication provider setup (if using LDAP)
 
 :::tip
 **Planning:** Choose the authentication method that best fits your organization's security policies and infrastructure.

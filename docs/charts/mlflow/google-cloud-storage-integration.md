@@ -471,14 +471,4 @@ extraEnvVars:
   MLFLOW_GCS_DEFAULT_TIMEOUT: "60"  # GCS transfer timeout in seconds
   MLFLOW_GCS_UPLOAD_CHUNK_SIZE: "104857600"  # GCS upload chunk size (100MB)
   MLFLOW_GCS_DOWNLOAD_CHUNK_SIZE: "104857600"  # GCS download chunk size (100MB)
-  
-  # Artifact Configuration
-  MLFLOW_ARTIFACT_UPLOAD_DOWNLOAD_TIMEOUT: "300"  # Artifact transfer timeout
-  MLFLOW_ENABLE_ARTIFACTS_PROGRESS_BAR: "true"  # Show progress bar for artifacts
-  MLFLOW_ENABLE_MULTIPART_UPLOAD: "true"  # Enable multipart upload for large files
-  MLFLOW_ENABLE_MULTIPART_DOWNLOAD: "true"  # Enable multipart download for large files
-  
-  # HTTP Configuration
-  MLFLOW_HTTP_REQUEST_TIMEOUT: "120"  # HTTP request timeout in seconds
-  MLFLOW_HTTP_REQUEST_MAX_RETRIES: "7"  # Maximum HTTP retries
 ```
