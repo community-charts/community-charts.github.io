@@ -4,6 +4,7 @@ title: Getting Started with GitHub Community Charts
 sidebar_label: Getting Started
 sidebar_position: 1
 description: Learn how to add the GitHub Community Charts Helm repository and start deploying open-source tools like MLflow, n8n, and Actual Budget on Kubernetes.
+keywords: ["helm", "kubernetes", "community charts", "mlflow", "n8n", "actual budget", "outline", "cloudflared", "drone", "pypiserver", "deployment", "getting started", "installation", "open source"]
 ---
 
 # Getting Started with GitHub Community Charts
@@ -103,7 +104,7 @@ Here's a quick overview of our current charts and their use cases:
 | Chart          | Description                                              | Documentation Link                                        |
 | -------------- | -------------------------------------------------------- | --------------------------------------------------------- |
 | MLflow         | Platform for managing the machine learning lifecycle     | [/docs/charts/mlflow](/docs/category/mlflow)              |
-| n8n            | Workflow automation tool for integrating apps            | [/docs/charts/n8n](/docs/category/n8n)                    |
+| n8n            | Workflow automation tool with **unique npm package installation** and **exclusive external task runner support** | [/docs/charts/n8n](/docs/category/n8n)                    |
 | Actual Budget  | Self-hosted personal finance tracker                     | [/docs/charts/actualbudget](/docs/category/actualbudget)  |
 | Outline        | Modern wiki for collaborative knowledge management       | [/docs/charts/outline](/docs/category/outline)            |
 | Cloudflared    | Secure tunneling with Cloudflare for Kubernetes services | [/docs/charts/cloudflared](/docs/category/cloudflared)    |

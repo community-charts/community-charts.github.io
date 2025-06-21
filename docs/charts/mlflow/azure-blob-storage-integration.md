@@ -11,6 +11,10 @@ keywords: [mlflow, azure blob storage, kubernetes, helm, artifact storage, manag
 
 This guide covers configuring MLflow to use Azure Blob Storage for artifact storage. Azure Blob Storage provides scalable, durable storage for MLflow artifacts with enterprise-grade security and compliance features.
 
+:::info
+**Azure Integration:** Azure Blob Storage is ideal for organizations using Microsoft Azure, providing seamless integration with Azure services and enterprise security features.
+:::
+
 ```mermaid
 architecture-beta
   group k8s(cloud)[Kubernetes Cluster]
@@ -26,12 +30,20 @@ architecture-beta
 
 ## Prerequisites
 
+:::warning
+**Azure Setup:** Ensure you have proper Azure access and permissions before configuring Blob Storage integration.
+:::
+
 - Azure subscription with Storage Account access
 - Azure CLI configured or Azure credentials available
 - Kubernetes cluster with MLflow deployed
 - Storage Account with Blob service enabled
 
 ## Azure Storage Account Setup
+
+:::tip
+**Storage Configuration:** Proper storage account setup ensures optimal performance and cost management for your MLflow artifacts.
+:::
 
 ### 1. Create Storage Account
 
@@ -63,6 +75,10 @@ STORAGE_KEY=$(az storage account keys list \
 
 ## Authentication Options
 
+:::warning
+**Security Best Practice:** Use managed identities or service principals instead of storage account keys for production deployments.
+:::
+
 ### Option 1: Storage Account Key (Development)
 
 ```bash
@@ -71,6 +87,10 @@ kubectl create secret generic azure-storage-credentials \
   --from-literal=azure-storage-account-name=yourmlflowstorage \
   --from-literal=azure-storage-account-key=$STORAGE_KEY
 ```
+
+:::tip
+**Development Use:** Storage account keys are suitable for development and testing but not recommended for production.
+:::
 
 ### Option 2: Service Principal (Production)
 
@@ -110,7 +130,15 @@ az role assignment create \
   --scope /subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/YOUR_RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/yourmlflowstorage
 ```
 
+:::info
+**AKS Best Practice:** Managed identities provide the most secure and manageable way to grant Azure permissions to AKS pods.
+:::
+
 ## MLflow Configuration
+
+:::info
+**Complete Setup:** This configuration demonstrates a production-ready MLflow setup with PostgreSQL backend and Azure Blob Storage.
+:::
 
 ### Option 1: Using Storage Account Key
 
@@ -192,9 +220,17 @@ helm install mlflow community-charts/mlflow \
   --set artifactRoot.azureBlob.accessKey=your-access-key
 ```
 
+:::warning
+**Command Line Security:** Avoid passing sensitive credentials via command line arguments. Use values files or secrets instead.
+:::
+
 ## AKS Integration with Managed Identity
 
 If using AKS with managed identity, configure the service account:
+
+:::tip
+**AKS Integration:** Managed identities eliminate the need to manage service principal credentials and provide automatic credential rotation.
+:::
 
 ```yaml
 serviceAccount:

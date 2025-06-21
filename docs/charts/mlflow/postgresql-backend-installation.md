@@ -11,6 +11,10 @@ keywords: [mlflow, postgresql, kubernetes, helm, database, migration, production
 
 This guide covers setting up MLflow with PostgreSQL as the backend database. This configuration is recommended for production deployments as it provides better performance, scalability, and data integrity compared to SQLite.
 
+:::info
+**Production Database:** PostgreSQL is the recommended database backend for production MLflow deployments, offering better performance, scalability, and concurrent access capabilities.
+:::
+
 ```mermaid
 architecture-beta
   group k8s(cloud)[Kubernetes Cluster]
@@ -26,6 +30,10 @@ architecture-beta
 
 ## Prerequisites
 
+:::warning
+**Requirements:** Ensure you have all prerequisites installed and configured before proceeding with PostgreSQL setup.
+:::
+
 - Kubernetes cluster (v1.16+)
 - Helm 3.x installed
 - kubectl configured
@@ -33,6 +41,10 @@ architecture-beta
 - Storage class for PVC (if using in-cluster PostgreSQL)
 
 ## Option 1: Using External PostgreSQL
+
+:::tip
+**External Database:** Using external PostgreSQL (like RDS, Cloud SQL, or Azure Database) is recommended for production as it provides managed backups, high availability, and easier maintenance.
+:::
 
 ### 1. Prepare PostgreSQL Database
 
@@ -58,7 +70,15 @@ helm install mlflow community-charts/mlflow \
   --set backendStore.postgres.password=your_secure_password
 ```
 
+:::warning
+**Security:** Never hardcode database passwords in command line arguments. Use Kubernetes secrets or environment variables for sensitive data.
+:::
+
 ## Option 2: Deploy PostgreSQL in Kubernetes
+
+:::info
+**In-Cluster Database:** Deploying PostgreSQL in Kubernetes is suitable for development and testing environments, but external managed databases are recommended for production.
+:::
 
 ### 1. Install PostgreSQL using Bitnami Chart
 
@@ -95,6 +115,10 @@ helm install mlflow community-charts/mlflow \
 ```
 
 ## Option 3: Using Existing Database Secret
+
+:::tip
+**Secret Management:** Using Kubernetes secrets for database credentials is a security best practice that keeps sensitive data out of configuration files.
+:::
 
 ### 1. Create Database Secret
 
@@ -138,6 +162,10 @@ architecture-beta
   server:R --> L:volume
   server:B --> T:db
 ```
+
+:::info
+**Complete Setup:** This configuration demonstrates a production-ready MLflow setup with PostgreSQL backend and proper resource management.
+:::
 
 Create a `values.yaml` file:
 
@@ -185,6 +213,10 @@ helm install mlflow community-charts/mlflow \
 ```
 
 ## Database Migration Features
+
+:::tip
+**Migration Safety:** Database migrations are disabled by default. Enable them only when you're ready to update your database schema.
+:::
 
 ### Automatic Schema Migrations
 

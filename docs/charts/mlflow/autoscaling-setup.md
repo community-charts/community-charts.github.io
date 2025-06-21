@@ -11,7 +11,15 @@ keywords: [mlflow, autoscaling, kubernetes, helm, hpa, horizontal pod autoscaler
 
 This guide covers configuring autoscaling for MLflow to handle varying workloads efficiently. We'll cover Horizontal Pod Autoscaler (HPA), and cluster autoscaling strategies.
 
+:::info
+**Production Scaling:** Autoscaling is essential for production MLflow deployments to handle varying workloads and ensure optimal resource utilization.
+:::
+
 ## Prerequisites
+
+:::warning
+**Critical Requirements:** Autoscaling requires specific backend configurations. Ensure all prerequisites are met before enabling autoscaling.
+:::
 
 - Kubernetes cluster with metrics server enabled
 - MLflow deployed on Kubernetes
@@ -21,9 +29,17 @@ This guide covers configuring autoscaling for MLflow to handle varying workloads
 - **Artifact store enabled** (S3, Azure Blob, or GCS)
 - **Authentication configured** (PostgreSQL auth backend or disabled)
 
+:::tip
+**Resource Planning:** Define appropriate resource requests and limits for your MLflow pods to enable effective autoscaling decisions.
+:::
+
 ## Horizontal Pod Autoscaler (HPA)
 
 ### Prerequisites for HPA
+
+:::warning
+**HPA Requirements:** The HPA will only be created if all these conditions are met. Check your configuration carefully.
+:::
 
 The HPA is created only if:
 - `autoscaling.enabled: true`
@@ -112,6 +128,10 @@ autoscaling:
           periodSeconds: 60
 ```
 
+:::tip
+**Scaling Behavior:** Customize scaling behavior to prevent rapid scaling up/down and ensure stable performance during workload changes.
+:::
+
 ### 4. Custom Metrics HPA
 
 For more sophisticated scaling based on custom metrics:
@@ -141,7 +161,15 @@ autoscaling:
           averageValue: 100
 ```
 
+:::info
+**Custom Metrics:** Use custom metrics for more precise scaling decisions based on application-specific workload indicators.
+:::
+
 ## Complete Production Configuration
+
+:::info
+**Production Setup:** This example demonstrates a complete production-ready MLflow configuration with autoscaling enabled.
+:::
 
 ### PostgreSQL with S3 and Autoscaling
 

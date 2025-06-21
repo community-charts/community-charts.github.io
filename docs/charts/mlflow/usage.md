@@ -7,14 +7,17 @@ description: Complete guide to deploying and configuring MLflow on Kubernetes us
 keywords: [mlflow, kubernetes, helm, machine learning, mlops, experiment tracking, model management]
 ---
 
-# MLflow chart usage
+# MLflow Chart Usage
 
 [MLflow](https://mlflow.org) is an open-source platform for managing the end-to-end machine learning lifecycle, including experiment tracking, model management, and deployment. This Helm chart helps you deploy MLflow on Kubernetes with enterprise-grade features.
 
+:::info
+**Quick Links:**
 - **Official Website:** [https://mlflow.org](https://mlflow.org)
 - **GitHub Repository:** [https://github.com/mlflow/mlflow](https://github.com/mlflow/mlflow)
 - **Documentation:** [https://mlflow.org/docs/latest/index.html](https://mlflow.org/docs/latest/index.html)
 - **ArtifactHub:** [MLflow Helm Chart](https://artifacthub.io/packages/helm/community-charts/mlflow)
+:::
 
 ## Why use this chart?
 
@@ -27,13 +30,25 @@ keywords: [mlflow, kubernetes, helm, machine learning, mlops, experiment trackin
 
 ## Supported Databases
 
+:::tip
+**Database Selection:** Choose your database based on your deployment requirements. PostgreSQL is recommended for production environments.
+:::
+
 The chart supports multiple database backends for MLflow:
 
 - **PostgreSQL**: Production-ready with connection pooling and migrations
 - **MySQL**: Alternative database with PyMySQL driver support
 - **SQLite**: Development and testing (in-memory or file-based)
 
+:::warning
+**Production Database:** SQLite is not suitable for production deployments. Use PostgreSQL or MySQL for production environments.
+:::
+
 ## Supported Cloud Providers
+
+:::info
+**Enterprise Storage:** Cloud storage integration is essential for production MLflow deployments to handle large model artifacts and datasets.
+:::
 
 Enterprise artifact storage integration:
 
@@ -42,6 +57,10 @@ Enterprise artifact storage integration:
 - **Azure Blob Storage**: Azure Storage Account with managed identities
 
 ## Quick Start
+
+:::note
+**Getting Started:** Follow these steps to get MLflow running quickly. For production deployments, see the detailed configuration examples below.
+:::
 
 ### 1. Add the Helm Repository
 
@@ -57,6 +76,10 @@ helm install mlflow community-charts/mlflow \
   --namespace mlflow \
   --create-namespace
 ```
+
+:::tip
+**Development Use:** SQLite installation is perfect for development, testing, and single-user scenarios.
+:::
 
 ### 3. Production Installation with PostgreSQL and S3
 
@@ -76,7 +99,15 @@ helm install mlflow community-charts/mlflow \
   --set artifactRoot.s3.awsSecretAccessKey=your-secret-key
 ```
 
+:::warning
+**Security:** Never hardcode credentials in command line arguments. Use Kubernetes secrets or environment variables for sensitive data.
+:::
+
 ## Key Features
+
+:::info
+**Enterprise Features:** These features make MLflow production-ready and suitable for enterprise environments.
+:::
 
 ### Database Migrations
 Enable automatic database schema migrations:
@@ -84,6 +115,10 @@ Enable automatic database schema migrations:
 backendStore:
   databaseMigration: true
 ```
+
+:::tip
+**Migration Safety:** Database migrations are disabled by default. Enable them only when you're ready to update your database schema.
+:::
 
 ### Connection Health Checks
 Add database availability checks:
@@ -100,6 +135,10 @@ auth:
   adminUsername: admin
   adminPassword: your-secure-password
 ```
+
+:::warning
+**Authentication:** Always enable authentication in production environments to secure your MLflow instance.
+:::
 
 ### LDAP Integration
 Enterprise LDAP authentication:
@@ -128,6 +167,10 @@ autoscaling:
           averageUtilization: 70
 ```
 
+:::tip
+**Scaling Strategy:** Use autoscaling for dynamic workloads and manual scaling for predictable, steady-state workloads.
+:::
+
 ### Monitoring
 Prometheus ServiceMonitor integration:
 ```yaml
@@ -139,6 +182,10 @@ serviceMonitor:
 ```
 
 ## Configuration Examples
+
+:::info
+**Production Examples:** These examples demonstrate common production deployment patterns for different cloud providers and databases.
+:::
 
 ### PostgreSQL with S3 Artifacts
 
@@ -183,6 +230,10 @@ artifactRoot:
 ```
 
 ### EKS with IAM Roles
+
+:::info
+**IAM Best Practice:** Using IAM roles is the recommended approach for AWS EKS deployments as it eliminates the need to manage access keys.
+:::
 
 ```yaml
 serviceAccount:

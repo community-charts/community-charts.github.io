@@ -11,6 +11,10 @@ keywords: [mlflow, mysql, kubernetes, helm, database, migration, production, pym
 
 This guide covers setting up MLflow with MySQL as the backend database. MySQL is a popular alternative to PostgreSQL and provides good performance for MLflow deployments.
 
+:::info
+**Alternative Database:** MySQL is a viable alternative to PostgreSQL for MLflow deployments, offering good performance and wide compatibility with existing infrastructure.
+:::
+
 ```mermaid
 architecture-beta
   group k8s(cloud)[Kubernetes Cluster]
@@ -26,6 +30,10 @@ architecture-beta
 
 ## Prerequisites
 
+:::warning
+**Requirements:** Ensure you have all prerequisites installed and configured before proceeding with MySQL setup.
+:::
+
 - Kubernetes cluster (v1.16+)
 - Helm 3.x installed
 - kubectl configured
@@ -33,6 +41,10 @@ architecture-beta
 - Storage class for PVC (if using in-cluster MySQL)
 
 ## Option 1: Using External MySQL
+
+:::tip
+**External Database:** Using external MySQL (like RDS, Cloud SQL, or Azure Database) is recommended for production as it provides managed backups, high availability, and easier maintenance.
+:::
 
 ### 1. Prepare MySQL Database
 
@@ -59,7 +71,15 @@ helm install mlflow community-charts/mlflow \
   --set backendStore.mysql.password=your_secure_password
 ```
 
+:::warning
+**Security:** Never hardcode database passwords in command line arguments. Use Kubernetes secrets or environment variables for sensitive data.
+:::
+
 ## Option 2: Deploy MySQL in Kubernetes
+
+:::info
+**In-Cluster Database:** Deploying MySQL in Kubernetes is suitable for development and testing environments, but external managed databases are recommended for production.
+:::
 
 ### 1. Install MySQL using Bitnami Chart
 
@@ -108,6 +128,10 @@ helm install mlflow community-charts/mlflow \
 
 ## Option 3: Using Existing Database Secret
 
+:::tip
+**Secret Management:** Using Kubernetes secrets for database credentials is a security best practice that keeps sensitive data out of configuration files.
+:::
+
 ### 1. Create Database Secret
 
 ```bash
@@ -150,6 +174,10 @@ architecture-beta
   server:R --> L:db
   server:B --> T:volume
 ```
+
+:::info
+**Complete Setup:** This configuration demonstrates a production-ready MLflow setup with MySQL backend and proper resource management.
+:::
 
 Create a `values.yaml` file:
 

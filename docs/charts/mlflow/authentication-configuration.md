@@ -11,13 +11,25 @@ keywords: [mlflow, authentication, ldap, kubernetes, helm, security, basic auth,
 
 This guide covers configuring authentication for MLflow to secure access to your MLflow tracking server. MLflow supports various authentication methods including basic authentication, OAuth, and LDAP integration.
 
+:::warning
+**Security Requirement:** Authentication should always be enabled in production environments to secure your MLflow instance and protect sensitive ML data.
+:::
+
 ## Prerequisites
+
+:::info
+**Setup Requirements:** Ensure you have the necessary infrastructure and access before configuring authentication.
+:::
 
 - MLflow deployed on Kubernetes
 - Access to MLflow configuration
 - Authentication provider setup (if using OAuth/LDAP)
 
 ## Basic Authentication
+
+:::tip
+**Quick Security:** Basic authentication is the simplest way to secure MLflow and is suitable for small teams or development environments.
+:::
 
 ### 1. Simple Basic Authentication
 
@@ -27,6 +39,10 @@ auth:
   adminUsername: admin
   adminPassword: S3cr3+
 ```
+
+:::warning
+**Password Security:** Use strong, unique passwords and consider using Kubernetes secrets instead of hardcoding credentials.
+:::
 
 ### 2. Create User Credentials Secret
 
@@ -68,6 +84,10 @@ architecture-beta
   server:R --> L:db
 ```
 
+:::info
+**Enterprise Authentication:** PostgreSQL-based authentication provides centralized user management and is suitable for larger organizations.
+:::
+
 ### 1. Configure PostgreSQL Auth Backend
 
 ```yaml
@@ -108,6 +128,10 @@ architecture-beta
   server:R --> L:ldap
 ```
 
+:::info
+**Enterprise Integration:** LDAP authentication integrates MLflow with existing enterprise directory services for centralized user management.
+:::
+
 ### 1. Basic LDAP Configuration
 
 ```yaml
@@ -141,6 +165,10 @@ ldapAuth:
   encodedTrustedCACertificate: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURoRENDQW15Z0F3SUJBZ0lSQUx1a3VyZnlCMFF0Z1FtbnphZDlMNWN3RFFZSktvWklodmNOQVFFTEJRQXcKU3pFZ01CNEdBMVVFQXd3WFRVeEdiRzkzSUV4RVFWQXRVMU5NTFZSbGMzUWdRMEV4RHpBTkJnTlZCQW9NQmsxTQpSbXh2ZHpFV01CUUdBMVVFQ3d3TlRFUkJVQzFUVTB3dFZHVnpkREFlRncweU5UQXpNRE14TnpJMU1qVmFGdzB5Ck5UQXpNRFF4TnpJMU1qVmFNRXN4SURBZUJnTlZCQU1NRjAxTVJteHZkeUJNUkVGUUxWTlRUQzFVWlhOMElFTkIKTVE4d0RRWURWUVFLREFaTlRFWnNiM2N4RmpBVUJnTlZCQXNNRFV4RVFWQXRVMU5NTFZSbGMzUXdnZ0VpTUEwRwpDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRRHNBNDc1NkRrZlVXRThZZjRHN0Z4ZFJkL0pnNXNkCjRJUVp1K3ZQcDRMTm5uM3E5VWlZeUtHZkVFRDJTMnRvYUVTS1VNakJyYWVRd3crUDV0dDVHcjNMQ3JQUmpjZTUKQ2xuMEh3NE5pRGJ5bkhWcDkxWXRjdHJObWtGMFRGdUYxNVE5OUMyR1lpbmNYUW93THduMWZXN2pTZjFuU3N1Kwpvek0veHFUa2FyQndtcVFkYTRlcW56cG5Xa2ZqL2ZHQTNVcnpwMHV6ZG1ZdnNhcmtiTkt0aGZSWTJ4UDhQZGc0Cm15dDJ6SmlycjN2MEo1OFNHeFN6ZWlab0tYUTNtTW5hRDZGTUVTcEg5THUydDVTRUVPZjlubFJLS2l4UzF0aWMKVHJUMDkzUVNKcWNRRkMyNTNwWmF1ZkpQNWR2SlVIR0NvcHFzVU5xc0Jkd2Ivd1grNnJFQm5YYUJBZ01CQUFHagpZekJoTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3RGdZRFZSMFBBUUgvQkFRREFnRUdNQjBHQTFVZERnUVdCQlJsCnZVRmphb0c5NU1sWmxBSUs2SDRsaVlvMUNqQWZCZ05WSFNNRUdEQVdnQlJsdlVGamFvRzk1TWxabEFJSzZINGwKaVlvMUNqQU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFCNy96YWtlOHB6QWF3eHhvUW5mV3N1MkpSNWhyZkpjcQpjdCt1UEVnSWdnc3lFSmRGbndvbSt2UUV3a3NnT2tEYk10UGZnWTdRUVdUeHo4d1pQOXJDZVZaVUJ0T1FrdytKCjZCR2NLc1gwVnl5bUx5a1VOWUF5U2pEUE1Ma0NES2ZsRyt2eWFPWTZQbFdkZVJJTTVRMVZRL1B1SmQrbCtobEgKd2dFbU1RK2VjeVB2Wkhnd0t3cE41Zzh3YzI3bjI3RURqS29wUHpFMXpzRFN0MjFwUnMvcUdnZXZ6QTl2RlB5eAprWXdXdWJkblQ5NkwyTUUrVjcwTmJzbWt5ekl2T2NzajBlRnE0Z2EyNUQxQ2FhLzlyUnVOSlhwanYyQndYUm1tClNDNnBIV1dRWnh3NDRLQnJCM09EM1hLS25rMU94RFBDUzVwMzN2SHo4ZEZOMHNzb3EwV1VPUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
 ```
 
+:::warning
+**Certificate Security:** Always use proper TLS certificates in production. Self-signed certificates should only be used for testing.
+:::
+
 ### 3. LDAP with External CA Certificate Secret
 
 If you already stored your self-signed CA certificate in an external secret:
@@ -160,6 +188,10 @@ ldapAuth:
 ```
 
 ## Complete Configuration Examples
+
+:::info
+**Production Examples:** These examples demonstrate complete authentication setups for different enterprise scenarios.
+:::
 
 ### Basic Authentication with PostgreSQL Backend
 

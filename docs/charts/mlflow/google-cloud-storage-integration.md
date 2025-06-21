@@ -11,6 +11,10 @@ keywords: [mlflow, google cloud storage, kubernetes, helm, artifact storage, gcs
 
 This guide covers configuring MLflow to use Google Cloud Storage (GCS) for artifact storage. GCS provides scalable, durable storage for MLflow artifacts with enterprise-grade security and global availability.
 
+:::info
+**GCS Integration:** Google Cloud Storage is ideal for organizations using Google Cloud Platform, providing seamless integration with GCP services and global availability.
+:::
+
 ```mermaid
 architecture-beta
   group k8s(cloud)[Kubernetes Cluster]
@@ -26,12 +30,20 @@ architecture-beta
 
 ## Prerequisites
 
+:::warning
+**GCP Setup:** Ensure you have proper GCP access and permissions before configuring GCS integration.
+:::
+
 - Google Cloud Platform account with GCS access
 - Google Cloud CLI configured or service account credentials available
 - Kubernetes cluster with MLflow deployed
 - GCS bucket created and accessible
 
 ## GCS Bucket Setup
+
+:::tip
+**Bucket Configuration:** Proper bucket setup ensures data durability and cost optimization for your MLflow artifacts.
+:::
 
 ### 1. Create GCS Bucket
 
@@ -44,6 +56,10 @@ gsutil mb gs://your-mlflow-artifacts-bucket
 ```bash
 gsutil versioning set on gs://your-mlflow-artifacts-bucket
 ```
+
+:::tip
+**Versioning:** Enable versioning to protect against accidental deletions and maintain artifact history.
+:::
 
 ### 3. Configure Bucket Lifecycle (Optional)
 
@@ -66,7 +82,15 @@ Create `lifecycle.json`:
 }
 ```
 
+:::info
+**Lifecycle Management:** Configure lifecycle policies to automatically manage storage costs and clean up old artifacts.
+:::
+
 ## Authentication Options
+
+:::warning
+**Security Best Practice:** Use Workload Identity instead of service account keys for production deployments to improve security and eliminate credential management.
+:::
 
 ### Option 1: Service Account Key (Development)
 
@@ -86,6 +110,10 @@ gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
 gcloud iam service-accounts keys create mlflow-gcs-key.json \
   --iam-account=mlflow-gcs-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com
 ```
+
+:::tip
+**Development Use:** Service account keys are suitable for development and testing but not recommended for production.
+:::
 
 ### Option 2: Workload Identity (GKE Production)
 
@@ -113,7 +141,15 @@ gcloud iam service-accounts add-iam-policy-binding \
   --member="serviceAccount:YOUR_PROJECT_ID.svc.id.goog[mlflow/mlflow]"
 ```
 
+:::info
+**GKE Best Practice:** Workload Identity provides the most secure and manageable way to grant GCP permissions to GKE pods.
+:::
+
 ## Kubernetes Secret for GCS Credentials
+
+:::warning
+**Credential Security:** Store GCS credentials in Kubernetes secrets rather than hardcoding them in configuration files.
+:::
 
 ### Create Secret with Service Account Key
 
@@ -138,6 +174,10 @@ architecture-beta
   server:R --> L:bucket
   server:B --> T:db
 ```
+
+:::info
+**Complete Setup:** This configuration demonstrates a production-ready MLflow setup with PostgreSQL backend and GCS artifact storage.
+:::
 
 ### Option 1: Using Service Account Key
 

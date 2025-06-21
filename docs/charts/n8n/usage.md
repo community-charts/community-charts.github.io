@@ -1,28 +1,264 @@
 ---
+id: usage
+title: "n8n Chart Usage"
+sidebar_label: "Usage Guide"
 sidebar_position: 1
+description: "Learn how to deploy and configure n8n on Kubernetes using the community-maintained Helm chart"
+keywords: ["n8n", "helm", "kubernetes", "workflow automation", "deployment", "configuration"]
 ---
 
-# n8n chart usage
+# N8N Chart Usage
 
-[n8n](https://n8n.io) is a powerful workflow automation tool that lets you connect apps and automate tasks with a no-code/low-code interface. This chart makes it easy to run n8n on Kubernetes.
+[n8n](https://n8n.io) is a powerful workflow automation tool that lets you connect apps and automate tasks with a no-code/low-code interface. This chart makes it easy to run n8n on Kubernetes with enterprise-grade features.
 
+:::info
+**Quick Links:**
 - **Official Website:** [https://n8n.io](https://n8n.io)
 - **GitHub Repository:** [https://github.com/n8n-io/n8n](https://github.com/n8n-io/n8n)
 - **Documentation:** [https://docs.n8n.io](https://docs.n8n.io)
 - **ArtifactHub:** [n8n Helm Chart](https://artifacthub.io/packages/helm/community-charts/n8n)
+:::
 
 ## Why use this chart?
 
-- Deploy n8n reliably on Kubernetes
-- Community-maintained and up-to-date
-- Great for automating business and personal workflows
+- **Production Ready:** Deploy n8n reliably on Kubernetes with enterprise features
+- **Community Maintained:** Regularly updated and well-tested
+- **Scalable Architecture:** Support for queue mode, worker nodes, and webhook nodes
+- **Flexible Configuration:** Multiple database backends, external storage, and monitoring
+- **Security Focused:** Built-in security contexts, secrets management, and RBAC support
+- **Advanced Node Support:** **Unique npm package installation capabilities** - Install custom npm packages and community nodes directly in main and worker pods
+- **External Task Runners:** **Only Helm chart supporting external task runners** - Isolate workflow execution in dedicated sidecar containers for enhanced security and performance
 
-## Installation
+## Quick Start
+
+### Prerequisites
+
+:::warning
+**Requirements:**
+- Kubernetes cluster (1.19+)
+- Helm 3.0+
+- kubectl configured
+- Storage class for persistent volumes (if using PostgreSQL/MinIO)
+:::
+
+### Basic Installation
 
 ```bash
+# Add the repository
 helm repo add community-charts https://community-charts.github.io/helm-charts
 helm repo update
+
+# Install n8n with default settings (SQLite)
 helm install my-n8n community-charts/n8n -n <your-namespace>
 ```
 
-Replace `<your-namespace>` with your target namespace. For advanced configuration, see [values.yaml](https://github.com/community-charts/helm-charts/blob/main/charts/n8n/values.yaml) and [ArtifactHub page](https://artifacthub.io/packages/helm/community-charts/n8n).
+:::tip
+**For Development:** The basic installation with SQLite is perfect for testing and development environments. For production, consider using PostgreSQL with queue mode.
+:::
+
+### Production Installation with PostgreSQL
+
+```bash
+# Install with PostgreSQL backend
+helm install my-n8n community-charts/n8n \
+  --set db.type=postgresdb \
+  --set postgresql.enabled=true \
+  --set postgresql.auth.database=n8n \
+  --set postgresql.auth.username=n8n \
+  --set postgresql.auth.password=your-secure-password \
+  -n <your-namespace>
+```
+
+:::note
+**Security:** Always use strong, unique passwords for database credentials. Consider using Kubernetes secrets for sensitive data.
+:::
+
+### Installation with Ingress
+
+```bash
+# Install with ingress for external access
+helm install my-n8n community-charts/n8n \
+  --set ingress.enabled=true \
+  --set ingress.hosts[0].host=n8n.yourdomain.com \
+  --set db.type=postgresdb \
+  --set postgresql.enabled=true \
+  -n <your-namespace>
+```
+
+### Queue Mode Installation (Production)
+
+```bash
+# Install with queue mode for distributed execution
+helm install my-n8n community-charts/n8n \
+  --set db.type=postgresdb \
+  --set postgresql.enabled=true \
+  --set redis.enabled=true \
+  --set worker.mode=queue \
+  --set webhook.mode=queue \
+  --set webhook.url=https://webhook.yourdomain.com \
+  --set ingress.enabled=true \
+  --set ingress.hosts[0].host=n8n.yourdomain.com \
+  -n <your-namespace>
+```
+
+:::tip
+**Production Recommendation:** Queue mode with PostgreSQL and Redis is the recommended setup for production environments. It provides better scalability, reliability, and performance.
+:::
+
+## Key Features
+
+### Database Support
+- **SQLite** (default) - Simple single-node deployments
+- **PostgreSQL** - Production-ready with Bitnami PostgreSQL or external instances
+
+### Deployment Modes
+- **Regular Mode** - Single n8n instance (default)
+- **Queue Mode** - Distributed execution with worker nodes
+- **Webhook Mode** - Dedicated webhook processing nodes
+
+### Storage Options
+- **Default** - In-memory binary data storage
+- **Filesystem** - Local file storage
+- **S3-Compatible** - External object storage (AWS S3, MinIO, etc.)
+
+### Monitoring & Observability
+- **Prometheus Metrics** - Built-in metrics endpoint
+- **ServiceMonitor** - Prometheus Operator integration
+- **Health Checks** - Liveness and readiness probes
+- **Logging** - Configurable log levels and outputs
+
+### Security Features
+- **RBAC Support** - Kubernetes role-based access control
+- **Security Contexts** - Non-root container execution
+- **Secrets Management** - Kubernetes secrets integration
+- **Network Policies** - Pod-to-pod communication control
+
+## Unique Features
+
+:::tip
+**Exclusive Capabilities:** These features make this n8n Helm chart stand out from all others available.
+:::
+
+### Advanced npm Package Management
+This chart provides **exceptional npm package installation capabilities** that set it apart from other n8n Helm charts:
+
+- **Custom npm Packages:** Install any npm package directly in main and worker pods
+- **Community Nodes:** Seamlessly install n8n community nodes for extended functionality
+- **Private Registries:** Support for private npm registries with authentication
+- **Automatic Reinstallation:** Smart package management with automatic reinstallation of missing packages
+- **Built-in Modules:** Configure access to Node.js built-in modules for enhanced Code node capabilities
+
+### External Task Runners (Exclusive Feature)
+This is the **only n8n Helm chart** that supports external task runners, providing enhanced security and performance:
+
+- **Isolated Execution:** Run workflow executions in dedicated sidecar containers
+- **Enhanced Security:** Separate execution environment from the main n8n application
+- **Resource Isolation:** Dedicated resource allocation for task execution
+- **Scalability:** Independent scaling of execution capacity
+- **Enterprise Ready:** Production-grade isolation for sensitive workflows
+
+:::warning
+**Enterprise Feature:** External task runners are only available in n8n Enterprise. Make sure you have the appropriate license if using this feature.
+:::
+
+## Architecture Overview
+
+:::info
+**Deployment Options:** Choose the architecture that best fits your use case and requirements.
+:::
+
+The n8n Helm chart supports three main deployment architectures:
+
+### Single Node (Default)
+```
+┌─────────────────┐
+│   n8n Pod       │
+│  (Main + Exec)  │
+└─────────────────┘
+```
+
+### Queue Mode (Production)
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Main Node     │    │  Worker Nodes   │    │ Webhook Nodes   │
+│  (UI + API)     │◄──►│  (Execution)    │    │ (Webhook Proc)  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         └───────────────────────┼───────────────────────┘
+                                 │
+                    ┌─────────────────┐
+                    │   Redis Queue   │
+                    │   (Message Bus) │
+                    └─────────────────┘
+```
+
+### External Task Runners
+```
+┌─────────────────┐    ┌─────────────────┐
+│   n8n Pod       │◄──►│ External Runner │
+│  (Main + API)   │    │   (Execution)   │
+└─────────────────┘    └─────────────────┘
+```
+
+## Next Steps
+
+:::tip
+**Getting Started:** Follow these guides in order for a complete n8n setup experience.
+:::
+
+- [Configuration Guide](./configuration.md) - Detailed configuration options
+- [Database Setup](./database-setup.md) - PostgreSQL and external database configuration
+- [Queue Mode Setup](./queue-mode.md) - Distributed execution with Redis
+- [Storage Configuration](./storage.md) - Binary data storage options
+- [Monitoring Setup](./monitoring.md) - Metrics and observability
+- [Troubleshooting](./troubleshooting.md) - Common issues and solutions
+
+## Examples
+
+:::info
+**Real-world Scenarios:** These examples demonstrate practical deployment patterns for different use cases.
+:::
+
+Check out the [examples directory](https://github.com/community-charts/examples/tree/main/n8n-examples) for complete deployment scenarios:
+
+- [Workers and Webhooks](https://github.com/community-charts/examples/tree/main/n8n-examples/workers-and-webhooks-example) - Queue mode with dedicated nodes
+- [Community Nodes](https://github.com/community-charts/examples/tree/main/n8n-examples/community-nodes-packages-example) - Custom npm packages
+- [External Task Runners](https://github.com/community-charts/examples/tree/main/n8n-examples/internal-and-external-npm-packages-with-external-runner-example) - Isolated execution environments
+
+## Upgrading
+
+```bash
+# Update the repository
+helm repo update
+
+# Upgrade the release
+helm upgrade my-n8n community-charts/n8n -n <your-namespace>
+```
+
+:::note
+**Backup First:** Always backup your data before upgrading, especially when changing database configurations.
+:::
+
+## Uninstalling
+
+```bash
+# Uninstall the release
+helm uninstall my-n8n -n <your-namespace>
+
+# Optionally delete PVCs (WARNING: This will delete all data)
+kubectl delete pvc -l app.kubernetes.io/instance=my-n8n -n <your-namespace>
+```
+
+:::danger
+**Data Loss Warning:** Deleting PVCs will permanently remove all n8n data including workflows, executions, and credentials. Make sure you have backups before proceeding.
+:::
+
+## Support
+
+:::info
+**Need Help?** We're here to help you succeed with your n8n deployment.
+:::
+
+- **GitHub Issues:** [Report bugs or request features](https://github.com/community-charts/helm-charts/issues)
+- **Discussions:** [Community discussions](https://github.com/community-charts/helm-charts/discussions)
+- **Documentation:** [n8n official docs](https://docs.n8n.io)

@@ -11,7 +11,15 @@ keywords: [mlflow, sqlite, kubernetes, helm, basic installation, development set
 
 This guide walks you through installing MLflow on Kubernetes using SQLite as the backend database. This setup is perfect for development, testing, or small-scale deployments.
 
+:::info
+**Use Case:** SQLite installation is ideal for development, testing, single-user scenarios, and learning MLflow concepts.
+:::
+
 ## Prerequisites
+
+:::warning
+**Requirements:** Ensure you have all prerequisites installed and configured before proceeding with the installation.
+:::
 
 - Kubernetes cluster (v1.16+)
 - Helm 3.x installed
@@ -19,6 +27,10 @@ This guide walks you through installing MLflow on Kubernetes using SQLite as the
 - Storage class available for PVC
 
 ## Installation Steps
+
+:::note
+**Getting Started:** Follow these steps in order to get MLflow running quickly with minimal configuration.
+:::
 
 ### 1. Add the Helm Repository
 
@@ -41,6 +53,10 @@ helm install mlflow community-charts/mlflow \
   --set backendStore.defaultSqlitePath=/mlflow/data/mlflow.db
 ```
 
+:::tip
+**Quick Start:** This command installs MLflow with SQLite backend and basic configuration suitable for development.
+:::
+
 ### 4. Verify Installation
 
 Check the deployment status:
@@ -61,7 +77,15 @@ kubectl port-forward svc/mlflow -n mlflow 5000:5000
 
 Open your browser and navigate to `http://localhost:5000`
 
+:::info
+**Access Method:** Port-forwarding is suitable for development. For production, use ingress or load balancer.
+:::
+
 ## Configuration Options
+
+:::tip
+**Customization:** Use values files to customize your MLflow installation according to your specific needs.
+:::
 
 ### Basic Values Override
 
@@ -113,6 +137,10 @@ architecture-beta
   ui:R --> L:server
   server:R --> L:pv
 ```
+
+:::info
+**Persistent Storage:** Using PVC ensures your MLflow data persists across pod restarts and deployments.
+:::
 
 For persistent storage with SQLite and local artifacts:
 
@@ -168,6 +196,10 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
 ```
+
+:::warning
+**Data Persistence:** Without PVC, your MLflow data will be lost when the pod is restarted or redeployed.
+:::
 
 ### Static Prefix Configuration
 
