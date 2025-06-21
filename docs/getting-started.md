@@ -70,13 +70,13 @@ To install a chart, use the `helm install` command. Below is an example for inst
 helm install my-mlflow community-charts/mlflow -n <your-namespace>
 ```
 
-Replace `my-mlflow` with your preferred release name and `<your-namespace>` with the target namespace (e.g., `default`). If the namespace doesn’t exist, create it first:
+Replace `my-mlflow` with your preferred release name and `<your-namespace>` with the target namespace (e.g., `default`). If the namespace doesn't exist, create it first:
 
 ```bash
 kubectl create namespace <your-namespace>
 ```
 
-For customized installations (e.g., using PostgreSQL or AWS S3), refer to the chart’s specific documentation. For MLflow, see [Basic Installation with SQLite](/docs/charts/mlflow/basic-installation) or [PostgreSQL Backend Installation](/docs/charts/mlflow/postgresql-backend-installation).
+For customized installations (e.g., using PostgreSQL or AWS S3), refer to the chart's specific documentation. For MLflow, see [Basic Installation with SQLite](/docs/charts/mlflow/basic-installation), [PostgreSQL Backend Installation](/docs/charts/mlflow/postgresql-backend-installation), and [AWS S3 Integration](/docs/charts/mlflow/aws-s3-integration).
 
 ## Step 4: Verify the Installation
 
@@ -88,7 +88,7 @@ kubectl get pods -n <your-namespace>
 
 Look for pods associated with your release (e.g., `my-mlflow-XXXXX`) in a `Running` state.
 
-Access the application using the instructions in the chart’s documentation. For example, MLflow typically exposes a web UI at port 5000, which you can access via port-forwarding:
+Access the application using the instructions in the chart's documentation. For example, MLflow typically exposes a web UI at port 5000, which you can access via port-forwarding:
 
 ```bash
 kubectl port-forward svc/my-mlflow -n <your-namespace> 5000:5000
@@ -98,7 +98,7 @@ Then, open `http://localhost:5000` in your browser.
 
 ## Our Chart Offerings
 
-Here’s a quick overview of our current charts and their use cases:
+Here's a quick overview of our current charts and their use cases:
 
 | Chart          | Description                                              | Documentation Link                                        |
 | -------------- | -------------------------------------------------------- | --------------------------------------------------------- |
@@ -114,7 +114,7 @@ Explore the [Charts section](/docs/category/charts) for detailed installation gu
 
 ## Next Steps
 
-Now that you’ve set up our Helm repository, try these next steps:
+Now that you've set up our Helm repository, try these next steps:
 
 - Deploy a chart like MLflow with a [basic SQLite setup](/docs/charts/mlflow/basic-installation) for testing.
 - Configure a production-ready deployment with [PostgreSQL](/docs/charts/mlflow/postgresql-backend-installation) or [AWS S3](/docs/charts/mlflow/aws-s3-integration).
@@ -122,4 +122,4 @@ Now that you’ve set up our Helm repository, try these next steps:
 - Report issues or request features via [GitHub issues](https://github.com/community-charts/helm-charts/issues).
 - Stay updated by following our [blog](/blog) for tutorials and announcements.
 
-We’re excited to have you as part of the GitHub Community Charts community. Let’s make deploying open-source tools on Kubernetes easier, together!
+We're excited to have you as part of the GitHub Community Charts community. Let's make deploying open-source tools on Kubernetes easier, together!

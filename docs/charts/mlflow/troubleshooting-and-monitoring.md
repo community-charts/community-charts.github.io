@@ -1,0 +1,529 @@
+---
+id: troubleshooting-and-monitoring
+title: Troubleshooting and Monitoring
+sidebar_label: Troubleshooting
+sidebar_position: 10
+description: Comprehensive troubleshooting guide for MLflow on Kubernetes. Learn about common issues, debugging techniques, monitoring setup, and performance optimization.
+keywords: [mlflow, troubleshooting, monitoring, kubernetes, helm, debugging, performance, logs, metrics, prometheus]
+---
+
+# Troubleshooting and Monitoring
+
+This guide provides comprehensive troubleshooting steps and monitoring setup for MLflow deployments on Kubernetes. Learn how to diagnose common issues, set up monitoring, and maintain production deployments.
+
+## Common Issues and Solutions
+
+### Database Connection Issues
+
+#### PostgreSQL Connection Problems
+
+**Symptoms:**
+- Pod stuck in `CrashLoopBackOff`
+- Error messages: "connection refused", "authentication failed"
+- Init container failures
+
+**Diagnosis:**
+```bash
+# Check PostgreSQL service
+kubectl get svc postgres -n mlflow
+
+# Test network connectivity
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  nc -zv postgres-service 5432
+
+# Check PostgreSQL logs
+kubectl logs -f deployment/postgres -n mlflow
+
+# Verify database credentials
+kubectl get secret postgres-database-secret -n mlflow -o yaml
+```
+
+**Solutions:**
+1. **Connection Refused**: Check if PostgreSQL is running and accessible
+2. **Authentication Failed**: Verify username/password and database permissions
+3. **Database Not Found**: Ensure database exists and user has access
+4. **SSL Issues**: Add `?sslmode=disable` to connection string if needed
+
+#### MySQL Connection Problems
+
+**Symptoms:**
+- Similar to PostgreSQL issues
+- PyMySQL driver errors
+- Character set issues
+
+**Diagnosis:**
+```bash
+# Test MySQL connection
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  python -c "import pymysql; pymysql.connect(host='mysql-host', user='user', password='pass', database='mlflow')"
+
+# Check MySQL logs
+kubectl logs -f deployment/mysql -n mlflow
+```
+
+**Solutions:**
+1. **Character Set**: Ensure UTF-8 encoding is configured
+2. **Driver Issues**: Verify PyMySQL is installed
+3. **SSL Connection**: Add `?ssl_mode=DISABLED` if needed
+
+### Artifact Storage Issues
+
+#### S3/MinIO Problems
+
+**Symptoms:**
+- Artifact upload/download failures
+- Access denied errors
+- Endpoint connection issues
+
+**Diagnosis:**
+```bash
+# Test S3 access
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  aws s3 ls s3://your-bucket
+
+# Check S3 credentials
+kubectl exec -it deployment/mlflow -n mlflow -- env | grep AWS
+
+# Test MinIO endpoint
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  aws s3 ls s3://mlflow --endpoint-url http://minio-service:9000
+```
+
+**Solutions:**
+1. **Access Denied**: Check IAM permissions or access keys
+2. **Endpoint Issues**: Verify MinIO service endpoint
+3. **Region Mismatch**: Ensure S3 bucket and MLflow region match
+
+#### Azure Blob Storage Problems
+
+**Symptoms:**
+- WASBS connection failures
+- Authentication errors
+- Container access issues
+
+**Diagnosis:**
+```bash
+# Test Azure CLI connectivity
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  az storage account show --name your-storage-account
+
+# Check Azure credentials
+kubectl exec -it deployment/mlflow -n mlflow -- env | grep AZURE
+```
+
+**Solutions:**
+1. **Authentication Failed**: Verify storage account key or service principal
+2. **Container Not Found**: Ensure blob container exists
+3. **Network Issues**: Check firewall rules and VPC access
+
+### Authentication Issues
+
+#### Basic Authentication Problems
+
+**Symptoms:**
+- Login failures
+- Session timeout issues
+- Permission denied errors
+
+**Diagnosis:**
+```bash
+# Check authentication configuration
+kubectl exec -it deployment/mlflow -n mlflow -- env | grep MLFLOW
+
+# View authentication logs
+kubectl logs deployment/mlflow -n mlflow | grep -i "auth\|login"
+
+# Test authentication endpoint
+kubectl port-forward svc/mlflow -n mlflow 5000:5000
+curl -u admin:password http://localhost:5000/health
+```
+
+**Solutions:**
+1. **Login Failed**: Verify admin credentials
+2. **Session Issues**: Check session timeout settings
+3. **Permission Issues**: Verify user permissions and roles
+
+#### LDAP Authentication Problems
+
+**Symptoms:**
+- LDAP connection failures
+- User lookup errors
+- Group membership issues
+
+**Diagnosis:**
+```bash
+# Test LDAP connectivity
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  ldapsearch -H ldap://your-ldap-server:389 -D "uid=test,ou=people,dc=example,dc=com" -w password -b "dc=example,dc=com"
+
+# Check LDAP configuration
+kubectl get configmap mlflow -n mlflow -o yaml
+```
+
+**Solutions:**
+1. **Connection Issues**: Verify LDAP server connectivity
+2. **Certificate Issues**: Check TLS certificate configuration
+3. **Search Issues**: Verify LDAP search base and filters
+
+### Migration Issues
+
+#### Database Migration Failures
+
+**Symptoms:**
+- Init container failures
+- Schema migration errors
+- Data corruption issues
+
+**Diagnosis:**
+```bash
+# Check migration logs
+kubectl logs deployment/mlflow -c init-mlflow -n mlflow
+
+# Check database schema
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  python -c "import mlflow; mlflow.db.get_sqlalchemy_engine().execute('SELECT version_num FROM alembic_version')"
+```
+
+**Solutions:**
+1. **Migration Errors**: Enable `databaseMigration: true`
+2. **Permission Issues**: Ensure database user has migration permissions
+3. **Schema Conflicts**: Check for existing schema conflicts
+
+## Monitoring Setup
+
+### Prometheus ServiceMonitor Configuration
+
+Enable comprehensive monitoring with Prometheus:
+
+```yaml
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  interval: 30s
+  telemetryPath: /metrics
+  labels:
+    release: prometheus
+  timeout: 10s
+  targetLabels: []
+  metricRelabelings:
+    - sourceLabels: [__name__]
+      regex: 'mlflow_(.+)'
+      targetLabel: mlflow_metric
+      replacement: '${1}'
+```
+
+### Grafana Dashboard
+
+Create a Grafana dashboard for MLflow monitoring:
+
+```json
+{
+  "dashboard": {
+    "title": "MLflow Monitoring",
+    "panels": [
+      {
+        "title": "MLflow Requests",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{job=\"mlflow\"}[5m])",
+            "legendFormat": "{{method}} {{endpoint}}"
+          }
+        ]
+      },
+      {
+        "title": "MLflow Response Time",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job=\"mlflow\"}[5m]))",
+            "legendFormat": "95th percentile"
+          }
+        ]
+      },
+      {
+        "title": "Active Experiments",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "mlflow_active_experiments",
+            "legendFormat": "Active Experiments"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Health Checks and Alerts
+
+Configure health checks and alerting:
+
+```yaml
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 6
+  failureThreshold: 3
+  httpGet:
+    path: /health
+    port: 5000
+
+readinessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 6
+  failureThreshold: 3
+  httpGet:
+    path: /health
+    port: 5000
+```
+
+### Prometheus Alert Rules
+
+Create alert rules for MLflow:
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: mlflow-alerts
+  namespace: monitoring
+spec:
+  groups:
+  - name: mlflow
+    rules:
+    - alert: MLflowDown
+      expr: up{job="mlflow"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "MLflow is down"
+        description: "MLflow instance has been down for more than 1 minute"
+    
+    - alert: MLflowHighErrorRate
+      expr: rate(http_requests_total{job="mlflow",status=~"5.."}[5m]) > 0.1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High error rate in MLflow"
+        description: "MLflow is returning 5xx errors at a high rate"
+    
+    - alert: MLflowHighResponseTime
+      expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="mlflow"}[5m])) > 2
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High response time in MLflow"
+        description: "MLflow 95th percentile response time is above 2 seconds"
+```
+
+## Performance Optimization
+
+### Resource Management
+
+Configure appropriate resource limits:
+
+```yaml
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 2
+    memory: 4Gi
+```
+
+### Database Connection Pooling
+
+Optimize database connections:
+
+```yaml
+extraEnvVars:
+  MLFLOW_SQLALCHEMY_POOL_SIZE: "20"
+  MLFLOW_SQLALCHEMY_MAX_OVERFLOW: "30"
+  MLFLOW_SQLALCHEMY_POOL_TIMEOUT: "30"
+  MLFLOW_SQLALCHEMY_POOL_RECYCLE: "3600"
+```
+
+### Artifact Storage Optimization
+
+Optimize artifact storage performance:
+
+```yaml
+# For S3
+extraEnvVars:
+  MLFLOW_S3_PRESIGNED_URLS: "true"
+  MLFLOW_S3_UPLOAD_EXTRA_ARGS: '{"ServerSideEncryption": "aws:kms"}'
+
+# For GCS
+extraEnvVars:
+  MLFLOW_GCS_DEFAULT_TIMEOUT: "120"
+  MLFLOW_GCS_UPLOAD_CHUNK_SIZE: "209715200"
+```
+
+## Logging and Debugging
+
+### Log Level Configuration
+
+Configure appropriate log levels:
+
+```yaml
+extraEnvVars:
+  MLFLOW_LOG_LEVEL: "INFO"
+  MLFLOW_AUTH_LOGGING: "true"
+  MLFLOW_AUDIT_ENABLED: "true"
+```
+
+### Centralized Logging
+
+Set up centralized logging with Fluentd or similar:
+
+```yaml
+extraEnvVars:
+  MLFLOW_LOG_FORMAT: "json"
+  MLFLOW_LOG_FILE: "/var/log/mlflow/mlflow.log"
+```
+
+### Debug Mode
+
+Enable debug mode for troubleshooting:
+
+```yaml
+extraEnvVars:
+  MLFLOW_LOG_LEVEL: "DEBUG"
+  MLFLOW_TRACKING_URI: "http://localhost:5000"
+  MLFLOW_SERVE_ARTIFACTS: "true"
+```
+
+## Backup and Recovery
+
+### Database Backup
+
+Set up automated database backups:
+
+```bash
+# PostgreSQL backup script
+#!/bin/bash
+pg_dump -h $POSTGRES_HOST -U $POSTGRES_USER -d mlflow > /backup/mlflow_$(date +%Y%m%d_%H%M%S).sql
+
+# MySQL backup script
+#!/bin/bash
+mysqldump -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD mlflow > /backup/mlflow_$(date +%Y%m%d_%H%M%S).sql
+```
+
+### Artifact Storage Backup
+
+Configure artifact storage backup:
+
+```yaml
+# S3 backup configuration
+extraEnvVars:
+  MLFLOW_S3_BACKUP_BUCKET: "mlflow-backup-bucket"
+  MLFLOW_S3_BACKUP_SCHEDULE: "0 2 * * *"  # Daily at 2 AM
+```
+
+## Security Monitoring
+
+### Access Monitoring
+
+Monitor access patterns and security events:
+
+```yaml
+extraEnvVars:
+  MLFLOW_AUDIT_ENABLED: "true"
+  MLFLOW_AUDIT_LOG_PATH: "/var/log/mlflow/audit.log"
+  MLFLOW_SESSION_TIMEOUT: "3600"
+  MLFLOW_MAX_SESSIONS_PER_USER: "5"
+```
+
+### Network Security
+
+Monitor network access and security:
+
+```yaml
+# Network policy for MLflow
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mlflow-network-policy
+  namespace: mlflow
+spec:
+  podSelector:
+    matchLabels:
+      app: mlflow
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    ports:
+    - protocol: TCP
+      port: 5000
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: database
+    ports:
+    - protocol: TCP
+      port: 5432
+```
+
+## Maintenance Tasks
+
+### Regular Maintenance
+
+Set up regular maintenance tasks:
+
+```bash
+# Clean up old experiments (older than 90 days)
+mlflow gc --older-than 90d
+
+# Clean up old artifacts
+mlflow artifacts cleanup --older-than 90d
+
+# Database maintenance
+mlflow db gc --older-than 90d
+```
+
+### Health Check Script
+
+Create a comprehensive health check script:
+
+```bash
+#!/bin/bash
+# MLflow Health Check Script
+
+# Check pod status
+kubectl get pods -n mlflow
+
+# Check service status
+kubectl get svc -n mlflow
+
+# Check database connectivity
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  python -c "import mlflow; print('Database OK')"
+
+# Check artifact storage
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  python -c "import mlflow; print('Artifact storage OK')"
+
+# Check metrics endpoint
+kubectl exec -it deployment/mlflow -n mlflow -- \
+  curl -s http://localhost:5000/metrics | head -5
+```
+
+## Next Steps
+
+- Set up monitoring with [ServiceMonitor](/docs/charts/mlflow/usage#monitoring)
+- Configure [autoscaling](/docs/charts/mlflow/autoscaling-setup) for high availability
+- Implement backup and disaster recovery strategies
+- Set up [security monitoring](/docs/charts/mlflow/authentication-configuration) and alerting
