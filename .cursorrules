@@ -1,2 +1,5 @@
 Always use MDX syntax for Docusaurus Markdown files.
 Prefer React functional components for custom Docusaurus components.
+Add id, title, sidebar_label, sidebar_position, description, and keywords Front matter metadata information to each chart markdown pages.
+Chart pages already under chart named folder and it's part of the path. You don't need to include chart name again to page ids.
+Chart guide pages must have Next Steps section at the end of the page.
