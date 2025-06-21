@@ -15,6 +15,10 @@ This guide covers all configuration options available in the n8n Helm chart, org
 **Configuration Reference:** This guide provides comprehensive coverage of all available configuration options. Use the table of contents to navigate to specific sections.
 :::
 
+:::tip
+**Best Practices:** Follow the recommendations in this guide to ensure a secure, performant, and reliable n8n deployment.
+:::
+
 ## Table of Contents
 
 - [Image Configuration](#image-configuration)
@@ -48,6 +52,10 @@ image:
   pullPolicy: IfNotPresent
 ```
 
+:::warning
+**Image Security:** Always use specific image tags in production to avoid unexpected updates and potential security issues.
+:::
+
 ### Private Registry
 
 ```yaml
@@ -59,6 +67,10 @@ image:
 imagePullSecrets:
   - name: registry-secret
 ```
+
+:::info
+**Private Registry:** Use private registries for enhanced security and control over image distribution.
+:::
 
 ## Service Configuration
 
@@ -76,6 +88,10 @@ service:
   annotations: {}
 ```
 
+:::tip
+**Service Configuration:** ClusterIP is suitable for internal access. Use LoadBalancer or NodePort for external access without ingress.
+:::
+
 ### LoadBalancer Service
 
 ```yaml
@@ -86,6 +102,10 @@ service:
     service.beta.kubernetes.io/aws-load-balancer-type: nlb
     service.beta.kubernetes.io/aws-load-balancer-internal: "true"
 ```
+
+:::warning
+**LoadBalancer Cost:** LoadBalancer services can incur additional costs in cloud environments. Consider using ingress for cost optimization.
+:::
 
 ## Ingress Configuration
 
@@ -113,6 +133,10 @@ ingress:
         - n8n.yourdomain.com
 ```
 
+:::danger
+**TLS Security:** Never expose n8n without TLS in production. Use cert-manager or similar tools for automatic certificate management.
+:::
+
 ### Multiple Hosts
 
 ```yaml
@@ -129,6 +153,10 @@ ingress:
         - path: /api
           pathType: Prefix
 ```
+
+:::tip
+**Host Separation:** Separate API and UI hosts for better security and access control.
+:::
 
 ## Resources and Scaling
 
@@ -149,6 +177,10 @@ main:
       memory: 1Gi
 ```
 
+:::warning
+**Resource Limits:** Set appropriate limits to prevent resource exhaustion and ensure stable performance.
+:::
+
 ### Worker Node Resources
 
 ```yaml
@@ -164,6 +196,10 @@ worker:
       cpu: 2000m
       memory: 2Gi
 ```
+
+:::info
+**Worker Scaling:** Worker nodes handle workflow execution. Allocate more resources to workers for better performance.
+:::
 
 ### Autoscaling
 
@@ -189,6 +225,10 @@ worker:
             averageUtilization: 80
 ```
 
+:::tip
+**Autoscaling Strategy:** Use autoscaling for dynamic workloads. Monitor scaling behavior and adjust thresholds as needed.
+:::
+
 ## Database Configuration
 
 :::warning
@@ -201,69 +241,91 @@ worker:
 db:
   type: sqlite
   sqlite:
-    database: "database.sqlite"
+    database: database.sqlite
     poolSize: 0
     vacuum: false
 ```
 
-### PostgreSQL with Bitnami
+:::danger
+**SQLite Limitations:** SQLite is not suitable for production. It lacks concurrent access support and can cause data corruption under load.
+:::
+
+### Bitnami's PostgreSQL Chart Configuration
 
 ```yaml
 db:
   type: postgresdb
-  logging:
-    enabled: true
-    options: error
-    maxQueryExecutionTime: 1000
 
 postgresql:
   enabled: true
-  architecture: standalone
   auth:
+    database: n8n
     username: n8n
     password: your-secure-password
-    database: n8n
   primary:
     persistence:
       enabled: true
       size: 10Gi
 ```
 
-### External PostgreSQL
+:::tip
+**PostgreSQL Benefits:** PostgreSQL provides better performance, concurrent access, and supports all n8n features including queue mode.
+:::
+
+### External PostgreSQL Configuration
 
 ```yaml
 db:
   type: postgresdb
 
 externalPostgresql:
-  host: your-postgres-host.com
+  host: your-postgres-host
   port: 5432
+  database: n8n
   username: n8n
   password: your-secure-password
-  database: n8n
-  existingSecret: postgres-secret  # Optional: use Kubernetes secret
+  existingSecret: postgres-secret  # Optional: use existing secret
 ```
+
+:::info
+**External Database:** Use external databases for better resource isolation and management flexibility.
+:::
 
 ## Queue Mode Configuration
 
-### Redis Setup
+:::info
+**Queue Mode Benefits:** Queue mode enables distributed execution, better resource utilization, and improved reliability.
+:::
+
+### Bitnami's Redis Chart Configuration
 
 ```yaml
 redis:
   enabled: true
   architecture: standalone
-  master:
-    persistence:
-      enabled: true
-      size: 5Gi
-
-# Or use external Redis
-externalRedis:
-  host: your-redis-host.com
-  port: 6379
-  password: your-redis-password
-  existingSecret: redis-secret  # Optional: use Kubernetes secret
+  auth:
+    enabled: true
+    password: your-redis-password
 ```
+
+:::warning
+**Redis Security:** Always enable Redis authentication in production environments.
+:::
+
+### External Redis Configuration
+
+```yaml
+externalRedis:
+  host: your-redis-host
+  port: 6379
+  username: default
+  password: your-redis-password
+  existingSecret: redis-secret  # Optional: use existing secret
+```
+
+:::tip
+**Redis Planning:** Ensure Redis has sufficient memory and persistence configuration for your workload.
+:::
 
 ### Worker Configuration
 
@@ -272,106 +334,89 @@ worker:
   mode: queue
   count: 3
   concurrency: 10
-  allNodes: false  # Set to true to deploy one worker per node
   autoscaling:
     enabled: true
     minReplicas: 2
     maxReplicas: 10
 ```
 
+:::info
+**Worker Tuning:** Adjust worker count and concurrency based on your workflow complexity and resource availability.
+:::
+
 ### Webhook Configuration
 
 ```yaml
 webhook:
   mode: queue
-  url: "https://webhook.yourdomain.com"
   count: 2
+  url: https://webhook.yourdomain.com
   autoscaling:
     enabled: true
     minReplicas: 2
     maxReplicas: 5
 ```
 
+:::tip
+**Webhook Scaling:** Dedicated webhook nodes improve performance for high-volume webhook processing.
+:::
+
 ## Storage Configuration
 
-### Default (In-Memory)
+:::info
+**Storage Strategy:** Choose storage options based on your data persistence and performance requirements.
+:::
+
+### Binary Data Storage
 
 ```yaml
 binaryData:
-  mode: "default"
+  mode: default  # default, filesystem, s3
+  localStoragePath: /n8n/data
 ```
 
-### Filesystem Storage
+:::warning
+**Data Persistence:** Default mode stores data in memory and will be lost on pod restart. Use filesystem or S3 for persistence.
+:::
+
+### S3 Storage
 
 ```yaml
 binaryData:
-  mode: "filesystem"
-  localStoragePath: "/data/n8n"
-```
-
-### S3-Compatible Storage
-
-```yaml
-binaryData:
-  mode: "s3"
+  mode: s3
   s3:
     host: s3.amazonaws.com
     bucketName: n8n-binary-data
     bucketRegion: us-east-1
     accessKey: your-access-key
     accessSecret: your-secret-key
-    existingSecret: s3-credentials  # Optional: use Kubernetes secret
+    existingSecret: s3-secret  # Optional: use existing secret
 ```
+
+:::tip
+**S3 Benefits:** S3 storage provides scalability, durability, and enables team collaboration.
+:::
 
 ### MinIO Integration
 
 ```yaml
-binaryData:
-  mode: "s3"
-  s3:
-    host: minio.yourdomain.com
-    bucketName: n8n-bucket
-    bucketRegion: us-east-1
-    accessKey: n8n-user
-    accessSecret: your-secret-key
-
 minio:
   enabled: true
-  mode: standalone
   rootUser: minioadmin
-  rootPassword: minioadmin123
-  persistence:
-    enabled: true
-    size: 20Gi
+  rootPassword: minioadmin
   buckets:
     - name: n8n-bucket
       policy: none
-      versioning: false
 ```
+
+:::info
+**Self-Hosted Storage:** MinIO provides S3-compatible storage for on-premises deployments.
+:::
 
 ## Node Configuration
 
-:::tip
-**🎯 Unique Feature:** This chart provides **exceptional npm package installation capabilities** that set it apart from other n8n Helm charts. You can install custom npm packages and community nodes directly in main and worker pods, making it the most flexible n8n deployment option available.
-:::
-
-### Built-in Node Modules
-
-```yaml
-nodes:
-  builtin:
-    enabled: true
-    modules:
-      - crypto
-      - fs
-      - http
-      - https
-      - querystring
-      - url
-```
-
-:::note
-**Security Consideration:** Only enable the built-in modules you actually need. This reduces the attack surface of your Code nodes.
+:::info
+**Node Management:** Configure npm package installation and built-in module access for enhanced workflow capabilities.
 :::
 
 ### External npm Packages
@@ -380,15 +425,30 @@ nodes:
 nodes:
   external:
     allowAll: false
-    reinstallMissingPackages: true
     packages:
       - "moment@2.29.4"
       - "lodash@4.17.21"
-      - "n8n-nodes-python@0.1.4"
+    reinstallMissingPackages: true
 ```
 
 :::warning
-**Package Security:** Be cautious with `allowAll: true` as it can install any npm package. Prefer explicit package lists for better security control.
+**Package Security:** Only install trusted npm packages. Review packages for security vulnerabilities before installation.
+:::
+
+### Built-in Modules
+
+```yaml
+nodes:
+  builtin:
+    enabled: true
+    modules:
+      - crypto
+      - fs
+      - path
+```
+
+:::tip
+**Module Access:** Enable built-in modules to enhance Code node capabilities while maintaining security.
 :::
 
 ### Private npm Registry
@@ -396,15 +456,19 @@ nodes:
 ```yaml
 npmRegistry:
   enabled: true
-  url: "https://npm.yourcompany.com"
-  secretName: "npm-registry-secret"
-  secretKey: "npmrc"
+  url: https://your-registry.com
+  secretName: npm-registry-secret
+  secretKey: npmrc
 ```
+
+:::info
+**Private Registry:** Use private registries for internal packages and enhanced security.
+:::
 
 ## Monitoring Configuration
 
-:::info
-**Observability:** Proper monitoring is crucial for production deployments. Configure metrics and logging based on your infrastructure.
+:::tip
+**Observability:** Enable monitoring to track n8n performance, identify issues, and optimize resource usage.
 :::
 
 ### ServiceMonitor
@@ -413,56 +477,50 @@ npmRegistry:
 serviceMonitor:
   enabled: true
   interval: 30s
-  timeout: 10s
   labels:
     release: prometheus
   include:
     defaultMetrics: true
-    cacheMetrics: false
-    messageEventBusMetrics: false
-    workflowIdLabel: false
-    nodeTypeLabel: false
-    credentialTypeLabel: false
-    apiEndpoints: false
+    apiEndpoints: true
     queueMetrics: true
 ```
 
-### Logging Configuration
+:::info
+**Prometheus Integration:** ServiceMonitor enables automatic metric collection by Prometheus Operator.
+:::
+
+### Metrics Configuration
 
 ```yaml
-log:
-  level: info
-  output:
-    - console
-    - file
-  scopes:
-    - concurrency
-    - external-secrets
-    - license
-    - multi-main-setup
-    - pubsub
-    - redis
-    - scaling
-    - waiting-executions
-  file:
-    location: "logs/n8n.log"
-    maxsize: 16
-    maxcount: "100"
+serviceMonitor:
+  metricsPrefix: n8n_
+  include:
+    defaultMetrics: true
+    apiEndpoints: true
+    apiMethodLabel: true
+    apiPathLabel: true
+    apiStatusCodeLabel: true
+    cacheMetrics: true
+    credentialTypeLabel: true
+    messageEventBusMetrics: true
+    nodeTypeLabel: true
+    queueMetrics: true
+    workflowIdLabel: true
 ```
+
+:::tip
+**Metric Granularity:** Enable specific metrics based on your monitoring needs and resource constraints.
+:::
 
 ## Security Configuration
 
 :::warning
-**Security First:** These settings are crucial for production deployments. Never run containers as root and always use proper security contexts.
+**Security Best Practices:** Implement these security measures to protect your n8n deployment.
 :::
 
-### Security Contexts
+### Security Context
 
 ```yaml
-podSecurityContext:
-  fsGroup: 1000
-  fsGroupChangePolicy: "OnRootMismatch"
-
 securityContext:
   allowPrivilegeEscalation: false
   capabilities:
@@ -470,71 +528,74 @@ securityContext:
       - ALL
   readOnlyRootFilesystem: false
   runAsNonRoot: true
-  privileged: false
   runAsUser: 1000
   runAsGroup: 1000
+
+podSecurityContext:
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
 ```
 
-### Service Account
+:::danger
+**Security Context:** Always run containers as non-root users and drop unnecessary capabilities.
+:::
+
+### RBAC Configuration
 
 ```yaml
 serviceAccount:
   create: true
   automount: true
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/n8n-role
+  annotations: {}
   name: ""
 ```
+
+:::tip
+**RBAC Best Practices:** Use dedicated service accounts and implement least-privilege access policies.
+:::
 
 ### Encryption Key
 
 ```yaml
-# Auto-generated on first install (recommended)
-encryptionKey: ""
-
-# Or use existing secret
-existingEncryptionKeySecret: "n8n-encryption-key"
+encryptionKey: your-32-character-encryption-key
+existingEncryptionKeySecret: n8n-encryption-key
 ```
 
-:::danger
-**Encryption Key:** Never lose your encryption key! It's used to encrypt sensitive data like credentials. If lost, you cannot decrypt existing data.
+:::warning
+**Encryption Security:** Use strong encryption keys and store them securely in Kubernetes secrets.
 :::
 
 ## Task Runners
 
-:::tip
-**🚀 Exclusive Feature:** This is the **only n8n Helm chart** that supports external task runners, providing enhanced security and performance through isolated execution environments.
+:::info
+**Task Runner Modes:** Choose between internal and external task runners based on your security and performance requirements.
 :::
 
-### Internal Task Runners (Default)
+### Internal Task Runners
 
 ```yaml
 taskRunners:
   mode: internal
+  maxConcurrency: 5
   taskTimeout: 60
   taskHeartbeatInterval: 30
-  maxConcurrency: 5
 ```
+
+:::tip
+**Internal Runners:** Internal task runners are simpler to configure and suitable for most use cases.
+:::
 
 ### External Task Runners
 
 ```yaml
 taskRunners:
   mode: external
-  taskTimeout: 300
-  taskHeartbeatInterval: 30
-  maxConcurrency: 10
   broker:
-    address: "127.0.0.1"
+    address: 127.0.0.1
     port: 5679
   external:
-    mainNodeAuthToken: "your-auth-token"
-    workerNodeAuthToken: "your-auth-token"
-    autoShutdownTimeout: 15
     port: 5680
-    nodeOptions:
-      - "--max-semi-space-size=16"
-      - "--max-old-space-size=300"
+    autoShutdownTimeout: 15
     resources:
       requests:
         cpu: 100m
@@ -545,18 +606,38 @@ taskRunners:
 ```
 
 :::warning
-**Enterprise Feature:** External task runners require n8n Enterprise license. Make sure you have the appropriate license before enabling this feature.
+**Enterprise Feature:** External task runners require n8n Enterprise license.
+:::
+
+:::danger
+**License Requirement:** Verify your n8n Enterprise license before enabling external task runners.
 :::
 
 ## Workflow History
 
+:::info
+**History Management:** Configure workflow history to track changes and enable rollback capabilities.
+:::
+
+### History Configuration
+
 ```yaml
 workflowHistory:
   enabled: true
-  pruneTime: 336  # 14 days in hours
+  pruneTime: 336  # hours (14 days)
 ```
 
+:::tip
+**History Retention:** Set appropriate retention periods to balance storage usage with audit requirements.
+:::
+
 ## API Configuration
+
+:::info
+**API Access:** Configure the public API for external integrations and automation.
+:::
+
+### Public API
 
 ```yaml
 api:
@@ -566,192 +647,140 @@ api:
     enabled: true
 ```
 
+:::warning
+**API Security:** Secure API access with proper authentication and authorization mechanisms.
+:::
+
 ## Diagnostics and Telemetry
+
+:::note
+**Telemetry Configuration:** Configure diagnostics and telemetry based on your privacy and monitoring requirements.
+:::
+
+### Diagnostics
+
+```yaml
+diagnostics:
+  enabled: false
+  frontendConfig: "1zPn9bgWPzlQc0p8Gj1uiK6DOTn;https://telemetry.n8n.io"
+  backendConfig: "1zPn7YoGC3ZXE9zLeTKLuQCB4F6;https://telemetry.n8n.io"
+```
+
+:::tip
+**Privacy Control:** Disable diagnostics if you prefer not to share usage data with n8n.
+:::
 
 ### Sentry Integration
 
 ```yaml
 sentry:
   enabled: true
-  backendDsn: "https://your-sentry-dsn@sentry.io/project"
-  frontendDsn: "https://your-sentry-dsn@sentry.io/project"
-  externalTaskRunnersDsn: "https://your-sentry-dsn@sentry.io/project"
+  backendDsn: your-backend-dsn
+  frontendDsn: your-frontend-dsn
+  externalTaskRunnersDsn: your-external-runners-dsn
 ```
 
-### Diagnostics
-
-```yaml
-diagnostics:
-  enabled: false  # Set to true for troubleshooting
-  frontendConfig: "1zPn9bgWPzlQc0p8Gj1uiK6DOTn;https://telemetry.n8n.io"
-  backendConfig: "1zPn7YoGC3ZXE9zLeTKLuQCB4F6;https://telemetry.n8n.io"
-  postHog:
-    apiKey: "phc_4URIAm1uYfJO7j8kWSe0J8lc8IqnstRLS7Jx8NcakHo"
-    apiHost: "https://ph.n8n.io"
-```
-
-### Version Notifications
-
-```yaml
-versionNotifications:
-  enabled: false
-  endpoint: "https://api.n8n.io/api/versions/"
-  infoUrl: "https://docs.n8n.io/hosting/installation/updating/"
-```
+:::info
+**Error Tracking:** Sentry integration helps track and resolve application errors in production environments.
+:::
 
 ## DNS Configuration
 
+:::info
+**DNS Settings:** Configure DNS policies and settings for advanced networking requirements.
+:::
+
+### DNS Policy
+
 ```yaml
-dnsPolicy: "ClusterFirst"
+dnsPolicy: ClusterFirst
+```
+
+### DNS Config
+
+```yaml
 dnsConfig:
   nameservers:
     - 8.8.8.8
     - 8.8.4.4
   searches:
-    - yourdomain.com
+    - your-domain.com
   options:
     - name: ndots
       value: "2"
 ```
 
-## Complete Production Example
-
-```yaml
-# Production-ready configuration
-image:
-  repository: n8nio/n8n
-  tag: "1.0.0"
-  pullPolicy: IfNotPresent
-
-db:
-  type: postgresdb
-  logging:
-    enabled: true
-    options: error
-    maxQueryExecutionTime: 1000
-
-postgresql:
-  enabled: true
-  auth:
-    username: n8n
-    password: your-secure-password
-    database: n8n
-  primary:
-    persistence:
-      enabled: true
-      size: 20Gi
-
-redis:
-  enabled: true
-  architecture: standalone
-  master:
-    persistence:
-      enabled: true
-      size: 10Gi
-
-worker:
-  mode: queue
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 10
-  resources:
-    requests:
-      cpu: 500m
-      memory: 512Mi
-    limits:
-      cpu: 2000m
-      memory: 2Gi
-
-webhook:
-  mode: queue
-  url: "https://webhook.yourdomain.com"
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 5
-
-binaryData:
-  mode: "s3"
-  s3:
-    host: s3.amazonaws.com
-    bucketName: n8n-binary-data
-    bucketRegion: us-east-1
-    accessKey: your-access-key
-    accessSecret: your-secret-key
-
-ingress:
-  enabled: true
-  className: nginx
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-  hosts:
-    - host: n8n.yourdomain.com
-      paths:
-        - path: /
-          pathType: Prefix
-  tls:
-    - secretName: n8n-tls
-      hosts:
-        - n8n.yourdomain.com
-
-serviceMonitor:
-  enabled: true
-  interval: 30s
-  labels:
-    release: prometheus
-
-log:
-  level: info
-  output:
-    - console
-  scopes:
-    - concurrency
-    - redis
-    - scaling
-
-encryptionKey: ""  # Auto-generated
-timezone: "UTC"
-defaultLocale: en
-gracefulShutdownTimeout: 30
-```
+:::tip
+**DNS Optimization:** Configure DNS settings for better network performance and reliability.
+:::
 
 ## Best Practices
 
-### Security
-- Always use strong passwords for databases
-- Enable RBAC and use dedicated service accounts
-- Use Kubernetes secrets for sensitive data
-- Enable security contexts
-- Use HTTPS with valid certificates
+:::tip
+**Production Recommendations:** Follow these best practices for secure and reliable n8n deployments.
+:::
 
-### Performance
-- Use PostgreSQL for production workloads
-- Enable Redis for queue mode
-- Configure appropriate resource limits
-- Use autoscaling for variable workloads
-- Monitor and tune database performance
+### Security Checklist
 
-### Reliability
-- Use persistent storage for databases
-- Configure health checks and probes
-- Set up proper backup strategies
-- Use multiple replicas for high availability
-- Monitor application metrics
+- [ ] Enable authentication
+- [ ] Use TLS certificates
+- [ ] Configure RBAC policies
+- [ ] Set resource limits
+- [ ] Use secrets for sensitive data
+- [ ] Enable monitoring
+- [ ] Regular backups
 
-### Maintenance
-- Keep n8n updated regularly
-- Monitor resource usage
-- Review and rotate secrets
-- Clean up old workflow history
-- Monitor logs for issues
+### Performance Optimization
+
+- [ ] Use PostgreSQL for production
+- [ ] Enable queue mode for high workloads
+- [ ] Configure appropriate resource limits
+- [ ] Use S3 storage for binary data
+- [ ] Monitor and tune autoscaling
+
+:::warning
+**Regular Maintenance:** Perform regular updates, security patches, and performance monitoring.
+:::
+
+## Troubleshooting
+
+:::info
+**Common Issues:** This section covers frequently encountered configuration problems and solutions.
+:::
+
+### Configuration Validation
+
+```bash
+# Validate Helm values
+helm template my-n8n community-charts/n8n -f values.yaml --dry-run
+
+# Check for configuration errors
+helm lint my-n8n community-charts/n8n -f values.yaml
+```
+
+### Common Configuration Issues
+
+1. **Resource Limits Too Low**: Increase CPU/memory limits
+2. **Database Connection Issues**: Verify database credentials and connectivity
+3. **Storage Problems**: Check PVC status and permissions
+4. **Ingress Issues**: Verify ingress controller and TLS configuration
+
+:::tip
+**Debug Commands:** Use these commands to validate and troubleshoot configuration issues.
+:::
 
 ## Next Steps
 
-- [Usage Guide](./usage.md) - Quick start and basic deployment
+:::tip
+**Configuration Guide:** Follow these guides to implement specific features and configurations.
+:::
+
 - [Database Setup](./database-setup.md) - PostgreSQL and external database configuration
 - [Queue Mode Setup](./queue-mode.md) - Distributed execution with Redis
 - [Storage Configuration](./storage.md) - Binary data storage options
 - [Monitoring Setup](./monitoring.md) - Metrics and observability
 - [Troubleshooting](./troubleshooting.md) - Common issues and solutions
+
+:::info
+**Advanced Configuration:** Explore advanced features like external task runners, custom nodes, and enterprise integrations.
+:::

@@ -15,6 +15,10 @@ This guide walks you through installing MLflow on Kubernetes using SQLite as the
 **Use Case:** SQLite installation is ideal for development, testing, single-user scenarios, and learning MLflow concepts.
 :::
 
+:::warning
+**Production Limitation:** SQLite is not suitable for production environments with multiple users or high data volumes. Use PostgreSQL or MySQL for production deployments.
+:::
+
 ## Prerequisites
 
 :::warning
@@ -25,6 +29,10 @@ This guide walks you through installing MLflow on Kubernetes using SQLite as the
 - Helm 3.x installed
 - kubectl configured
 - Storage class available for PVC
+
+:::danger
+**Cluster Compatibility:** Verify your Kubernetes cluster version meets the minimum requirements to avoid deployment issues.
+:::
 
 ## Installation Steps
 
@@ -39,11 +47,19 @@ helm repo add community-charts https://community-charts.github.io/helm-charts
 helm repo update
 ```
 
+:::tip
+**Repository Management:** Always update the repository before installing to get the latest chart versions and bug fixes.
+:::
+
 ### 2. Create Namespace
 
 ```bash
 kubectl create namespace mlflow
 ```
+
+:::info
+**Namespace Organization:** Using dedicated namespaces helps organize your Kubernetes resources and simplifies management.
+:::
 
 ### 3. Install MLflow with Default Settings
 
@@ -57,6 +73,10 @@ helm install mlflow community-charts/mlflow \
 **Quick Start:** This command installs MLflow with SQLite backend and basic configuration suitable for development.
 :::
 
+:::warning
+**Data Persistence:** The default installation stores SQLite data in the pod. Data will be lost if the pod is deleted.
+:::
+
 ### 4. Verify Installation
 
 Check the deployment status:
@@ -66,6 +86,10 @@ kubectl get pods -n mlflow
 ```
 
 You should see the MLflow server pod running. Wait for it to be in `Running` state.
+
+:::tip
+**Status Monitoring:** Use `kubectl describe pod` to troubleshoot if the pod doesn't reach Running state.
+:::
 
 ### 5. Access MLflow UI
 
@@ -79,6 +103,10 @@ Open your browser and navigate to `http://localhost:5000`
 
 :::info
 **Access Method:** Port-forwarding is suitable for development. For production, use ingress or load balancer.
+:::
+
+:::warning
+**Security Note:** Port-forwarding bypasses ingress security. Use proper ingress configuration for production access.
 :::
 
 ## Configuration Options
@@ -123,6 +151,10 @@ helm install mlflow community-charts/mlflow \
   -f values.yaml
 ```
 
+:::info
+**Values File:** Using a values file makes it easier to manage and version your configuration.
+:::
+
 ### PVC Mount with SQLite and File-Based Artifacts
 
 ```mermaid
@@ -166,6 +198,10 @@ Apply the PVC:
 kubectl apply -f mlflow-pvc.yaml
 ```
 
+:::tip
+**Storage Planning:** Choose an appropriate storage size based on your expected data volume and retention requirements.
+:::
+
 #### 2. Configure MLflow with PVC
 
 ```yaml
@@ -199,215 +235,223 @@ ingress:
 
 :::warning
 **Data Persistence:** Without PVC, your MLflow data will be lost when the pod is restarted or redeployed.
+**SQLite Limitations:** While this setup works, consider PostgreSQL for production environments with multiple users or high data volumes.
 :::
 
-### Static Prefix Configuration
-
-For serving MLflow under a specific path:
-
-```yaml
-extraArgs:
-  staticPrefix: /mlflow
-
-ingress:
-  enabled: true
-  hosts:
-    - host: your-domain.com
-      paths:
-        - path: /mlflow
-          pathType: ImplementationSpecific
-```
-
-### Health Probe Configuration
-
-Configure liveness and readiness probes for better reliability:
-
-```yaml
-livenessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 20
-  timeoutSeconds: 6
-  failureThreshold: 3
-
-readinessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 20
-  timeoutSeconds: 6
-  failureThreshold: 3
-```
-
-## Database Migration Features
-
-### Automatic Schema Migrations
-
-The chart supports automatic database schema migrations using init containers:
-
-```yaml
-backendStore:
-  databaseMigration: true  # Enable automatic migrations
-  defaultSqlitePath: /mlflow/data/mlflow.db
-```
-
-### Database Connection Health Checks
-
-Add database availability checks before starting MLflow:
-
-```yaml
-backendStore:
-  databaseConnectionCheck: true  # Enable connection checks
-  defaultSqlitePath: /mlflow/data/mlflow.db
-```
-
-### Migration with PostgreSQL
-
-When upgrading from SQLite to PostgreSQL:
-
-```yaml
-backendStore:
-  databaseMigration: true
-  postgres:
-    enabled: true
-    host: postgresql-instance.cg034hpkmmjt.eu-central-1.rds.amazonaws.com
-    port: 5432
-    database: mlflow
-    user: mlflowuser
-    password: Pa33w0rd!
-```
-
-### Migration with MySQL
-
-When upgrading from SQLite to MySQL:
-
-```yaml
-backendStore:
-  databaseMigration: true
-  mysql:
-    enabled: true
-    host: mysql-instance.cg034hpkmmjt.eu-central-1.rds.amazonaws.com
-    port: 3306
-    database: mlflow
-    user: mlflowuser
-    password: Pa33w0rd!
-```
+:::danger
+**Data Backup:** Always implement regular backups for your MLflow data, especially when using SQLite in any environment.
+:::
 
 ## Advanced Configuration
 
-### Custom Init Containers
+:::info
+**Advanced Features:** These configurations provide additional functionality for more complex deployment scenarios.
+:::
 
-Add custom initialization logic:
+### Database Migrations
 
-```yaml
-initContainers:
-  - name: custom-init
-    image: busybox:1.35
-    command: ['sh', '-c', 'echo "Custom initialization complete"']
-```
-
-### Environment Variables
-
-Configure MLflow-specific environment variables:
+Enable automatic database schema migrations:
 
 ```yaml
-extraEnvVars:
-  MLFLOW_TRACKING_DIR: "/mlflow/data"  # Default root directory for tracking FileStore
-  MLFLOW_LOGGING_LEVEL: "INFO"  # MLflow logging level
-  MLFLOW_CONFIGURE_LOGGING: "true"  # Configure MLflow logging on import
+backendStore:
+  databaseMigration: true
+  databaseConnectionCheck: true
 ```
 
-### Resource Limits
+:::warning
+**Migration Safety:** Database migrations are disabled by default. Enable them only when you're ready to update your database schema.
+:::
 
-Set appropriate resource limits:
+:::tip
+**Migration Testing:** Test migrations in a staging environment before applying to production.
+:::
+
+### Authentication Setup
+
+Enable basic authentication:
+
+```yaml
+auth:
+  enabled: true
+  adminUsername: admin
+  adminPassword: your-secure-password
+```
+
+:::danger
+**Security Requirement:** Always enable authentication in production environments to secure your MLflow instance.
+:::
+
+:::warning
+**Password Security:** Use strong, unique passwords and consider using Kubernetes secrets for credential management.
+:::
+
+### Resource Management
+
+Configure resource limits and requests:
 
 ```yaml
 resources:
   requests:
-    cpu: 200m
-    memory: 512Mi
+    cpu: 100m
+    memory: 128Mi
   limits:
-    cpu: 1000m
-    memory: 2Gi
+    cpu: 500m
+    memory: 512Mi
 ```
+
+:::tip
+**Resource Planning:** Start with conservative limits and adjust based on actual usage patterns.
+:::
+
+### Health Checks
+
+Configure liveness and readiness probes:
+
+```yaml
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 5000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 5000
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+```
+
+:::info
+**Health Monitoring:** Health checks help Kubernetes detect and recover from application failures automatically.
+:::
 
 ## Troubleshooting
 
-### Check Pod Logs
+:::info
+**Common Issues:** This section covers the most frequently encountered problems and their solutions.
+:::
+
+### Pod Not Starting
+
+Check pod status and logs:
 
 ```bash
-kubectl logs -f deployment/mlflow -n mlflow
+kubectl get pods -n mlflow
+kubectl describe pod <pod-name> -n mlflow
+kubectl logs <pod-name> -n mlflow
 ```
 
-### Check PVC Status
+:::tip
+**Debug Commands:** Use these commands to diagnose pod startup issues.
+:::
+
+### Database Connection Issues
+
+For SQLite-specific issues:
+
+```bash
+# Check if SQLite file exists
+kubectl exec -it <pod-name> -n mlflow -- ls -la /mlflow/data/
+
+# Check SQLite file permissions
+kubectl exec -it <pod-name> -n mlflow -- ls -la /mlflow/data/mlflow.db
+```
+
+:::warning
+**Permission Issues:** Ensure the MLflow container has proper permissions to read/write the SQLite database file.
+:::
+
+### Storage Issues
+
+Check PVC status:
 
 ```bash
 kubectl get pvc -n mlflow
+kubectl describe pvc mlflow-pvc -n mlflow
 ```
 
-### Check Init Container Logs
+:::tip
+**Storage Troubleshooting:** Verify PVC is bound and has sufficient storage capacity.
+:::
+
+### Access Issues
+
+Check service and port-forward:
 
 ```bash
-kubectl logs deployment/mlflow -c init-mlflow -n mlflow
+kubectl get svc -n mlflow
+kubectl port-forward svc/mlflow -n mlflow 5000:5000
 ```
 
-### Common Issues
+:::info
+**Network Debugging:** Verify the service is properly configured and port-forwarding is working.
+:::
 
-1. **Pod stuck in Pending**: Check if storage class is available
-2. **Database migration errors**: Verify database permissions and connectivity
-3. **Permission issues**: Check security context settings
-4. **Init container failures**: Review init container logs for migration issues
+## Performance Considerations
 
-### Debug Commands
+:::tip
+**Performance Tips:** These recommendations help optimize MLflow performance for your specific use case.
+:::
 
-```bash
-# Check database file
-kubectl exec -it deployment/mlflow -n mlflow -- ls -la /mlflow/data/
+### SQLite Performance
 
-# Test SQLite database
-kubectl exec -it deployment/mlflow -n mlflow -- \
-  sqlite3 /mlflow/data/mlflow.db ".tables"
+- **File System**: Use SSD storage for better I/O performance
+- **Concurrent Access**: SQLite has limitations with concurrent writes
+- **File Size**: Monitor database file size and implement cleanup strategies
 
-# Check MLflow configuration
-kubectl exec -it deployment/mlflow -n mlflow -- \
-  python -c "import mlflow; print(mlflow.get_tracking_uri())"
-```
+:::warning
+**Concurrency Limits:** SQLite is not suitable for high-concurrency environments. Consider PostgreSQL for multi-user scenarios.
+:::
 
-## Migration Paths
+### Resource Optimization
 
-### From In-Memory SQLite to File-Based
+- **Memory**: Allocate sufficient memory for MLflow operations
+- **CPU**: Monitor CPU usage and adjust limits accordingly
+- **Storage**: Use fast storage for better database performance
 
-```yaml
-backendStore:
-  defaultSqlitePath: /mlflow/data/mlflow.db  # Change from :memory:
-```
+:::info
+**Resource Monitoring:** Use Kubernetes metrics to monitor resource usage and optimize allocation.
+:::
 
-### From SQLite to PostgreSQL
+## Security Considerations
 
-```yaml
-backendStore:
-  databaseMigration: true
-  postgres:
-    enabled: true
-    host: your-postgres-host
-    database: mlflow
-    user: mlflowuser
-    password: your-password
-```
+:::warning
+**Security Best Practices:** Implement these security measures to protect your MLflow deployment.
+:::
 
-### From SQLite to MySQL
+### Network Security
 
-```yaml
-backendStore:
-  databaseMigration: true
-  mysql:
-    enabled: true
-    host: your-mysql-host
-    database: mlflow
-    user: mlflowuser
-    password: your-password
-```
+- Use ingress with TLS for external access
+- Configure network policies to restrict pod-to-pod communication
+- Use service mesh for advanced traffic management
+
+### Data Security
+
+- Enable authentication for all production deployments
+- Use Kubernetes secrets for sensitive configuration
+- Implement regular backups for data protection
+
+:::danger
+**Production Security:** Never deploy MLflow without authentication in production environments.
+:::
 
 ## Next Steps
+
+:::tip
+**Getting Started:** Follow these guides to enhance your MLflow deployment.
+:::
 
 - For production use, consider [PostgreSQL backend](/docs/charts/mlflow/postgresql-backend-installation)
 - Set up [authentication](/docs/charts/mlflow/authentication-configuration)
 - Configure [AWS S3](/docs/charts/mlflow/aws-s3-integration) or [Azure Blob Storage](/docs/charts/mlflow/azure-blob-storage-integration) for artifacts
 - Enable [autoscaling](/docs/charts/mlflow/autoscaling-setup) for high availability
+
+:::info
+**Production Migration:** Consider migrating to PostgreSQL when you need production-grade features or multi-user support.
+:::

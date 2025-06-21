@@ -15,6 +15,10 @@ This guide covers configuring authentication for MLflow to secure access to your
 **Security Requirement:** Authentication should always be enabled in production environments to secure your MLflow instance and protect sensitive ML data.
 :::
 
+:::danger
+**Production Security:** Never deploy MLflow without authentication in production. Unsecured MLflow instances can expose sensitive model data and credentials.
+:::
+
 ## Prerequisites
 
 :::info
@@ -25,10 +29,18 @@ This guide covers configuring authentication for MLflow to secure access to your
 - Access to MLflow configuration
 - Authentication provider setup (if using OAuth/LDAP)
 
+:::tip
+**Planning:** Choose the authentication method that best fits your organization's security policies and infrastructure.
+:::
+
 ## Basic Authentication
 
 :::tip
 **Quick Security:** Basic authentication is the simplest way to secure MLflow and is suitable for small teams or development environments.
+:::
+
+:::warning
+**Basic Auth Limitations:** Basic authentication stores credentials in plain text and doesn't support advanced features like password policies or account lockout.
 :::
 
 ### 1. Simple Basic Authentication
@@ -44,6 +56,10 @@ auth:
 **Password Security:** Use strong, unique passwords and consider using Kubernetes secrets instead of hardcoding credentials.
 :::
 
+:::danger
+**Credential Management:** Never hardcode passwords in configuration files. Use Kubernetes secrets for all sensitive data.
+:::
+
 ### 2. Create User Credentials Secret
 
 ```bash
@@ -52,6 +68,10 @@ kubectl create secret generic mlflow-auth \
   --from-literal=admin-user=admin \
   --from-literal=admin-password=your-secure-password
 ```
+
+:::tip
+**Secret Management:** Using Kubernetes secrets provides better security and makes credential rotation easier.
+:::
 
 ### 3. Configure Basic Authentication with Secret
 
@@ -68,6 +88,10 @@ auth:
   sqliteFile: basic_auth.db
   sqliteFullPath: ""
 ```
+
+:::info
+**Permission Levels:** Configure appropriate default permissions based on your team's access requirements.
+:::
 
 ## PostgreSQL-Based Centralized Authentication
 
@@ -88,6 +112,10 @@ architecture-beta
 **Enterprise Authentication:** PostgreSQL-based authentication provides centralized user management and is suitable for larger organizations.
 :::
 
+:::tip
+**Scalability:** PostgreSQL authentication scales better than SQLite for organizations with many users.
+:::
+
 ### 1. Configure PostgreSQL Auth Backend
 
 ```yaml
@@ -105,6 +133,10 @@ auth:
     driver: psycopg2
 ```
 
+:::warning
+**Database Security:** Ensure the PostgreSQL instance is properly secured with network policies and strong authentication.
+:::
+
 ### 2. Create Auth Database
 
 ```sql
@@ -112,6 +144,10 @@ CREATE DATABASE auth;
 CREATE USER mlflowauth WITH PASSWORD 'A4m1nPa33w0rd!';
 GRANT ALL PRIVILEGES ON DATABASE auth TO mlflowauth;
 ```
+
+:::tip
+**Database Setup:** Use dedicated databases for authentication to isolate security concerns and simplify management.
+:::
 
 ## LDAP Authentication
 
@@ -132,6 +168,10 @@ architecture-beta
 **Enterprise Integration:** LDAP authentication integrates MLflow with existing enterprise directory services for centralized user management.
 :::
 
+:::tip
+**Single Sign-On:** LDAP integration enables users to access MLflow with their existing enterprise credentials.
+:::
+
 ### 1. Basic LDAP Configuration
 
 ```yaml
@@ -146,6 +186,10 @@ ldapAuth:
   adminGroupDistinguishedName: cn=test-admin,ou=groups,dc=mlflow,dc=test
   userGroupDistinguishedName: cn=test-user,ou=groups,dc=mlflow,dc=test
 ```
+
+:::warning
+**LDAP Security:** Always use TLS/SSL for LDAP connections in production to protect user credentials in transit.
+:::
 
 ### 2. LDAP with Self-Signed CA Certificate
 
@@ -169,6 +213,10 @@ ldapAuth:
 **Certificate Security:** Always use proper TLS certificates in production. Self-signed certificates should only be used for testing.
 :::
 
+:::danger
+**Certificate Management:** Store CA certificates securely and rotate them regularly according to your security policies.
+:::
+
 ### 3. LDAP with External CA Certificate Secret
 
 If you already stored your self-signed CA certificate in an external secret:
@@ -186,6 +234,10 @@ ldapAuth:
   userGroupDistinguishedName: cn=test-user,ou=groups,dc=mlflow,dc=test
   externalSecretForTrustedCACertificate: external-ca-certificate-secret
 ```
+
+:::tip
+**Secret Management:** Using external secrets for certificates provides better security and easier certificate rotation.
+:::
 
 ## Complete Configuration Examples
 
@@ -216,7 +268,7 @@ backendStore:
   databaseConnectionCheck: true
   postgres:
     enabled: true
-    host: postgresql-instance1.cg034hpkmmjt.eu-central-1.rds.amazonaws.com
+    host: postgresql-instance.cg034hpkmmjt.eu-central-1.rds.amazonaws.com
     port: 5432
     database: mlflow
     user: mlflowuser
@@ -228,12 +280,20 @@ auth:
   adminPassword: S3cr3+
   postgres:
     enabled: true
-    host: postgresql--auth-instance1.abcdef1234.eu-central-1.rds.amazonaws.com
+    host: postgresql-auth-instance.cg034hpkmmjt.eu-central-1.rds.amazonaws.com
     port: 5432
     database: auth
     user: mlflowauth
     password: A4m1nPa33w0rd!
     driver: psycopg2
+
+ingress:
+  enabled: true
+  hosts:
+    - host: mlflow.your-domain.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
 ```
 
 ### LDAP Authentication with PostgreSQL Backend
@@ -259,7 +319,7 @@ backendStore:
   databaseConnectionCheck: true
   postgres:
     enabled: true
-    host: postgresql-instance1.cg034hpkmmjt.eu-central-1.rds.amazonaws.com
+    host: postgresql-instance.cg034hpkmmjt.eu-central-1.rds.amazonaws.com
     port: 5432
     database: mlflow
     user: mlflowuser
@@ -433,7 +493,15 @@ kubectl exec -it deployment/mlflow -n mlflow -- \
 
 ## Next Steps
 
-- Configure [autoscaling](/docs/charts/mlflow/autoscaling-setup) for high availability
-- Set up monitoring and alerting for authentication events
-- Implement backup and disaster recovery for user data
-- Configure SSO integration for enterprise environments
+:::tip
+**Getting Started:** Follow these guides to enhance your MLflow security setup.
+:::
+
+- [Basic Installation](/docs/charts/mlflow/basic-installation) - Set up MLflow with authentication
+- [PostgreSQL Backend Installation](/docs/charts/mlflow/postgresql-backend-installation) - Production database setup
+- [Autoscaling Setup](/docs/charts/mlflow/autoscaling-setup) - Scale with authentication
+- [Monitoring Setup](/docs/charts/mlflow/troubleshooting-and-monitoring) - Monitor authentication events
+
+:::info
+**Security Enhancement:** Consider implementing additional security measures like OAuth, SAML, or multi-factor authentication for enhanced security.
+:::

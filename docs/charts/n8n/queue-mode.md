@@ -23,18 +23,35 @@ Queue mode enables distributed execution in n8n by separating the main node (UI/
 
 ### Queue Mode Components
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Main Node     │    │  Worker Nodes   │    │ Webhook Nodes   │
-│  (UI + API)     │◄──►│  (Execution)    │    │ (Webhook Proc)  │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │   Redis Queue   │
-                    │   (Message Bus) │
-                    └─────────────────┘
+```mermaid
+architecture-beta
+  group k8s(cloud)[Kubernetes Cluster]
+
+  service ui(internet)[Editor Access]
+  service request(internet)[Webhook Request]
+
+  service main(server)[Main Node] in k8s
+  service worker(server)[Worker Nodes] in k8s
+  service webhook(server)[Webhook Nodes] in k8s
+
+  service db(database)[PostgreSQL DB]
+  service queue(database)[Redis Queue]
+
+  junction junctionCenter in k8s
+  junction junctionLeft in k8s
+  junction junctionRight in k8s
+  junction junctionBottom
+
+  ui:R --> L:main
+  request:L --> R:webhook
+  main:B -- T:junctionLeft
+  junctionLeft:R -- L:junctionCenter
+  worker:B -- T:junctionCenter
+  webhook:B -- T:junctionRight
+  junctionRight:L -- R:junctionCenter
+  junctionCenter:B -- T:junctionBottom
+  junctionBottom:L --> R:db
+  junctionBottom:R --> L:queue
 ```
 
 ### Component Roles

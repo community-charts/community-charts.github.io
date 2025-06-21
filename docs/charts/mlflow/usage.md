@@ -21,6 +21,10 @@ keywords: [mlflow, kubernetes, helm, machine learning, mlops, experiment trackin
 
 ## Why use this chart?
 
+:::tip
+**Enterprise Ready:** This chart provides production-grade features that make MLflow suitable for enterprise environments and team collaboration.
+:::
+
 - **Production Ready**: Deploy MLflow with PostgreSQL, MySQL, or SQLite backends
 - **Cloud Storage Integration**: Support for AWS S3, Google Cloud Storage, and Azure Blob Storage
 - **Enterprise Features**: Built-in authentication, LDAP integration, and autoscaling
@@ -44,6 +48,10 @@ The chart supports multiple database backends for MLflow:
 **Production Database:** SQLite is not suitable for production deployments. Use PostgreSQL or MySQL for production environments.
 :::
 
+:::danger
+**Data Loss Risk:** SQLite stores data in files that can be lost if the pod is deleted. Always use persistent volumes for SQLite in any environment.
+:::
+
 ## Supported Cloud Providers
 
 :::info
@@ -55,6 +63,10 @@ Enterprise artifact storage integration:
 - **AWS S3**: IAM roles, access keys, and MinIO compatibility
 - **Google Cloud Storage**: GCS bucket integration with service accounts
 - **Azure Blob Storage**: Azure Storage Account with managed identities
+
+:::tip
+**Storage Strategy:** Use cloud storage for artifacts to enable team collaboration and ensure data persistence across deployments.
+:::
 
 ## Quick Start
 
@@ -103,6 +115,10 @@ helm install mlflow community-charts/mlflow \
 **Security:** Never hardcode credentials in command line arguments. Use Kubernetes secrets or environment variables for sensitive data.
 :::
 
+:::danger
+**Production Security:** Always use strong passwords, enable authentication, and configure TLS for production deployments.
+:::
+
 ## Key Features
 
 :::info
@@ -110,7 +126,9 @@ helm install mlflow community-charts/mlflow \
 :::
 
 ### Database Migrations
+
 Enable automatic database schema migrations:
+
 ```yaml
 backendStore:
   databaseMigration: true
@@ -120,6 +138,10 @@ backendStore:
 **Migration Safety:** Database migrations are disabled by default. Enable them only when you're ready to update your database schema.
 :::
 
+:::warning
+**Migration Backup:** Always backup your database before enabling migrations in production environments.
+:::
+
 ### Connection Health Checks
 Add database availability checks:
 ```yaml
@@ -127,8 +149,14 @@ backendStore:
   databaseConnectionCheck: true
 ```
 
+:::tip
+**Health Monitoring:** Enable connection checks to ensure your MLflow instance can detect database connectivity issues early.
+:::
+
 ### Authentication
+
 Basic authentication with admin credentials:
+
 ```yaml
 auth:
   enabled: true
@@ -138,6 +166,10 @@ auth:
 
 :::warning
 **Authentication:** Always enable authentication in production environments to secure your MLflow instance.
+:::
+
+:::danger
+**Default Credentials:** Change default admin credentials immediately after installation. Never use default passwords in production.
 :::
 
 ### LDAP Integration
@@ -150,6 +182,10 @@ ldapAuth:
   searchBaseDistinguishedName: ou=groups,dc=example,dc=com
   adminGroupDistinguishedName: cn=admins,ou=groups,dc=example,dc=com
 ```
+
+:::info
+**Enterprise Integration:** LDAP authentication enables centralized user management and integration with existing enterprise identity systems.
+:::
 
 ### Autoscaling
 Horizontal Pod Autoscaler for production workloads:
@@ -171,6 +207,10 @@ autoscaling:
 **Scaling Strategy:** Use autoscaling for dynamic workloads and manual scaling for predictable, steady-state workloads.
 :::
 
+:::warning
+**Resource Limits:** Set appropriate resource limits when using autoscaling to prevent resource exhaustion.
+:::
+
 ### Monitoring
 Prometheus ServiceMonitor integration:
 ```yaml
@@ -180,6 +220,10 @@ serviceMonitor:
   labels:
     release: prometheus
 ```
+
+:::tip
+**Observability:** Enable monitoring to track MLflow performance, usage patterns, and identify potential issues.
+:::
 
 ## Configuration Examples
 
@@ -229,6 +273,10 @@ artifactRoot:
     accessKey: your-access-key
 ```
 
+:::tip
+**Production Setup:** This configuration provides a robust production environment with external database and cloud storage.
+:::
+
 ### EKS with IAM Roles
 
 :::info
@@ -242,9 +290,11 @@ serviceAccount:
     eks.amazonaws.com/role-arn: arn:aws:iam::account-id:role/iam-role-name
 
 backendStore:
+  databaseMigration: true
   postgres:
     enabled: true
-    host: your-postgres-host
+    host: postgresql-instance.cg034hpkmmjt.eu-central-1.rds.amazonaws.com
+    port: 5432
     database: mlflow
     user: mlflowuser
     password: Pa33w0rd!
@@ -290,6 +340,10 @@ ingress:
           pathType: ImplementationSpecific
 ```
 
+:::tip
+**Self-Hosted Storage:** MinIO provides S3-compatible storage for environments where you need to keep data on-premises.
+:::
+
 ### Production Monitoring Setup
 
 ```yaml
@@ -334,6 +388,10 @@ readinessProbe:
   failureThreshold: 3
 ```
 
+:::info
+**Production Monitoring:** This configuration includes comprehensive monitoring and health checks for production environments.
+:::
+
 ### Proxied Artifact Storage Access
 
 ```yaml
@@ -361,6 +419,10 @@ extraFlags:
   - serveArtifacts
 ```
 
+:::tip
+**Proxied Storage:** Enable proxied artifact storage when you want MLflow to serve artifacts directly instead of redirecting to storage URLs.
+:::
+
 ### Static Prefix Configuration
 
 ```yaml
@@ -375,6 +437,10 @@ ingress:
         - path: /mlflow
           pathType: ImplementationSpecific
 ```
+
+:::info
+**URL Customization:** Use static prefix to customize the base URL path for your MLflow instance.
+:::
 
 ### PVC Usage with SQLite
 
@@ -407,7 +473,15 @@ ingress:
           pathType: ImplementationSpecific
 ```
 
+:::warning
+**SQLite Limitations:** While this setup works, consider PostgreSQL for production environments with multiple users or high data volumes.
+:::
+
 ## Advanced Configuration
+
+:::info
+**Advanced Features:** These configurations provide fine-grained control over MLflow behavior and performance.
+:::
 
 ### Custom Environment Variables
 
@@ -438,6 +512,10 @@ extraEnvVars:
   MLFLOW_SYSTEM_METRICS_SAMPLING_INTERVAL: "1.0"  # System metrics sampling interval
 ```
 
+:::tip
+**Environment Variables:** Use environment variables to customize MLflow behavior without modifying the container image.
+:::
+
 ### Resource Management
 
 ```yaml
@@ -449,6 +527,10 @@ resources:
     cpu: 2
     memory: 4Gi
 ```
+
+:::warning
+**Resource Planning:** Set appropriate resource limits to prevent resource exhaustion and ensure stable performance.
+:::
 
 ### Ingress Configuration
 
@@ -467,7 +549,15 @@ ingress:
         - mlflow.your-domain.com
 ```
 
+:::danger
+**TLS Security:** Always use TLS certificates in production to encrypt traffic between clients and MLflow.
+:::
+
 ## Troubleshooting
+
+:::info
+**Common Issues:** This section covers the most frequently encountered problems and their solutions.
+:::
 
 ### Common Issues
 
@@ -494,7 +584,15 @@ kubectl exec -it deployment/mlflow -n mlflow -- \
   aws s3 ls s3://your-bucket
 ```
 
+:::tip
+**Debugging:** Use these commands to diagnose common issues with MLflow deployments.
+:::
+
 ## Next Steps
+
+:::tip
+**Getting Started:** Follow these guides in order for a complete MLflow setup experience.
+:::
 
 - [Basic Installation with SQLite](/docs/charts/mlflow/basic-installation) - Get started quickly
 - [PostgreSQL Backend Installation](/docs/charts/mlflow/postgresql-backend-installation) - Production database setup
