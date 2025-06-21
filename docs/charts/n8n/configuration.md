@@ -381,6 +381,10 @@ binaryData:
 
 ### S3 Storage
 
+:::warning
+**Enterprise License:** Enterprise n8n license required for s3 binary data storage capability.
+:::
+
 ```yaml
 binaryData:
   mode: s3
@@ -520,6 +524,8 @@ serviceMonitor:
 
 ### Security Context
 
+UID `1000` and GID `1000` default node user and group IDs.
+
 ```yaml
 securityContext:
   allowPrivilegeEscalation: false
@@ -624,7 +630,7 @@ taskRunners:
 ```yaml
 workflowHistory:
   enabled: true
-  pruneTime: 336  # hours (14 days)
+  pruneTime: 336  # in hours (14 days)
 ```
 
 :::tip

@@ -194,31 +194,6 @@ externalPostgresql:
   existingSecret: postgres-secret  # Use Kubernetes secret
 ```
 
-### External PostgreSQL with SSL
-
-```yaml
-db:
-  type: postgresdb
-
-externalPostgresql:
-  host: your-postgres-host.com
-  port: 5432
-  username: n8n
-  password: your-secure-password
-  database: n8n
-  existingSecret: postgres-secret
-
-# Add SSL configuration via environment variables
-main:
-  extraEnvVars:
-    N8N_DB_POSTGRESDB_SSL_CA: "/etc/ssl/certs/ca-certificates.crt"
-    N8N_DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED: "true"
-```
-
-:::warning
-**SSL Configuration:** Always use SSL/TLS for external database connections in production environments.
-:::
-
 ## Database Migration
 
 :::danger
@@ -455,26 +430,6 @@ kubectl cp ./n8n-backup-20240101.sqlite <namespace>/<n8n-pod>:/home/node/.n8n/da
 ## Troubleshooting
 
 ### Common Database Issues
-
-#### Connection Timeouts
-
-```yaml
-# Increase connection timeout
-main:
-  extraEnvVars:
-    N8N_DB_POSTGRESDB_CONNECTION_TIMEOUT: "30000"
-    N8N_DB_POSTGRESDB_ACQUIRE_TIMEOUT: "30000"
-```
-
-#### Database Lock Issues
-
-```yaml
-# For SQLite, enable WAL mode
-main:
-  extraEnvVars:
-    N8N_DB_SQLITE_VACUUM_ON_STARTUP: "true"
-    N8N_DB_SQLITE_EXECUTION_MODE: "parallelize"
-```
 
 #### Performance Issues
 

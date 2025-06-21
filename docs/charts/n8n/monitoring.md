@@ -217,12 +217,6 @@ log:
     - concurrency
     - redis
     - scaling
-
-# Enable structured logging
-main:
-  extraEnvVars:
-    N8N_LOG_FORMAT: "json"
-    N8N_LOG_LEVEL: "info"
 ```
 
 ### Log Aggregation
@@ -467,95 +461,1178 @@ spec:
 
 ## Grafana Dashboards
 
-### Basic Dashboard
+:::info
+**Dashboard Templates:** These dashboard examples are based on actual n8n metrics and can be imported directly into Grafana. Customize them based on your specific monitoring needs.
+:::
+
+### Comprehensive n8n Dashboard
 
 ```json
 {
-  "dashboard": {
-    "title": "n8n Overview",
-    "panels": [
+  "annotations": {
+    "list": [
       {
-        "title": "Execution Rate",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "rate(n8n_execution_total[5m])",
-            "legendFormat": "executions/sec"
-          }
-        ]
-      },
-      {
-        "title": "Success Rate",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "(
-              rate(n8n_execution_total[5m]) - rate(n8n_execution_failed_total[5m])
-            ) / rate(n8n_execution_total[5m]) * 100",
-            "legendFormat": "success rate"
-          }
-        ]
-      },
-      {
-        "title": "Execution Duration",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "histogram_quantile(0.95, rate(n8n_execution_duration_seconds_bucket[5m]))",
-            "legendFormat": "95th percentile"
-          }
-        ]
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
       }
     ]
-  }
-}
-```
-
-### Queue Mode Dashboard
-
-```json
-{
-  "dashboard": {
-    "title": "n8n Queue Mode",
-    "panels": [
-      {
-        "title": "Queue Depth",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "n8n_queue_bull_queue_waiting",
-            "legendFormat": "waiting"
+  },
+  "description": "n8n prometheus client basic metrics",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": 11159,
+  "graphTooltip": 0,
+  "iteration": 1750529070188,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 0,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 6,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "8.2.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "irate(n8n_process_cpu_user_seconds_total{instance=~\"$instance\"}[2m]) * 100",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "User CPU - {{instance}}",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "irate(n8n_process_cpu_system_seconds_total{instance=~\"$instance\"}[2m]) * 100",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Sys CPU - {{instance}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Process CPU Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "percent",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 9,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "8.2.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_eventloop_lag_seconds{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{role}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Event Loop Lag",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          {
-            "expr": "n8n_queue_bull_queue_active",
-            "legendFormat": "active"
-          }
-        ]
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
       },
-      {
-        "title": "Queue Processing Rate",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "rate(n8n_queue_bull_queue_completed[5m])",
-            "legendFormat": "completed/sec"
-          }
-        ]
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 17,
+        "y": 0
       },
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.2.7",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(increase(n8n_scaling_mode_queue_jobs_completed[1w]))",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Last Week Completed Jobs",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 2,
+      "interval": "",
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "name"
+      },
+      "pluginVersion": "8.2.7",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(n8n_nodejs_version_info{instance=~\"$instance\"}) by (version)",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{version}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Node.js Version",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#F2495C",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 3
+      },
+      "id": 4,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "name"
+      },
+      "pluginVersion": "8.2.7",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(n8n_version_info{instance=~\"$instance\"}) by (version)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{version}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "n8n version",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 16,
+        "x": 0,
+        "y": 7
+      },
+      "hiddenSeries": false,
+      "id": 7,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "8.2.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "n8n_process_resident_memory_bytes{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Process Memory - {{role}}",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_heap_size_total_bytes{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Heap Total - {{role}}",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_heap_size_used_bytes{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Heap Used - {{role}}",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_external_memory_bytes{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "External Memory - {{role}}",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Process Memory Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 7
+      },
+      "hiddenSeries": false,
+      "id": 9,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "8.2.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_active_handles_total{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Active Handler - {{role}}",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_active_requests_total{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Active Request - {{role}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Active Handlers/Requests Total",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 14
+      },
+      "hiddenSeries": false,
+      "id": 10,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "8.2.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_heap_space_size_total_bytes{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Heap Total - {{role}} - {{space}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Heap Total Detail",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 14
+      },
+      "hiddenSeries": false,
+      "id": 11,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "8.2.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_heap_space_size_used_bytes{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Heap Used - {{role}} - {{space}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Heap Used Detail",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 14
+      },
+      "hiddenSeries": false,
+      "id": 12,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "8.2.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "n8n_nodejs_heap_space_size_available_bytes{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Heap Used - {{role}} - {{space}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Heap Available Detail",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 32,
+  "style": "dark",
+  "tags": [
+    "n8n"
+  ],
+  "templating": {
+    "list": [
       {
-        "title": "Worker Utilization",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "n8n_queue_bull_queue_active / (n8n_queue_bull_queue_waiting + n8n_queue_bull_queue_active) * 100",
-            "legendFormat": "utilization"
-          }
-        ]
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "prometheus",
+        "definition": "label_values(n8n_nodejs_version_info, instance)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "instance",
+        "multi": true,
+        "name": "instance",
+        "options": [],
+        "query": {
+          "query": "label_values(n8n_nodejs_version_info, instance)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
-  }
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "N8N Application Dashboard",
+  "uid": "PTSqcpJWk",
+  "version": 1
 }
 ```
+
+### Enhanced Prometheus Queries
+
+:::tip
+**Query Optimization:** These queries are optimized for production use and include proper rate calculations and aggregations.
+:::
+
+#### System Performance Queries
+
+```promql
+# CPU Usage (per instance)
+irate(n8n_process_cpu_user_seconds_total{instance=~"$instance"}[2m]) * 100
+
+# Memory Usage (per instance)
+n8n_process_resident_memory_bytes{instance=~"$instance"}
+
+# Event Loop Lag (critical for performance)
+n8n_nodejs_eventloop_lag_seconds{instance=~"$instance"}
+
+# Active Handles and Requests
+n8n_nodejs_active_handles_total{instance=~"$instance"}
+n8n_nodejs_active_requests_total{instance=~"$instance"}
+```
+
+#### Workflow Execution Queries
+
+```promql
+# Execution Rate (per instance)
+rate(n8n_execution_total{instance=~"$instance"}[5m])
+
+# Success Rate (per instance)
+(
+  rate(n8n_execution_total{instance=~"$instance"}[5m]) - 
+  rate(n8n_execution_failed_total{instance=~"$instance"}[5m])
+) / rate(n8n_execution_total{instance=~"$instance"}[5m]) * 100
+
+# Execution Duration Percentiles
+histogram_quantile(0.50, rate(n8n_execution_duration_seconds_bucket{instance=~"$instance"}[5m]))
+histogram_quantile(0.95, rate(n8n_execution_duration_seconds_bucket{instance=~"$instance"}[5m]))
+histogram_quantile(0.99, rate(n8n_execution_duration_seconds_bucket{instance=~"$instance"}[5m]))
+
+# Error Rate
+rate(n8n_execution_failed_total{instance=~"$instance"}[5m])
+```
+
+#### Queue Mode Queries
+
+```promql
+# Queue Depth by Status
+n8n_queue_bull_queue_waiting{instance=~"$instance"}
+n8n_queue_bull_queue_active{instance=~"$instance"}
+n8n_queue_bull_queue_delayed{instance=~"$instance"}
+
+# Queue Processing Rate
+rate(n8n_queue_bull_queue_completed{instance=~"$instance"}[5m])
+rate(n8n_queue_bull_queue_failed{instance=~"$instance"}[5m])
+
+# Worker Utilization
+n8n_queue_bull_queue_active{role="worker"} / 
+(n8n_queue_bull_queue_waiting{role="worker"} + n8n_queue_bull_queue_active{role="worker"}) * 100
+
+# Queue Stuck Detection
+n8n_queue_bull_queue_active{instance=~"$instance"} > 0 and 
+rate(n8n_queue_bull_queue_completed{instance=~"$instance"}[5m]) == 0
+```
+
+#### API Performance Queries
+
+```promql
+# API Request Rate
+rate(n8n_api_requests_total{instance=~"$instance"}[5m])
+
+# API Response Time Percentiles
+histogram_quantile(0.50, rate(n8n_api_request_duration_seconds_bucket{instance=~"$instance"}[5m]))
+histogram_quantile(0.95, rate(n8n_api_request_duration_seconds_bucket{instance=~"$instance"}[5m]))
+
+# API Error Rate
+rate(n8n_api_requests_failed_total{instance=~"$instance"}[5m])
+```
+
+#### Memory and Heap Queries
+
+```promql
+# Heap Memory Usage
+n8n_nodejs_heap_size_used_bytes{instance=~"$instance"}
+n8n_nodejs_heap_size_total_bytes{instance=~"$instance"}
+
+# Heap Space Details
+n8n_nodejs_heap_space_size_used_bytes{instance=~"$instance"}
+n8n_nodejs_heap_space_size_available_bytes{instance=~"$instance"}
+
+# External Memory
+n8n_nodejs_external_memory_bytes{instance=~"$instance"}
+```
+
+#### Advanced Analytics Queries
+
+```promql
+# Execution Trends (hourly)
+increase(n8n_execution_total{instance=~"$instance"}[1h])
+
+# Success Rate Trends (hourly)
+(
+  increase(n8n_execution_total{instance=~"$instance"}[1h]) - 
+  increase(n8n_execution_failed_total{instance=~"$instance"}[1h])
+) / increase(n8n_execution_total{instance=~"$instance"}[1h]) * 100
+
+# Queue Processing Efficiency
+rate(n8n_queue_bull_queue_completed{instance=~"$instance"}[5m]) / 
+(n8n_queue_bull_queue_waiting{instance=~"$instance"} + n8n_queue_bull_queue_active{instance=~"$instance"})
+
+# Resource Utilization Score
+(
+  irate(n8n_process_cpu_user_seconds_total{instance=~"$instance"}[2m]) * 100 +
+  (n8n_process_resident_memory_bytes{instance=~"$instance"} / 
+   n8n_nodejs_heap_size_total_bytes{instance=~"$instance"}) * 100
+) / 2
+```
+
+:::warning
+**Query Performance:** Use appropriate time ranges and consider using recording rules for complex queries that are frequently executed.
+:::
 
 ## Sentry Integration
 
@@ -576,13 +1653,6 @@ sentry:
   backendDsn: "https://your-sentry-dsn@sentry.io/project"
   frontendDsn: "https://your-sentry-dsn@sentry.io/project"
   externalTaskRunnersDsn: "https://your-sentry-dsn@sentry.io/project"
-
-# Add Sentry environment variables
-main:
-  extraEnvVars:
-    N8N_SENTRY_ENVIRONMENT: "production"
-    N8N_SENTRY_TRACES_SAMPLE_RATE: "0.1"
-    N8N_SENTRY_PROFILES_SAMPLE_RATE: "0.1"
 ```
 
 ## Database Monitoring
@@ -600,13 +1670,6 @@ postgresql:
       interval: 30s
       labels:
         release: prometheus
-
-# Add database monitoring queries
-main:
-  extraEnvVars:
-    N8N_DB_LOGGING_ENABLED: "true"
-    N8N_DB_LOGGING_OPTIONS: "error"
-    N8N_DB_LOGGING_MAX_QUERY_EXECUTION_TIME: "1000"
 ```
 
 ### Redis Monitoring (Queue Mode)
@@ -625,16 +1688,6 @@ redis:
 ```
 
 ## Storage Monitoring
-
-### S3 Storage Monitoring
-
-```yaml
-# Add S3 monitoring
-main:
-  extraEnvVars:
-    N8N_BINARY_DATA_S3_MONITORING_ENABLED: "true"
-    N8N_BINARY_DATA_S3_MONITORING_INTERVAL: "300"
-```
 
 ### Filesystem Storage Monitoring
 

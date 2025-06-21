@@ -719,7 +719,7 @@ kubectl get pods -l app.kubernetes.io/component=webhook
 kubectl logs -l app.kubernetes.io/component=webhook
 
 # Test webhook endpoint
-curl -X POST https://webhook.yourdomain.com/webhook/test
+curl -X POST https://webhook.yourdomain.com/webhook-test/18ca0dba-fd0f-415a-abb5-8fb65d10653b/webhook
 ```
 
 ### Performance Optimization

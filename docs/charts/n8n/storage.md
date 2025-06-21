@@ -52,20 +52,6 @@ binaryData:
   mode: "default"
 ```
 
-### Default Storage with Memory Limits
-
-```yaml
-binaryData:
-  mode: "default"
-  availableModes: ["filesystem", "s3"]  # Allow switching modes
-
-# Configure memory limits for binary data
-main:
-  extraEnvVars:
-    N8N_BINARY_DATA_MAX_SIZE: "10485760"  # 10MB max file size
-    N8N_BINARY_DATA_TTL: "86400"  # 24 hours TTL
-```
-
 ## Filesystem Storage Configuration
 
 :::note
@@ -117,21 +103,6 @@ spec:
   resources:
     requests:
       storage: 100Gi
-```
-
-### Filesystem Performance Tuning
-
-```yaml
-binaryData:
-  mode: "filesystem"
-  localStoragePath: "/data/n8n"
-
-# Add performance optimizations
-main:
-  extraEnvVars:
-    N8N_BINARY_DATA_FILESYSTEM_MAX_SIZE: "104857600"  # 100MB max file size
-    N8N_BINARY_DATA_FILESYSTEM_TTL: "604800"  # 7 days TTL
-    N8N_BINARY_DATA_FILESYSTEM_CLEANUP_INTERVAL: "3600"  # 1 hour cleanup interval
 ```
 
 ## S3-Compatible Storage Configuration
@@ -462,28 +433,6 @@ binaryData:
 
 ## Performance Tuning
 
-### S3 Performance Optimization
-
-```yaml
-binaryData:
-  mode: "s3"
-  s3:
-    host: s3.amazonaws.com
-    bucketName: n8n-binary-data
-    bucketRegion: us-east-1
-    accessKey: your-access-key
-    accessSecret: your-secret-key
-
-# Add S3 performance optimizations
-main:
-  extraEnvVars:
-    N8N_BINARY_DATA_S3_MAX_SIZE: "104857600"  # 100MB max file size
-    N8N_BINARY_DATA_S3_TTL: "2592000"  # 30 days TTL
-    N8N_BINARY_DATA_S3_CLEANUP_INTERVAL: "86400"  # 24 hours cleanup
-    N8N_BINARY_DATA_S3_UPLOAD_CONCURRENCY: "5"
-    N8N_BINARY_DATA_S3_DOWNLOAD_CONCURRENCY: "10"
-```
-
 ### Filesystem Performance
 
 ```yaml
@@ -500,10 +449,6 @@ main:
   volumeMounts:
     - name: n8n-binary-data
       mountPath: /data
-  extraEnvVars:
-    N8N_BINARY_DATA_FILESYSTEM_MAX_SIZE: "104857600"  # 100MB max file size
-    N8N_BINARY_DATA_FILESYSTEM_TTL: "604800"  # 7 days TTL
-    N8N_BINARY_DATA_FILESYSTEM_CLEANUP_INTERVAL: "3600"  # 1 hour cleanup
 ```
 
 ## Security Configuration
@@ -659,17 +604,6 @@ kubectl exec -it <n8n-pod> -- curl -I http://minio-service:9000
 ```
 
 ### Storage Performance Issues
-
-#### S3 Performance
-
-```yaml
-# Optimize S3 performance
-main:
-  extraEnvVars:
-    N8N_BINARY_DATA_S3_UPLOAD_CONCURRENCY: "10"
-    N8N_BINARY_DATA_S3_DOWNLOAD_CONCURRENCY: "20"
-    N8N_BINARY_DATA_S3_PART_SIZE: "5242880"  # 5MB part size
-```
 
 #### Filesystem Performance
 
