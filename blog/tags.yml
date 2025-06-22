@@ -23,6 +23,26 @@ actualbudget:
   permalink: /actual-budget
   description: Actual Budget tag description
 
+outline:
+  label: Outline
+  permalink: /outline
+  description: Outline tag description
+
+cloudflared:
+  label: Cloudflared
+  permalink: /cloudflared
+  description: Cloudflared tag description
+
+drone:
+  label: Drone
+  permalink: /drone
+  description: Drone tag description
+
+pypiserver:
+  label: PyPI Server
+  permalink: /pypiserver
+  description: PyPI Server tag description
+
 open-source:
   label: Open Source
   permalink: /open-source
