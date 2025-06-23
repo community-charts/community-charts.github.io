@@ -102,7 +102,10 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
 
   themeConfig: {
-    // Replace with your project's social card
+    colorMode: {
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
     metadata: [
       {name: 'keywords', content: 'helm, charts, community, open source'},
       {name: 'twitter:card', content: 'summary_large_image'},
