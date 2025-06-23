@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: Drone Chart Configuration Guide
+title: Configuration Guide
 sidebar_label: Configuration
 sidebar_position: 2
 description: Detailed guide to configuring the Drone Helm chart for production and custom use cases.
@@ -13,7 +13,7 @@ keywords:
   - kubernetes
 ---
 
-# Drone Chart Configuration Guide
+# Configuration Guide
 
 This guide covers all major configuration options for the Drone Helm chart, including server and runner settings, environment variables, and best practices for production deployments.
 

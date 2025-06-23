@@ -1,6 +1,6 @@
 ---
 id: authentication
-title: Drone Chart Authentication Guide
+title: Authentication Guide
 sidebar_label: Authentication
 sidebar_position: 3
 description: How to configure authentication providers for Drone using the Helm chart.
@@ -14,7 +14,7 @@ keywords:
   - kubernetes
 ---
 
-# Drone Chart Authentication Guide
+# Authentication Guide
 
 Drone supports multiple authentication providers (GitHub, GitLab, Gitea, Bitbucket, etc). This guide explains how to configure them securely using the Helm chart.
 

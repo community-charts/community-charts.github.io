@@ -1,6 +1,6 @@
 ---
 id: storage
-title: Drone Chart Storage Guide
+title: Storage Guide
 sidebar_label: Storage
 sidebar_position: 4
 description: Guide to persistent storage and database configuration for Drone Helm chart deployments.
@@ -12,7 +12,7 @@ keywords:
   - kubernetes
 ---
 
-# Drone Chart Storage Guide
+# Storage Guide
 
 This guide covers persistent storage and database configuration for Drone deployments on Kubernetes.
 

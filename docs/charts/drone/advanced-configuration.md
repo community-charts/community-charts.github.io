@@ -1,6 +1,6 @@
 ---
 id: advanced-configuration
-title: Drone Chart Advanced Configuration
+title: Advanced Configuration
 sidebar_label: Advanced Configuration
 sidebar_position: 5
 description: Advanced configuration options for Drone Helm chart, including runners, RBAC, and custom Kubernetes settings.
@@ -12,7 +12,7 @@ keywords:
   - kubernetes
 ---
 
-# Drone Chart Advanced Configuration
+# Advanced Configuration
 
 This guide covers advanced options for customizing your Drone deployment on Kubernetes.
 

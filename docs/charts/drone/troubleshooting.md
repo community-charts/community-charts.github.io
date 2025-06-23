@@ -1,6 +1,6 @@
 ---
 id: troubleshooting
-title: Drone Chart Troubleshooting Guide
+title: Troubleshooting Guide
 sidebar_label: Troubleshooting
 sidebar_position: 6
 description: Troubleshooting common issues with the Drone Helm chart on Kubernetes.
@@ -11,7 +11,7 @@ keywords:
   - helm
 ---
 
-# Drone Chart Troubleshooting Guide
+# Troubleshooting Guide
 
 This guide helps you diagnose and resolve common issues with Drone deployments on Kubernetes.
 
