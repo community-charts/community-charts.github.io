@@ -122,6 +122,15 @@ const config: Config = {
         groupByYear: true,
       },
     },
+    algolia: {
+      appId: 'C4YC101RQL',
+      apiKey: 'c037e00400a7512214e49d2d68df2104',
+      indexName: 'community-chartsio',
+
+      searchPagePath: 'search',
+
+      insights: false,
+    },
     navbar: {
       title: 'Community Charts',
       logo: {
