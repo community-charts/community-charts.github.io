@@ -112,6 +112,16 @@ const config: Config = {
       {name: 'twitter:image', content: 'img/social-card.png'},
     ],
     image: 'img/social-card.png',
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
+      },
+    },
+    blog: {
+      sidebar: {
+        groupByYear: true,
+      },
+    },
     navbar: {
       title: 'Community Charts',
       logo: {
@@ -136,6 +146,7 @@ const config: Config = {
           position: 'right',
         },
       ],
+      hideOnScroll: true,
     },
     footer: {
       style: 'dark',
