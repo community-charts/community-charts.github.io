@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Community Charts',
+  title: 'Community Helm Charts for Open-Source Kubernetes Apps',
   tagline: 'Community-Maintained Helm Charts for Your Favorite Open Source Projects',
   favicon: 'favicon.ico',
 
@@ -72,6 +72,12 @@ const config: Config = {
         gtag: {
           trackingID: 'G-6QM4ZM0XG7',
           anonymizeIP: true,
+        },
+        sitemap: {
+          lastmod: 'date',
+          changefreq: 'weekly',
+          priority: 0.5,
+          filename: 'sitemap-0.xml',
         },
       } satisfies Preset.Options,
     ],

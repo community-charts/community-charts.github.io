@@ -304,16 +304,16 @@ backendStore:
 mysql:
   enabled: true
   architecture: standalone
-  
+
   primary:
     service:
       ports:
         mysql: 3306
-    
+
     persistence:
       enabled: true
       existingClaim: ""
-  
+
   auth:
     username: mlflowuser
     password: Pa33w0rd!

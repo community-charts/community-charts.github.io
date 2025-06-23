@@ -12,7 +12,7 @@ export default function HomepageHeader(): ReactNode {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className="hero__title">
-          {siteConfig.title}
+          Community Charts
         </Heading>
         <p className="hero__subtitle">
           {siteConfig.tagline || 'Your Go-To Source for Community-Driven Helm Deployments.'}

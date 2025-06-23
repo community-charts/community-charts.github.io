@@ -108,23 +108,23 @@ db:
 postgresql:
   enabled: true
   architecture: standalone
-  
+
   auth:
     username: n8n
     password: your-secure-password
     database: n8n
-  
+
   primary:
     service:
       ports:
         postgresql: 5432
-    
+
     persistence:
       enabled: true
       existingClaim: ""
       storageClass: "fast-ssd"
       size: 20Gi
-    
+
     resources:
       requests:
         cpu: 100m
@@ -147,25 +147,25 @@ db:
 postgresql:
   enabled: true
   architecture: replication  # Enable replication
-  
+
   auth:
     username: n8n
     password: your-secure-password
     database: n8n
-  
+
   primary:
     persistence:
       enabled: true
       size: 20Gi
-    
+
     service:
       type: ClusterIP
-  
+
   readReplicas:
     persistence:
       enabled: true
       size: 20Gi
-    
+
     resources:
       requests:
         cpu: 100m
@@ -286,12 +286,12 @@ postgresql:
     username: n8n
     password: your-secure-password
     database: n8n
-  
+
   primary:
     persistence:
       enabled: true
       size: 50Gi  # Larger storage for better performance
-    
+
     resources:
       requests:
         cpu: 500m
@@ -299,7 +299,7 @@ postgresql:
       limits:
         cpu: 2000m
         memory: 4Gi
-    
+
     # PostgreSQL configuration
     configuration: |
       shared_buffers = 256MB
@@ -460,7 +460,7 @@ main:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
-  
+
   readinessProbe:
     httpGet:
       path: /healthz/readiness

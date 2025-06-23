@@ -1065,7 +1065,7 @@ spec:
       annotations:
         summary: "MLflow is down"
         description: "MLflow instance has been down for more than 1 minute"
-    
+
     - alert: MLflowHighErrorRate
       expr: rate(http_requests_total{job="mlflow",status=~"5.."}[5m]) > 0.1
       for: 5m
@@ -1074,7 +1074,7 @@ spec:
       annotations:
         summary: "High error rate in MLflow"
         description: "MLflow is returning 5xx errors at a high rate"
-    
+
     - alert: MLflowHighResponseTime
       expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="mlflow"}[5m])) > 2
       for: 5m

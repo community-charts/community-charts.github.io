@@ -143,7 +143,7 @@ auth:
     enabled: true
     clientId: "your-google-client-id"
     clientSecret: "your-google-client-secret"
-  
+
   github:
     enabled: true
     clientId: "your-github-client-id"

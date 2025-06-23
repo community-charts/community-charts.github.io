@@ -320,7 +320,7 @@ externalRedis:
 redis:
   enabled: true
   architecture: replication  # Master-slave replication
-  
+
   master:
     persistence:
       enabled: true
@@ -332,7 +332,7 @@ redis:
       limits:
         cpu: 500m
         memory: 512Mi
-  
+
   replica:
     replicaCount: 2
     persistence:
@@ -630,7 +630,7 @@ main:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
-  
+
   readinessProbe:
     httpGet:
       path: /healthz/readiness
@@ -649,7 +649,7 @@ worker:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
-  
+
   readinessProbe:
     httpGet:
       path: /healthz/readiness
@@ -668,7 +668,7 @@ webhook:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
-  
+
   readinessProbe:
     httpGet:
       path: /healthz/readiness

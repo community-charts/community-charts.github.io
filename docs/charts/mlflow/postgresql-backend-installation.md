@@ -289,16 +289,16 @@ backendStore:
 postgresql:
   enabled: true
   architecture: standalone
-  
+
   primary:
     service:
       ports:
         postgresql: 5432
-    
+
     persistence:
       enabled: true
       existingClaim: ""
-  
+
   auth:
     username: mlflowuser
     password: Pa33w0rd!

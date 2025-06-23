@@ -256,7 +256,7 @@ main:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
-  
+
   readinessProbe:
     httpGet:
       path: /healthz/readiness
@@ -283,7 +283,7 @@ main:
     timeoutSeconds: 10
     failureThreshold: 3
     successThreshold: 1
-  
+
   readinessProbe:
     httpGet:
       path: /healthz/readiness
@@ -293,7 +293,7 @@ main:
     timeoutSeconds: 5
     failureThreshold: 3
     successThreshold: 1
-  
+
   startupProbe:
     httpGet:
       path: /healthz
@@ -316,7 +316,7 @@ worker:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
-  
+
   readinessProbe:
     httpGet:
       path: /healthz/readiness
@@ -325,7 +325,7 @@ worker:
     periodSeconds: 5
     timeoutSeconds: 3
     failureThreshold: 3
-  
+
   startupProbe:
     exec:
       command: ["/bin/sh", "-c", "ps aux | grep '[n]8n'"]
@@ -342,7 +342,7 @@ webhook:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
-  
+
   readinessProbe:
     httpGet:
       path: /healthz/readiness
@@ -377,7 +377,7 @@ spec:
           annotations:
             summary: "High n8n execution error rate"
             description: "n8n is experiencing a high error rate of {{ $value }} errors per second"
-        
+
         - alert: N8NHighExecutionTime
           expr: histogram_quantile(0.95, rate(n8n_execution_duration_seconds_bucket[5m])) > 300
           for: 5m
@@ -386,7 +386,7 @@ spec:
           annotations:
             summary: "High n8n execution time"
             description: "95th percentile execution time is {{ $value }} seconds"
-        
+
         - alert: N8NQueueDepth
           expr: n8n_queue_bull_queue_waiting > 100
           for: 2m
@@ -421,7 +421,7 @@ spec:
           annotations:
             summary: "Low n8n success rate"
             description: "Success rate is {{ $value | humanizePercentage }}"
-        
+
         - alert: N8NHighMemoryUsage
           expr: (container_memory_usage_bytes{container="n8n"} / container_spec_memory_limit_bytes{container="n8n"}) > 0.8
           for: 5m
@@ -430,7 +430,7 @@ spec:
           annotations:
             summary: "High n8n memory usage"
             description: "Memory usage is {{ $value | humanizePercentage }}"
-        
+
         - alert: N8NHighCPUUsage
           expr: rate(container_cpu_usage_seconds_total{container="n8n"}[5m]) > 0.8
           for: 5m
@@ -439,7 +439,7 @@ spec:
           annotations:
             summary: "High n8n CPU usage"
             description: "CPU usage is {{ $value | humanizePercentage }}"
-        
+
         - alert: N8NQueueStuck
           expr: n8n_queue_bull_queue_active > 0 and rate(n8n_queue_bull_queue_completed[5m]) == 0
           for: 10m
@@ -448,7 +448,7 @@ spec:
           annotations:
             summary: "n8n queue appears stuck"
             description: "Active jobs: {{ $value }}, no completions in 5m"
-        
+
         - alert: N8NHighAPILatency
           expr: histogram_quantile(0.95, rate(n8n_api_request_duration_seconds_bucket[5m])) > 5
           for: 5m
@@ -1543,7 +1543,7 @@ rate(n8n_execution_total{instance=~"$instance"}[5m])
 
 # Success Rate (per instance)
 (
-  rate(n8n_execution_total{instance=~"$instance"}[5m]) - 
+  rate(n8n_execution_total{instance=~"$instance"}[5m]) -
   rate(n8n_execution_failed_total{instance=~"$instance"}[5m])
 ) / rate(n8n_execution_total{instance=~"$instance"}[5m]) * 100
 
@@ -1569,11 +1569,11 @@ rate(n8n_queue_bull_queue_completed{instance=~"$instance"}[5m])
 rate(n8n_queue_bull_queue_failed{instance=~"$instance"}[5m])
 
 # Worker Utilization
-n8n_queue_bull_queue_active{role="worker"} / 
+n8n_queue_bull_queue_active{role="worker"} /
 (n8n_queue_bull_queue_waiting{role="worker"} + n8n_queue_bull_queue_active{role="worker"}) * 100
 
 # Queue Stuck Detection
-n8n_queue_bull_queue_active{instance=~"$instance"} > 0 and 
+n8n_queue_bull_queue_active{instance=~"$instance"} > 0 and
 rate(n8n_queue_bull_queue_completed{instance=~"$instance"}[5m]) == 0
 ```
 
@@ -1614,18 +1614,18 @@ increase(n8n_execution_total{instance=~"$instance"}[1h])
 
 # Success Rate Trends (hourly)
 (
-  increase(n8n_execution_total{instance=~"$instance"}[1h]) - 
+  increase(n8n_execution_total{instance=~"$instance"}[1h]) -
   increase(n8n_execution_failed_total{instance=~"$instance"}[1h])
 ) / increase(n8n_execution_total{instance=~"$instance"}[1h]) * 100
 
 # Queue Processing Efficiency
-rate(n8n_queue_bull_queue_completed{instance=~"$instance"}[5m]) / 
+rate(n8n_queue_bull_queue_completed{instance=~"$instance"}[5m]) /
 (n8n_queue_bull_queue_waiting{instance=~"$instance"} + n8n_queue_bull_queue_active{instance=~"$instance"})
 
 # Resource Utilization Score
 (
   irate(n8n_process_cpu_user_seconds_total{instance=~"$instance"}[2m]) * 100 +
-  (n8n_process_resident_memory_bytes{instance=~"$instance"} / 
+  (n8n_process_resident_memory_bytes{instance=~"$instance"} /
    n8n_nodejs_heap_size_total_bytes{instance=~"$instance"}) * 100
 ) / 2
 ```
