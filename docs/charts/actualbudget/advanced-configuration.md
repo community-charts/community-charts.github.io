@@ -15,24 +15,23 @@ This guide covers advanced configuration options for production deployments and 
 
 ### Pod Security Context
 
-Configure security context for enhanced security:
+We use the following security context for enhanced security. User ID 1001 and Group ID 1001 actual user and actual group IDs respectively. Pleae find more information from [here](https://github.com/actualbudget/actual/blob/e3aa63d1fa252ebc3f99061a95ebe9ad0454c400/packages/sync-server/docker/ubuntu.Dockerfile#L46).
 
 ```yaml
 podSecurityContext:
-  runAsUser: 1000
-  runAsGroup: 3000
-  fsGroup: 2000
-  fsGroupChangePolicy: OnRootMismatch
-  supplementalGroups: []
+  fsGroup: 1001
+  fsGroupChangePolicy: "OnRootMismatch"
 
 securityContext:
   allowPrivilegeEscalation: false
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
   capabilities:
     drop:
       - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  privileged: false
+  runAsUser: 1001
+  runAsGroup: 1001
 ```
 
 ### Service Account Configuration
