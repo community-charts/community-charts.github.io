@@ -127,14 +127,19 @@ kubectl get pod <pod-name> -o yaml | grep -A 10 securityContext
 ```yaml
 # Configure proper security context
 podSecurityContext:
-  runAsUser: 1000
-  runAsGroup: 3000
-  fsGroup: 2000
-  fsGroupChangePolicy: OnRootMismatch
+  fsGroup: 1001
+  fsGroupChangePolicy: "OnRootMismatch"
 
 securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
   runAsNonRoot: true
-  runAsUser: 1000
+  privileged: false
+  runAsUser: 1001
+  runAsGroup: 1001
 ```
 
 ## Authentication Issues
