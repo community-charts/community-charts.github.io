@@ -173,6 +173,14 @@ const config: Config = {
           title: 'Community',
           items: [
             {
+              label: 'Stack Overflow',
+              href: 'https://stackoverflow.com/questions/tagged/community-charts',
+            },
+            {
+              label: 'X (Twitter)',
+              href: 'https://x.com/ChartsCommunity',
+            },
+            {
               label: 'Keybase',
               href: 'https://keybase.io/communitycharts',
             },
