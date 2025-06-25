@@ -14,8 +14,6 @@ We are thrilled to announce the release of the **n8n Helm chart version 1.9.0** 
 
 This release includes updates to the Helm chart (version 1.9.0) and the underlying application (version 1.99.1). Below is the detailed changelog:
 
-# Changelog
-
 - **Added**: Add ingress path for rest/oauth2-credential/callback
     - [GitHub Issue](https://github.com/community-charts/helm-charts/issues/141)
 

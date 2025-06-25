@@ -14,8 +14,6 @@ We are thrilled to announce the release of the **mlflow Helm chart version 1.2.0
 
 This release includes updates to the Helm chart (version 1.2.0) and the underlying application (version 3.1.0). Below is the detailed changelog:
 
-# Changelog
-
 - **Added**: Log level configuration added
     - [Github Issue](https://github.com/community-charts/helm-charts/issues/137)
 

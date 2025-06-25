@@ -14,8 +14,6 @@ We are thrilled to announce the release of the **n8n Helm chart version 1.8.6** 
 
 This release includes updates to the Helm chart (version 1.8.6) and the underlying application (version 1.98.2). Below is the detailed changelog:
 
-# Changelog
-
 - **Fixed**: Fix npm registry secret volume mount when only npmRegistry.enabled is true
     - [Github PR](https://github.com/community-charts/helm-charts/pull/135)
 

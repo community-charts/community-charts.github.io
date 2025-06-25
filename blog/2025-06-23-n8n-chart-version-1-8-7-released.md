@@ -14,8 +14,6 @@ We are thrilled to announce the release of the **n8n Helm chart version 1.8.7** 
 
 This release includes updates to the Helm chart (version 1.8.7) and the underlying application (version 1.99.1). Below is the detailed changelog:
 
-# Changelog
-
 - **Changed**: Update n8nio/n8n image version to 1.99.1
     - [Upstream Project](https://github.com/n8n-io/n8n)
 

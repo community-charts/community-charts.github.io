@@ -14,8 +14,6 @@ We are thrilled to announce the release of the **actualbudget Helm chart version
 
 This release includes updates to the Helm chart (version 1.7.0) and the underlying application (version 25.6.1). Below is the detailed changelog:
 
-# Changelog
-
 - **Changed**: Change pod security context to actual user and group
     - [GitHub Issue](https://github.com/community-charts/helm-charts/pull/144)
 
