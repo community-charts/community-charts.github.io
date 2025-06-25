@@ -44,7 +44,7 @@ function Feature({name, description, docLink, githubLink, image}: FeaturedChart)
     <div className={clsx('col col--4', styles.chartCardWrapper)}>
       <div className={styles.chartCard}>
         <div className="text--center">
-          {image && <img src={image} alt={name} className={styles.chartImage} />}
+          {image && <img src={image} alt={name} title={name} className={styles.chartImage} />}
         </div>
         <Heading as="h3" className="text--center">{name}</Heading>
         <p className="text--center">{description}</p>
