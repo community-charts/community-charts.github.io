@@ -106,11 +106,6 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    metadata: [
-      {name: 'keywords', content: 'helm, charts, community, open source'},
-      {name: 'twitter:card', content: 'summary_large_image'},
-      {name: 'twitter:image', content: 'img/social-card.png'},
-    ],
     image: 'img/social-card.png',
     docs: {
       sidebar: {

@@ -1,54 +1,54 @@
 helm:
   label: Helm
   permalink: /helm
-  description: Helm tag description
+  description: Easily manage and deploy your Kubernetes applications with Helm, the friendly package manager for cloud-native environments.
 
 kubernetes:
   label: Kubernetes
   permalink: /kubernetes
-  description: Kubernetes tag description
+  description: Orchestrate, scale, and manage your containerized applications with Kubernetes, the leading open-source platform for modern infrastructure.
 
 mlflow:
   label: Mlflow
   permalink: /mlflow
-  description: Mlflow tag description
+  description: Streamline your machine learning projects with MLflow, your companion for tracking, packaging, and deploying models effortlessly.
 
 n8n:
   label: n8n
   permalink: /n8n
-  description: n8n tag description
+  description: Automate your workflows with n8n, the flexible tool that connects your favorite apps and services with ease.
 
 actualbudget:
   label: Actual Budget
   permalink: /actual-budget
-  description: Actual Budget tag description
+  description: Take control of your finances with Actual Budget, an open-source app designed for privacy and simple, effective budgeting.
 
 outline:
   label: Outline
   permalink: /outline
-  description: Outline tag description
+  description: Collaborate and organize your team's knowledge with Outline, a modern and intuitive wiki for everyone.
 
 cloudflared:
   label: Cloudflared
   permalink: /cloudflared
-  description: Cloudflared tag description
+  description: Securely connect your infrastructure to Cloudflare with Cloudflared, making tunnels and integrations a breeze.
 
 drone:
   label: Drone
   permalink: /drone
-  description: Drone tag description
+  description: Build, test, and deploy your code confidently with Drone, a friendly and powerful CI/CD platform for developers.
 
 pypiserver:
   label: PyPI Server
   permalink: /pypiserver
-  description: PyPI Server tag description
+  description: Host and share your Python packages privately and simply with PyPI Server, your lightweight package index solution.
 
 open-source:
   label: Open Source
   permalink: /open-source
-  description: Open Source tag description
+  description: Discover the power of open-source software—collaborative, transparent, and built by the community for everyone.
 
 community:
   label: Community
   permalink: /community
-  description: Community tag description
+  description: Join a vibrant community where ideas, projects, and support come together to help everyone grow and succeed.

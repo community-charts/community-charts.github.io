@@ -1,6 +1,6 @@
 ---
 id: usage
-title: Drone Chart Usage Guide
+title: Drone CI Chart Usage Guide
 sidebar_label: Usage
 sidebar_position: 1
 description: How to install, upgrade, and use the Drone Helm chart for CI/CD on Kubernetes.

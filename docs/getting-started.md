@@ -165,13 +165,13 @@ Here's a quick overview of our current charts and their use cases:
 
 | Chart          | Description                                              | Documentation Link                                        |
 | -------------- | -------------------------------------------------------- | --------------------------------------------------------- |
-| MLflow         | Platform for managing the machine learning lifecycle     | [/docs/charts/mlflow](/docs/category/mlflow)              |
-| n8n            | Workflow automation tool with **unique npm package installation** and **exclusive external task runner support** | [/docs/charts/n8n](/docs/category/n8n)                    |
-| Actual Budget  | Self-hosted personal finance tracker                     | [/docs/charts/actualbudget](/docs/category/actualbudget)  |
-| Outline        | Modern wiki for collaborative knowledge management       | [/docs/charts/outline](/docs/category/outline)            |
-| Cloudflared    | Secure tunneling with Cloudflare for Kubernetes services | [/docs/charts/cloudflared](/docs/category/cloudflared)    |
-| Drone          | Continuous integration and deployment system             | [/docs/charts/drone](/docs/category/drone)                |
-| PyPI server    | Private minimal Python package repository                | [/docs/charts/pypiserver](/docs/category/pypiserver)      |
+| MLflow         | Platform for managing the machine learning lifecycle     | [mlflow chart docs](/docs/category/mlflow)              |
+| n8n            | Workflow automation tool with **unique npm package installation** and **exclusive external task runner support** | [n8n chart docs](/docs/category/n8n)                    |
+| Actual Budget  | Self-hosted personal finance tracker                     | [actualbudget chart docs](/docs/category/actualbudget)  |
+| Outline        | Modern wiki for collaborative knowledge management       | [outline chart docs](/docs/category/outline)            |
+| Cloudflared    | Secure tunneling with Cloudflare for Kubernetes services | [cloudflared chart docs](/docs/category/cloudflared)    |
+| Drone          | Continuous integration and deployment system             | [drone chart docs](/docs/category/drone)                |
+| PyPI server    | Private minimal Python package repository                | [pypiserver chart docs](/docs/category/pypiserver)      |
 
 :::tip
 **Unique Features:** Our n8n chart offers exclusive features not available in other Helm charts, including advanced npm package management and external task runner support.
