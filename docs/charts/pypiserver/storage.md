@@ -1,6 +1,6 @@
 ---
 id: storage
-title: Storage
+title: PyPI Server Storage
 sidebar_label: Storage
 sidebar_position: 3
 description: Configure persistent storage for PyPI Server packages, authentication files, and data persistence

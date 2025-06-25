@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: Configuration Guide
+title: Outline Configuration Guide
 sidebar_label: Configuration
 sidebar_position: 2
 description: Learn how to configure the Outline Helm chart for your deployment

@@ -1,6 +1,6 @@
 ---
 id: database
-title: Database Configuration
+title: Outline Database Configuration
 sidebar_label: Database
 sidebar_position: 5
 description: Configure PostgreSQL database for Outline including built-in and external database options

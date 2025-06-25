@@ -1,6 +1,6 @@
 ---
 id: advanced-configuration
-title: Advanced Configuration
+title: Actual Budget Advanced Configuration
 sidebar_label: Advanced Configuration
 sidebar_position: 5
 description: Advanced configuration options for Actual Budget including security, networking, and customization

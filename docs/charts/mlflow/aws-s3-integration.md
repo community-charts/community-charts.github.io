@@ -1,6 +1,6 @@
 ---
 id: aws-s3-integration
-title: AWS S3 Integration
+title: MLflow AWS S3 Integration
 sidebar_label: AWS S3 Integration
 sidebar_position: 5
 description: Complete guide to configuring MLflow with AWS S3 for artifact storage. Learn about IAM roles, MinIO compatibility, and production-ready S3 configurations.

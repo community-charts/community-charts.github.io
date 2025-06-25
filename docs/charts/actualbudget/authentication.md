@@ -1,6 +1,6 @@
 ---
 id: authentication
-title: Authentication Setup
+title: Actual Budget Authentication Setup
 sidebar_label: Authentication
 sidebar_position: 3
 description: Configure authentication methods for Actual Budget including password, header-based, and OpenID Connect

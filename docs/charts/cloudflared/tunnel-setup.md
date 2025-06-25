@@ -1,6 +1,6 @@
 ---
 id: tunnel-setup
-title: Tunnel Setup Guide
+title: Cloudflared Tunnel Setup Guide
 sidebar_label: Tunnel Setup
 sidebar_position: 3
 description: Set up Cloudflare Tunnel for secure access to your Kubernetes services

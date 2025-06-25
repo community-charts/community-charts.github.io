@@ -1,6 +1,6 @@
 ---
 id: storage
-title: Storage Guide
+title: Drone CI Storage Guide
 sidebar_label: Storage
 sidebar_position: 4
 description: Guide to persistent storage and database configuration for Drone Helm chart deployments.

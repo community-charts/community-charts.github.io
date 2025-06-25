@@ -1,6 +1,6 @@
 ---
 id: troubleshooting-and-monitoring
-title: Troubleshooting and Monitoring
+title: MLflow Troubleshooting and Monitoring
 sidebar_label: Troubleshooting
 sidebar_position: 10
 description: Comprehensive troubleshooting guide for MLflow on Kubernetes. Learn about common issues, debugging techniques, monitoring setup, and performance optimization.

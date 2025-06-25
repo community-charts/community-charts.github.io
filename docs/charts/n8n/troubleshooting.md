@@ -1,10 +1,10 @@
 ---
 id: troubleshooting
-title: "n8n Troubleshooting Guide"
-sidebar_label: "Troubleshooting"
+title: N8N Troubleshooting Guide
+sidebar_label: Troubleshooting
 sidebar_position: 7
-description: "Common issues and solutions for n8n Helm chart deployments"
-keywords: ["n8n", "troubleshooting", "debug", "issues", "kubernetes", "helm"]
+description: Common issues and solutions for n8n Helm chart deployments
+keywords: [n8n, troubleshooting, debug, issues, kubernetes, helm]
 ---
 
 # n8n Troubleshooting Guide

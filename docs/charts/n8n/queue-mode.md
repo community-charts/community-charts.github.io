@@ -1,10 +1,10 @@
 ---
 id: queue-mode
-title: "n8n Queue Mode Setup"
-sidebar_label: "Queue Mode"
+title: N8N Queue Mode Setup
+sidebar_label: Queue Mode
 sidebar_position: 4
-description: "Complete guide to setting up n8n in queue mode for distributed execution with Redis, worker nodes, and webhook nodes"
-keywords: ["n8n", "queue mode", "redis", "worker nodes", "webhook nodes", "distributed execution", "scalability"]
+description: Complete guide to setting up n8n in queue mode for distributed execution with Redis, worker nodes, and webhook nodes
+keywords: [n8n, queue mode, redis, worker nodes, webhook nodes, distributed execution, scalability]
 ---
 
 # n8n Queue Mode Setup

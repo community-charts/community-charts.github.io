@@ -1,6 +1,6 @@
 ---
 id: postgresql-backend-installation
-title: PostgreSQL Backend Installation
+title: MLflow PostgreSQL Backend Installation
 sidebar_label: PostgreSQL Installation
 sidebar_position: 3
 description: Complete guide to setting up MLflow with PostgreSQL backend on Kubernetes. Learn about database migrations, connection health checks, and production-ready configurations.

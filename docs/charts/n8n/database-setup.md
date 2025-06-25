@@ -1,10 +1,10 @@
 ---
 id: database-setup
-title: "n8n Database Setup"
-sidebar_label: "Database Setup"
+title: N8N Database Setup
+sidebar_label: Database Setup
 sidebar_position: 3
-description: "Complete guide to setting up and configuring databases for n8n on Kubernetes"
-keywords: ["n8n", "database", "postgresql", "sqlite", "setup", "migration", "kubernetes"]
+description: Complete guide to setting up and configuring databases for n8n on Kubernetes
+keywords: [n8n, database, postgresql, sqlite, setup, migration, kubernetes]
 ---
 
 # n8n Database Setup

@@ -1,6 +1,6 @@
 ---
 id: advanced-configuration
-title: Advanced Configuration
+title: Outline Advanced Configuration
 sidebar_label: Advanced Configuration
 sidebar_position: 6
 description: Advanced configuration options for Outline including integrations, SMTP, monitoring, and customization

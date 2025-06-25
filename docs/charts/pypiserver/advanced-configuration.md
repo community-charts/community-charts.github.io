@@ -1,6 +1,6 @@
 ---
 id: advanced-configuration
-title: Advanced Configuration
+title: PyPI Server Advanced Configuration
 sidebar_label: Advanced Configuration
 sidebar_position: 4
 description: Advanced PyPI Server configuration for production deployments, high availability, monitoring, and security

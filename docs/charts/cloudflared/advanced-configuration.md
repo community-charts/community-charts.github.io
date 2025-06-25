@@ -1,6 +1,6 @@
 ---
 id: advanced-configuration
-title: Advanced Configuration
+title: Cloudflared Advanced Configuration
 sidebar_label: Advanced Configuration
 sidebar_position: 5
 description: Advanced configuration options for Cloudflared Tunnel including high availability, monitoring, and customization

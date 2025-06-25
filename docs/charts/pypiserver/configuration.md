@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: Configuration
+title: PyPI Server Configuration
 sidebar_label: Configuration
 sidebar_position: 2
 description: Learn how to configure PyPI Server chart with custom values, environment variables, and deployment options

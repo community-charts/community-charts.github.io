@@ -1,6 +1,6 @@
 ---
 id: troubleshooting
-title: Troubleshooting
+title: Cloudflared Troubleshooting
 sidebar_label: Troubleshooting
 sidebar_position: 6
 description: Common issues and solutions for Cloudflared Tunnel Helm chart deployments

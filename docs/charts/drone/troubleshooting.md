@@ -1,6 +1,6 @@
 ---
 id: troubleshooting
-title: Troubleshooting Guide
+title: Drone CI Troubleshooting Guide
 sidebar_label: Troubleshooting
 sidebar_position: 6
 description: Troubleshooting common issues with the Drone Helm chart on Kubernetes.

@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Community Helm Charts for Open-Source Kubernetes Apps',
+  title: 'OpenCharts',
   tagline: 'Community-Maintained Helm Charts for Your Favorite Open Source Projects',
   favicon: 'favicon.ico',
 

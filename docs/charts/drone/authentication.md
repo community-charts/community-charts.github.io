@@ -1,6 +1,6 @@
 ---
 id: authentication
-title: Authentication Guide
+title: Drone CI Authentication Guide
 sidebar_label: Authentication
 sidebar_position: 3
 description: How to configure authentication providers for Drone using the Helm chart.

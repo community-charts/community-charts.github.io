@@ -1,6 +1,6 @@
 ---
 id: mysql-backend-installation
-title: MySQL Backend Installation
+title: MLflow MySQL Backend Installation
 sidebar_label: MySQL Installation
 sidebar_position: 4
 description: Complete guide to setting up MLflow with MySQL backend on Kubernetes. Learn about database migrations, PyMySQL driver, and production-ready configurations.

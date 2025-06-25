@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: Configuration Guide
+title: Drone CI Configuration Guide
 sidebar_label: Configuration
 sidebar_position: 2
 description: Detailed guide to configuring the Drone Helm chart for production and custom use cases.

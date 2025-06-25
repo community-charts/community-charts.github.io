@@ -1,6 +1,6 @@
 ---
 id: basic-installation
-title: Basic Installation with SQLite
+title: MLflow Basic Installation with SQLite
 sidebar_label: Basic Installation
 sidebar_position: 2
 description: Step-by-step guide to installing MLflow with SQLite backend on Kubernetes using the community-maintained Helm chart. Perfect for development, testing, and small-scale deployments.

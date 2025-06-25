@@ -1,6 +1,6 @@
 ---
 id: autoscaling-setup
-title: Autoscaling Setup
+title: MLflow Autoscaling Setup
 sidebar_label: Autoscaling
 sidebar_position: 9
 description: Complete guide to configuring autoscaling for MLflow on Kubernetes. Learn about Horizontal Pod Autoscaler (HPA), and cluster autoscaling strategies.

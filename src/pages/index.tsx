@@ -11,7 +11,7 @@ import HomepageLatestBlogPosts from '@site/src/components/HomepageLatestBlogPost
 export default function Home(): ReactNode {
   return (
     <Layout
-      title={`Home`}
+      title={`Community Helm Charts for Open-Source Kubernetes Apps`}
       description="Discover community-driven Helm charts for open-source tools lacking official support. Deploy apps effortlessly on Kubernetes.">
       <HomepageHeader />
       <main>

@@ -1,6 +1,6 @@
 ---
 id: azure-blob-storage-integration
-title: Azure Blob Storage Integration
+title: MLflow Azure Blob Storage Integration
 sidebar_label: Azure Blob Storage
 sidebar_position: 6
 description: Complete guide to configuring MLflow with Azure Blob Storage for artifact storage. Learn about managed identities, service principals, and production-ready Azure configurations.

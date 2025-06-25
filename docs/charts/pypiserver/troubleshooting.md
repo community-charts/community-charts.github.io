@@ -1,6 +1,6 @@
 ---
 id: troubleshooting
-title: Troubleshooting
+title: PyPI Server Troubleshooting
 sidebar_label: Troubleshooting
 sidebar_position: 5
 description: Common issues, debugging commands, and solutions for PyPI Server Helm chart deployments

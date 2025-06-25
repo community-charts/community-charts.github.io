@@ -1,6 +1,6 @@
 ---
 id: storage
-title: Storage Configuration
+title: Outline Storage Configuration
 sidebar_label: Storage
 sidebar_position: 4
 description: Configure file storage for Outline including local storage and S3-compatible storage

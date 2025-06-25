@@ -1,6 +1,6 @@
 ---
 id: troubleshooting
-title: Troubleshooting
+title: Outline Troubleshooting
 sidebar_label: Troubleshooting
 sidebar_position: 7
 description: Common issues and solutions for Outline Helm chart deployments

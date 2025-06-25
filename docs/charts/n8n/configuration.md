@@ -1,10 +1,10 @@
 ---
 id: configuration
-title: "n8n Configuration Guide"
-sidebar_label: "Configuration"
+title: N8N Configuration Guide
+sidebar_label: Configuration
 sidebar_position: 2
-description: "Complete configuration reference for the n8n Helm chart with examples and best practices"
-keywords: ["n8n", "configuration", "helm", "values", "settings", "options"]
+description: Complete configuration reference for the n8n Helm chart with examples and best practices
+keywords: [n8n, configuration, helm, values, settings, options]
 ---
 
 # n8n Configuration Guide

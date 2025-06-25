@@ -1,10 +1,10 @@
 ---
 id: monitoring
-title: "n8n Monitoring Setup"
-sidebar_label: "Monitoring"
+title: N8N Monitoring Setup
+sidebar_label: Monitoring
 sidebar_position: 6
-description: "Complete guide to setting up monitoring and observability for n8n including Prometheus metrics, logging, health checks, and alerting"
-keywords: ["n8n", "monitoring", "prometheus", "metrics", "logging", "health checks", "alerting", "observability"]
+description: Complete guide to setting up monitoring and observability for n8n including Prometheus metrics, logging, health checks, and alerting
+keywords: [n8n, monitoring, prometheus, metrics, logging, health checks, alerting, observability]
 ---
 
 # n8n Monitoring Setup

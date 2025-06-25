@@ -1,6 +1,6 @@
 ---
 id: troubleshooting
-title: Troubleshooting
+title: Actual Budget Troubleshooting
 sidebar_label: Troubleshooting
 sidebar_position: 6
 description: Common issues and solutions for Actual Budget Helm chart deployments

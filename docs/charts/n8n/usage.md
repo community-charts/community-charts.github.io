@@ -1,10 +1,10 @@
 ---
 id: usage
-title: "N8N Chart Usage"
-sidebar_label: "Usage Guide"
+title: N8N Chart Usage
+sidebar_label: Usage Guide
 sidebar_position: 1
-description: "Learn how to deploy and configure n8n on Kubernetes using the community-maintained Helm chart"
-keywords: ["n8n", "helm", "kubernetes", "workflow automation", "deployment", "configuration"]
+description: Learn how to deploy and configure n8n on Kubernetes using the community-maintained Helm chart
+keywords: [n8n, helm, kubernetes, workflow automation, deployment, configuration]
 ---
 
 # N8N Chart Usage

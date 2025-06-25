@@ -1,6 +1,6 @@
 ---
 id: google-cloud-storage-integration
-title: Google Cloud Storage Integration
+title: MLflow Google Cloud Storage Integration
 sidebar_label: Google Cloud Storage
 sidebar_position: 7
 description: Complete guide to configuring MLflow with Google Cloud Storage for artifact storage. Learn about service accounts, IAM roles, and production-ready GCS configurations.

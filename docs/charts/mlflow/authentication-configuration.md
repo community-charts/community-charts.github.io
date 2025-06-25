@@ -1,6 +1,6 @@
 ---
 id: authentication-configuration
-title: Authentication Configuration
+title: MLflow Authentication Configuration
 sidebar_label: Authentication
 sidebar_position: 8
 description: Complete guide to configuring authentication for MLflow on Kubernetes. Learn about basic auth, LDAP integration, PostgreSQL auth backend, and enterprise security features.

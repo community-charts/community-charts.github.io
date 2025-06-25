@@ -1,6 +1,6 @@
 ---
 id: ingress-configuration
-title: Ingress Configuration
+title: Cloudflared Ingress Configuration
 sidebar_label: Ingress Configuration
 sidebar_position: 4
 description: Configure ingress rules for Cloudflare Tunnel to route traffic to your Kubernetes services

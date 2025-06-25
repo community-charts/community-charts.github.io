@@ -1,6 +1,6 @@
 ---
 id: storage
-title: Storage and Persistence
+title: Actual Budget Storage and Persistence
 sidebar_label: Storage
 sidebar_position: 4
 description: Configure persistent storage and data management for Actual Budget deployments

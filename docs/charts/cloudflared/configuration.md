@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: Configuration Guide
+title: Cloudflared Configuration Guide
 sidebar_label: Configuration
 sidebar_position: 2
 description: Learn how to configure the Cloudflared Tunnel Helm chart for your deployment

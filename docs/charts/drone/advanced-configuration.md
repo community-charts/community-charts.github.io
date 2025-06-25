@@ -1,6 +1,6 @@
 ---
 id: advanced-configuration
-title: Advanced Configuration
+title: Drone CI Advanced Configuration
 sidebar_label: Advanced Configuration
 sidebar_position: 5
 description: Advanced configuration options for Drone Helm chart, including runners, RBAC, and custom Kubernetes settings.

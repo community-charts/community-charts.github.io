@@ -1,6 +1,6 @@
 ---
 id: authentication
-title: Authentication Setup
+title: Outline Authentication Setup
 sidebar_label: Authentication
 sidebar_position: 3
 description: Configure authentication methods for Outline including Google, Azure, OIDC, Slack, GitHub, and more
