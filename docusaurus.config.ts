@@ -205,6 +205,14 @@ const config: Config = {
       theme: {light: 'neutral'},
     },
   } satisfies Preset.ThemeConfig,
+  plugins: [
+    [
+      '@gracefullight/docusaurus-plugin-microsoft-clarity',
+      {
+        projectId: 's5ia53rdga',
+      },
+    ],
+  ],
 };
 
 export default config;
