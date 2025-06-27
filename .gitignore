@@ -1,5 +1,7 @@
 # Dependencies
 node_modules
+helm-charts
+examples
 
 # Production
 /build

@@ -398,6 +398,10 @@ Visit `http://localhost:5000` in your browser.
 
 ## Troubleshooting
 
+:::tip
+**Log Level:** Set `log.level: debug` in your values to get more detailed logs for troubleshooting MySQL connection or migration issues.
+:::
+
 ### Common MySQL Issues
 
 1. **Connection refused**: Check MySQL service and network policies

@@ -125,6 +125,20 @@ helm install mlflow community-charts/mlflow \
 **Enterprise Features:** These features make MLflow production-ready and suitable for enterprise environments.
 :::
 
+### Logging Level Control
+
+Configure the verbosity of MLflow logs using the `log.level` value:
+
+```yaml
+log:
+  enabled: true
+  level: info  # Set to debug, info, warning, error, or critical
+```
+
+:::tip
+**Debugging:** Set `log.level: debug` to get more detailed logs for troubleshooting. Use `info` or higher for production.
+:::
+
 ### Database Migrations
 
 Enable automatic database schema migrations:
@@ -482,6 +496,18 @@ ingress:
 :::info
 **Advanced Features:** These configurations provide fine-grained control over MLflow behavior and performance.
 :::
+
+### Logging Level
+
+You can control the MLflow logging level via the `log.level` value:
+
+```yaml
+log:
+  enabled: true
+  level: info  # debug, info, warning, error, critical
+```
+
+This sets the logging verbosity for the MLflow server. Use `debug` for troubleshooting and `info` or higher for normal operation.
 
 ### Custom Environment Variables
 

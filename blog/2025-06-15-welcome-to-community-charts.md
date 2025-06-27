@@ -1,9 +1,9 @@
 ---
 slug: welcome-to-community-charts
-title: Welcome to GitHub Community Charts - Empowering Kubernetes with Community-Driven Helm Charts
+title: Welcome to Helm Charts - Kubernetes with Community Power
 authors: burakince
 tags: [helm, kubernetes, mlflow, open-source, community]
-description: Introducing GitHub Community Charts, a project dedicated to providing Helm charts for open-source tools like MLflow, n8n, and Actual Budget, with a focus on community collaboration.
+description: Discover GitHub Community Charts - Helm charts for MLflow, n8n, & more. Join our community-driven Kubernetes project!
 ---
 
 # Welcome to GitHub Community Charts: Empowering Kubernetes with Community-Driven Helm Charts

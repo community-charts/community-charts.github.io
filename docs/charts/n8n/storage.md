@@ -1,10 +1,10 @@
 ---
 id: storage
-title: N8N Storage Configuration
+title: n8n Storage Configuration
 sidebar_label: Storage
-sidebar_position: 5
+sidebar_position: 6
 description: Complete guide to configuring binary data storage for n8n including filesystem, S3-compatible storage, and MinIO integration
-keywords: [n8n, storage, binary data, s3, filesystem, minio, object storage, kubernetes]
+keywords: [n8n, storage, binary data, s3, filesystem, minio, blob, object storage, kubernetes]
 ---
 
 # n8n Storage Configuration

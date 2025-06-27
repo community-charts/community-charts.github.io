@@ -1,10 +1,10 @@
 ---
 id: configuration
-title: N8N Configuration Guide
+title: n8n Configuration Guide
 sidebar_label: Configuration
 sidebar_position: 2
 description: Complete configuration reference for the n8n Helm chart with examples and best practices
-keywords: [n8n, configuration, helm, values, settings, options]
+keywords: [n8n, configuration, helm, kubernetes, values, settings, options, environment, secrets]
 ---
 
 # n8n Configuration Guide
@@ -233,6 +233,10 @@ worker:
 
 :::warning
 **Production Database:** Use PostgreSQL for production deployments. SQLite is suitable only for development and testing.
+:::
+
+:::info
+**Cloud Databases:** For AWS RDS/Aurora, Azure Database for PostgreSQL, or Google Cloud SQL, see [Database Setup](./database-setup.md) for cloud-specific instructions.
 :::
 
 ### SQLite (Default)
@@ -789,4 +793,8 @@ helm lint my-n8n community-charts/n8n -f values.yaml
 
 :::info
 **Advanced Configuration:** Explore advanced features like external task runners, custom nodes, and enterprise integrations.
+:::
+
+:::tip
+**Cloud Redis:** For managed Redis on GCP, AWS, or Azure, see [Cloud Redis Setup](./cloud-redis.md).
 :::

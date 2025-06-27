@@ -1,10 +1,10 @@
 ---
 id: troubleshooting
-title: N8N Troubleshooting Guide
+title: n8n Troubleshooting Guide
 sidebar_label: Troubleshooting
-sidebar_position: 7
+sidebar_position: 8
 description: Common issues and solutions for n8n Helm chart deployments
-keywords: [n8n, troubleshooting, debug, issues, kubernetes, helm]
+keywords: [n8n, helm, kubernetes, troubleshooting, errors, debug, issues, faq]
 ---
 
 # n8n Troubleshooting Guide
@@ -129,6 +129,7 @@ kubectl get configmap <configmap-name> -o yaml
 **Symptoms:**
 - Database connection timeout errors
 - Authentication failures
+- Cloud SQL Proxy sidecar errors (if using GKE/Cloud SQL)
 
 **Solutions:**
 
@@ -165,6 +166,16 @@ postgresql:
     password: your-secure-password
     database: n8n
 ```
+
+5. **If using Cloud SQL Proxy (GKE/Cloud SQL):**
+   - Check the Cloud SQL Proxy sidecar logs:
+     ```bash
+     kubectl logs <n8n-pod> -c cloudsql-proxy
+     ```
+   - Ensure the service account has the `Cloud SQL Client` role.
+   - Verify the instance connection name is correct.
+   - Make sure the proxy port matches `externalPostgresql.port`.
+   - See [Cloud SQL Proxy docs](https://cloud.google.com/sql/docs/postgres/connect-run#kubernetes-engine) for more troubleshooting.
 
 #### SQLite Issues
 

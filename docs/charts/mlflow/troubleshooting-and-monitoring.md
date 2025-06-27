@@ -1131,15 +1131,18 @@ extraEnvVars:
 
 ## Logging and Debugging
 
+:::tip
+**Log Level:** Use the `log.level` value in your Helm values to control MLflow's logging verbosity. Set to `debug` for troubleshooting, or `info` for normal operation.
+:::
+
 ### Log Level Configuration
 
 Configure appropriate log levels:
 
 ```yaml
-extraEnvVars:
-  MLFLOW_LOG_LEVEL: "INFO"
-  MLFLOW_AUTH_LOGGING: "true"
-  MLFLOW_AUDIT_ENABLED: "true"
+log:
+  enabled: true
+  level: debug  # debug, info, warning, error, critical
 ```
 
 ### Centralized Logging

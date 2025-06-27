@@ -115,6 +115,10 @@ Open your browser and navigate to `http://localhost:5000`
 **Customization:** Use values files to customize your MLflow installation according to your specific needs.
 :::
 
+:::tip
+**Logging Level:** Use the `log.level` value to control the verbosity of MLflow logs. For development or troubleshooting, set `log.level: debug`.
+:::
+
 ### Basic Values Override
 
 Create a `values.yaml` file for custom configuration:

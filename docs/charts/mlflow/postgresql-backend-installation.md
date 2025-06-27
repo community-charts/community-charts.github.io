@@ -359,6 +359,10 @@ Visit `http://localhost:5000` in your browser.
 
 ## Troubleshooting
 
+:::tip
+**Log Level:** Set `log.level: debug` in your values to get more detailed logs for troubleshooting PostgreSQL connection or migration issues.
+:::
+
 ### Common PostgreSQL Issues
 
 1. **Connection refused**: Check PostgreSQL service and network policies

@@ -1,10 +1,10 @@
 ---
 id: database-setup
-title: N8N Database Setup
+title: n8n Database Setup
 sidebar_label: Database Setup
 sidebar_position: 3
 description: Complete guide to setting up and configuring databases for n8n on Kubernetes
-keywords: [n8n, database, postgresql, sqlite, setup, migration, kubernetes]
+keywords: [n8n, database, postgresql, sqlite, setup, migration, kubernetes, aws, azure, rds, aurora, cloud-sql, managed-database]
 ---
 
 # n8n Database Setup
@@ -193,6 +193,152 @@ externalPostgresql:
   database: n8n
   existingSecret: postgres-secret  # Use Kubernetes secret
 ```
+
+### Google Cloud SQL (GCP) with Cloud SQL Proxy
+
+:::tip
+**GKE + Cloud SQL:** If you are running n8n on Google Kubernetes Engine (GKE) and want to use Google Cloud SQL (PostgreSQL), you must use the Cloud SQL Auth Proxy as a sidecar container. This is required because Cloud SQL is not directly accessible from GKE nodes.
+:::
+
+#### Example: Add Cloud SQL Proxy Sidecar to n8n Main Pod
+
+```yaml
+db:
+  type: postgresdb
+
+externalPostgresql:
+  host: 127.0.0.1  # Cloud SQL Proxy listens on localhost
+  port: 5432       # Default proxy port
+  username: n8n
+  password: your-secure-password
+  database: n8n
+  existingSecret: postgres-secret
+
+main:
+  extraContainers:
+    - name: cloudsql-proxy
+      image: gcr.io/cloudsql-docker/gce-proxy:1.36.2
+      command:
+        - "/cloud_sql_proxy"
+        - "-instances=YOUR_PROJECT:YOUR_REGION:YOUR_INSTANCE=tcp:5432"
+        # Use one of the following for authentication:
+        # - "-credential_file=/secrets/cloudsql/credentials.json"  # Service Account Key
+        # OR (for Workload Identity, omit -credential_file)
+      securityContext:
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
+      volumeMounts:
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+  volumes:
+    - name: cloudsql-instance-credentials
+      secret:
+        secretName: cloudsql-instance-credentials
+```
+
+- Replace `YOUR_PROJECT:YOUR_REGION:YOUR_INSTANCE` with your Cloud SQL instance connection name.
+- If using a service account key, create a Kubernetes secret named `cloudsql-instance-credentials` with the key as `credentials.json`.
+- If using Workload Identity, you can omit the `-credential_file` flag and the volume mount.
+
+:::info
+**Workload Identity:** For production, prefer [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) over service account keys for better security.
+:::
+
+#### Troubleshooting Cloud SQL Proxy
+- Check Cloud SQL Proxy logs in the n8n main pod: `kubectl logs <n8n-pod> -c cloudsql-proxy`
+- Ensure the service account has the `Cloud SQL Client` role.
+- Verify the instance connection name is correct.
+- Make sure the proxy port matches `externalPostgresql.port`.
+- Network policies/firewall must allow egress to Cloud SQL.
+
+For more, see [Cloud SQL Auth Proxy docs](https://cloud.google.com/sql/docs/postgres/connect-run#kubernetes-engine).
+
+## AWS RDS/Aurora PostgreSQL
+
+:::info
+Amazon RDS and Aurora PostgreSQL are fully managed database services on AWS. They are recommended for production deployments due to their reliability, scalability, and security features.
+:::
+
+### Connecting n8n to AWS RDS/Aurora
+
+- Ensure your EKS cluster can reach the RDS/Aurora instance (VPC, subnet, and security group settings).
+- Enable SSL for secure connections (recommended).
+- Use IAM authentication for advanced security (optional, see AWS docs).
+
+#### Example `values.yaml` for External PostgreSQL
+
+```yaml
+db:
+  type: postgresdb
+externalPostgresql:
+  host: "<rds-endpoint>.rds.amazonaws.com"
+  port: 5432
+  username: "n8nuser"
+  password: "<your-password>"
+  database: "n8n"
+```
+
+:::tip
+You can use `externalPostgresql.existingSecret` to reference a Kubernetes secret for your password.
+:::
+
+#### Security Group & Networking Tips
+- The RDS instance must allow inbound connections from your EKS nodes (check security group rules).
+- Prefer private subnets and VPC peering for security.
+- If using IAM authentication, see [IAM DB Auth for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html).
+
+#### Troubleshooting
+- **Timeouts:** Check VPC/subnet routing and security groups.
+- **SSL errors:** Ensure `rds.force_ssl=1` and use the correct SSL mode in n8n.
+- **Auth errors:** Double-check username/password and DB user privileges.
+
+:::note
+See the [AWS RDS PostgreSQL documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html) for more details.
+:::
+
+## Azure Database for PostgreSQL
+
+:::info
+Azure Database for PostgreSQL is a fully managed database service on Microsoft Azure. It supports both Single Server and Flexible Server deployments.
+:::
+
+### Connecting n8n to Azure Database for PostgreSQL
+
+- Ensure your AKS cluster can reach the Azure Database (VNet, firewall, and subnet settings).
+- Use the full username format: `<username>@<server-name>`.
+- SSL is required by default.
+
+#### Example `values.yaml` for External PostgreSQL
+
+```yaml
+db:
+  type: postgresdb
+externalPostgresql:
+  host: "<server-name>.postgres.database.azure.com"
+  port: 5432
+  username: "n8nuser@<server-name>"
+  password: "<your-password>"
+  database: "n8n"
+```
+
+:::tip
+You can use `externalPostgresql.existingSecret` to reference a Kubernetes secret for your password.
+:::
+
+#### Firewall & Networking Tips
+- Add your AKS node subnet to the Azure Database firewall rules.
+- For private access, use VNet integration.
+- Ensure SSL is enabled (default for Azure).
+
+#### Troubleshooting
+- **FATAL: no pg_hba.conf entry:** Check firewall and username format.
+- **SSL required:** Ensure SSL mode is enabled in n8n.
+- **Auth errors:** Double-check username/password and DB user privileges.
+
+:::note
+See the [Azure Database for PostgreSQL documentation](https://learn.microsoft.com/en-us/azure/postgresql/) for more details.
+:::
 
 ## Database Migration
 

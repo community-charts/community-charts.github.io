@@ -1,8 +1,8 @@
 ---
 id: monitoring
-title: N8N Monitoring Setup
+title: n8n Monitoring Setup
 sidebar_label: Monitoring
-sidebar_position: 6
+sidebar_position: 7
 description: Complete guide to setting up monitoring and observability for n8n including Prometheus metrics, logging, health checks, and alerting
 keywords: [n8n, monitoring, prometheus, metrics, logging, health checks, alerting, observability]
 ---
@@ -1784,15 +1784,6 @@ log:
     maxcount: "50"  # Reduce file count
 ```
 
-## Next Steps
-
-- [Usage Guide](./usage.md) - Quick start and basic deployment
-- [Configuration Guide](./configuration.md) - Detailed configuration options
-- [Database Setup](./database-setup.md) - PostgreSQL and external database configuration
-- [Queue Mode Setup](./queue-mode.md) - Distributed execution with Redis
-- [Storage Configuration](./storage.md) - Binary data storage options
-- [Troubleshooting](./troubleshooting.md) - Common issues and solutions
-
 ## Best Practices
 
 ### Monitoring Strategy
@@ -1822,3 +1813,12 @@ log:
 - Encrypt sensitive metrics
 - Audit monitoring access
 - Regular security updates
+
+## Next Steps
+
+- [Usage Guide](./usage.md) - Quick start and basic deployment
+- [Configuration Guide](./configuration.md) - Detailed configuration options
+- [Database Setup](./database-setup.md) - PostgreSQL and external database configuration
+- [Queue Mode Setup](./queue-mode.md) - Distributed execution with Redis
+- [Storage Configuration](./storage.md) - Binary data storage options
+- [Troubleshooting](./troubleshooting.md) - Common issues and solutions

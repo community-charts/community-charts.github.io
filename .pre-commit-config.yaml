@@ -9,3 +9,26 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
       - id: check-merge-conflict
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Prettier
+        entry: npx prettier --write
+        language: node
+        types: [javascript, css, markdown, json, yaml]
+        files: ^(src|docs|blog)/
+        args: [--ignore-unknown]
+        additional_dependencies:
+          - prettier@^3.6.2
+          - prettier-plugin-organize-imports@^4.1.0
+
+      - id: eslint-unused-imports
+        name: ESLint Remove Unused Imports
+        entry: npx eslint --fix
+        language: node
+        types: [javascript]
+        files: ^(src|docs|blog)/
+        additional_dependencies:
+          - eslint@^8.57.0
+          - eslint-plugin-unused-imports@^3.1.0

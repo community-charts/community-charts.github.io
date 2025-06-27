@@ -1,6 +1,6 @@
 ---
 id: usage
-title: N8N Chart Usage
+title: n8n Chart Usage
 sidebar_label: Usage Guide
 sidebar_position: 1
 description: Learn how to deploy and configure n8n on Kubernetes using the community-maintained Helm chart
@@ -49,6 +49,8 @@ keywords: [n8n, helm, kubernetes, workflow automation, deployment, configuration
 - Helm 3.0+
 - kubectl configured
 - Storage class for persistent volumes (if using PostgreSQL/MinIO)
+- **If using Google Cloud SQL (PostgreSQL) on GKE:** You must use the Cloud SQL Proxy sidecar. See [Google Cloud SQL (GCP) with Cloud SQL Proxy](./database-setup.md#google-cloud-sql-gcp-with-cloud-sql-proxy) for details.
+- **If using AWS RDS/Aurora or Azure Database for PostgreSQL:** See [AWS RDS/Aurora](./database-setup.md#aws-rdsaurora-postgresql) and [Azure Database for PostgreSQL](./database-setup.md#azure-database-for-postgresql) for cloud-specific setup and troubleshooting.
 
 :::danger
 **Cluster Compatibility:** Ensure your Kubernetes cluster version is compatible with the chart requirements to avoid deployment issues.
@@ -132,6 +134,10 @@ helm install my-n8n community-charts/n8n \
 
 :::info
 **Queue Mode Benefits:** Queue mode enables distributed execution, better resource utilization, and improved reliability for high-volume workflows.
+:::
+
+:::tip
+**Cloud Redis:** For managed Redis on GCP, AWS, or Azure, see [Cloud Redis Setup](./cloud-redis.md).
 :::
 
 ## Key Features
@@ -309,19 +315,6 @@ architecture-beta
 **External Runners:** Provides enhanced security and performance isolation for sensitive workflows.
 :::
 
-## Next Steps
-
-:::tip
-**Getting Started:** Follow these guides in order for a complete n8n setup experience.
-:::
-
-- [Configuration Guide](./configuration.md) - Detailed configuration options
-- [Database Setup](./database-setup.md) - PostgreSQL and external database configuration
-- [Queue Mode Setup](./queue-mode.md) - Distributed execution with Redis
-- [Storage Configuration](./storage.md) - Binary data storage options
-- [Monitoring Setup](./monitoring.md) - Metrics and observability
-- [Troubleshooting](./troubleshooting.md) - Common issues and solutions
-
 ## Examples
 
 :::info
@@ -387,3 +380,16 @@ kubectl delete pvc -l app.kubernetes.io/instance=my-n8n -n <your-namespace>
 :::tip
 **Community Support:** Join our community discussions to get help from other users and share your experiences.
 :::
+
+## Next Steps
+
+:::tip
+**Getting Started:** Follow these guides in order for a complete n8n setup experience.
+:::
+
+- [Configuration Guide](./configuration.md) - Detailed configuration options
+- [Database Setup](./database-setup.md) - PostgreSQL and external database configuration
+- [Queue Mode Setup](./queue-mode.md) - Distributed execution with Redis
+- [Storage Configuration](./storage.md) - Binary data storage options
+- [Monitoring Setup](./monitoring.md) - Metrics and observability
+- [Troubleshooting](./troubleshooting.md) - Common issues and solutions
