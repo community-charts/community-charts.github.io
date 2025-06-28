@@ -85,6 +85,13 @@ const config: Config = {
 
   headTags: [
     {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://community-charts.github.io',
+      },
+    },
+    {
       tagName: 'script',
       attributes: {
         type: 'application/ld+json',
