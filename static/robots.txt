@@ -1,5 +1,5 @@
 User-agent: *
-Allow: /
-
-# Sitemaps
+Allow: /docs/
+Allow: /blog/
+Disallow: /search
 Sitemap: https://community-charts.github.io/sitemap.xml
