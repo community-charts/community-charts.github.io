@@ -628,6 +628,156 @@ serviceMonitor:
     cacheMetrics: true
 ```
 
+## Pod Affinity and Anti-Affinity
+
+:::tip
+**Database Affinity:** Proper affinity configuration can optimize database performance by ensuring pods are placed optimally relative to database resources.
+:::
+
+:::warning
+**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+:::
+
+### Affinity for Database Optimization
+
+#### Co-locate with Database Nodes
+
+```yaml
+# Place pods on nodes close to database
+main:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: database-zone
+            operator: In
+            values:
+            - "primary"
+
+worker:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: database-zone
+            operator: In
+            values:
+            - "primary"
+```
+
+#### Spread Pods for Database Load Distribution
+
+```yaml
+# Distribute database connections across nodes
+main:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: kubernetes.io/hostname
+
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - n8n
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - worker
+        topologyKey: kubernetes.io/hostname
+```
+
+#### Zone Distribution for Database Resilience
+
+```yaml
+# Distribute pods across zones for database availability
+main:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: topology.kubernetes.io/zone
+
+webhook:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+              - webhook
+          topologyKey: topology.kubernetes.io/zone
+```
+
+#### Node Affinity for Database Performance
+
+```yaml
+# Use nodes optimized for database workloads
+main:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - database-optimized
+
+worker:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - database-optimized
+```
+
+:::info
+**Database Benefits:** Proper affinity configuration ensures optimal database performance by placing pods on nodes with good database connectivity and distributing database load effectively.
+:::
+
 ## Best Practices
 
 ### Security

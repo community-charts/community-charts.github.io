@@ -298,6 +298,114 @@ webhook:
     enabled: false
 ```
 
+### Pod Affinity and Anti-Affinity
+
+:::tip
+**Advanced Scheduling:** Use affinity rules to control pod placement and optimize resource utilization in queue mode deployments.
+:::
+
+:::warning
+**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+:::
+
+#### Spread Worker Pods Across Nodes
+
+```yaml
+worker:
+  mode: queue
+  count: 3
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: n8n
+            app.kubernetes.io/component: worker
+        topologyKey: kubernetes.io/hostname
+```
+
+#### Spread Webhook Pods Across Zones
+
+```yaml
+webhook:
+  mode: queue
+  url: "https://webhook.yourdomain.com"
+  count: 2
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: n8n
+              app.kubernetes.io/component: webhook
+          topologyKey: topology.kubernetes.io/zone
+```
+
+#### Co-locate Main and Worker Pods
+
+```yaml
+main:
+  affinity:
+    podAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: n8n
+          topologyKey: kubernetes.io/hostname
+
+worker:
+  mode: queue
+  affinity:
+    podAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: n8n
+              app.kubernetes.io/component: main
+          topologyKey: kubernetes.io/hostname
+```
+
+#### Node Affinity for Specific Node Types
+
+```yaml
+worker:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - compute-optimized
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
+
+webhook:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: node-role.kubernetes.io/worker
+            operator: Exists
+```
+
+:::info
+**Affinity Benefits:** Proper affinity configuration improves availability, resource utilization, and performance in queue mode deployments.
+:::
+
 ### External Redis Configuration
 
 ```yaml

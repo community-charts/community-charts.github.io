@@ -25,6 +25,7 @@ This guide covers all configuration options available in the n8n Helm chart, org
 - [Service Configuration](#service-configuration)
 - [Ingress Configuration](#ingress-configuration)
 - [Resources and Scaling](#resources-and-scaling)
+- [Pod Affinity and Anti-Affinity](#pod-affinity-and-anti-affinity)
 - [Database Configuration](#database-configuration)
 - [Queue Mode Configuration](#queue-mode-configuration)
 - [Storage Configuration](#storage-configuration)
@@ -227,6 +228,144 @@ worker:
 
 :::tip
 **Autoscaling Strategy:** Use autoscaling for dynamic workloads. Monitor scaling behavior and adjust thresholds as needed.
+:::
+
+## Pod Affinity and Anti-Affinity
+
+:::tip
+**Advanced Scheduling:** Pod affinity and anti-affinity rules allow you to control where n8n pods are scheduled based on node labels, pod labels, and other criteria.
+:::
+
+:::warning
+**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+:::
+
+### Main Node Affinity
+
+Configure affinity rules for the main n8n node to control its placement:
+
+```yaml
+main:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: kubernetes.io/hostname
+```
+
+### Worker Node Affinity
+
+Configure affinity rules for worker nodes to optimize their distribution:
+
+```yaml
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: n8n
+            app.kubernetes.io/component: worker
+        topologyKey: kubernetes.io/hostname
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: node-role.kubernetes.io/worker
+            operator: Exists
+```
+
+### Webhook Node Affinity
+
+Configure affinity rules for webhook nodes to ensure proper distribution:
+
+```yaml
+webhook:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: n8n
+            app.kubernetes.io/component: webhook
+        topologyKey: kubernetes.io/hostname
+```
+
+### Common Affinity Patterns
+
+#### Spread Pods Across Nodes
+
+```yaml
+# Spread worker pods across different nodes
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: n8n
+            app.kubernetes.io/component: worker
+        topologyKey: kubernetes.io/hostname
+```
+
+#### Co-locate Pods with Specific Nodes
+
+```yaml
+# Place pods on nodes with specific labels
+main:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - compute-optimized
+```
+
+#### Zone Distribution
+
+```yaml
+# Distribute pods across availability zones
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: n8n
+          topologyKey: topology.kubernetes.io/zone
+```
+
+:::info
+**Affinity Rules:** Use affinity rules to optimize resource utilization, improve availability, and ensure proper pod distribution across your cluster.
+:::
+
+:::warning
+**Performance Impact:** Complex affinity rules can impact scheduling performance. Test thoroughly in your environment.
 :::
 
 ## Database Configuration

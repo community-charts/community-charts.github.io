@@ -1710,6 +1710,126 @@ main:
           mountPath: /data
 ```
 
+## Pod Affinity and Anti-Affinity
+
+:::tip
+**Monitoring Affinity:** Proper affinity configuration can improve monitoring performance and reliability by ensuring pods are distributed optimally across your cluster.
+:::
+
+:::warning
+**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+:::
+
+### Affinity for Monitoring Optimization
+
+#### Spread Monitoring Pods
+
+```yaml
+# Spread pods to avoid monitoring bottlenecks
+main:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: kubernetes.io/hostname
+
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - n8n
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - worker
+        topologyKey: kubernetes.io/hostname
+```
+
+#### Zone Distribution for High Availability
+
+```yaml
+# Distribute pods across availability zones for monitoring resilience
+main:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: topology.kubernetes.io/zone
+
+webhook:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+              - webhook
+          topologyKey: topology.kubernetes.io/zone
+```
+
+#### Node Affinity for Monitoring Nodes
+
+```yaml
+# Place pods on nodes with monitoring capabilities
+main:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: monitoring-enabled
+            operator: In
+            values:
+            - "true"
+
+worker:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: monitoring-enabled
+            operator: In
+            values:
+            - "true"
+```
+
+:::info
+**Monitoring Benefits:** Proper affinity configuration ensures that monitoring data collection is distributed across your cluster, preventing bottlenecks and improving overall monitoring performance.
+:::
+
 ## Troubleshooting
 
 ### Common Monitoring Issues

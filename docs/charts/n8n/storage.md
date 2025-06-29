@@ -563,6 +563,158 @@ main:
     failureThreshold: 3
 ```
 
+## Pod Affinity and Anti-Affinity
+
+:::tip
+**Storage Affinity:** Proper affinity configuration can optimize storage performance by ensuring pods are placed on nodes with optimal storage access.
+:::
+
+:::warning
+**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+:::
+
+### Affinity for Storage Optimization
+
+#### Co-locate with Storage Nodes
+
+```yaml
+# Place pods on nodes with fast storage
+main:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: storage-type
+            operator: In
+            values:
+            - ssd
+            - nvme
+
+worker:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: storage-type
+            operator: In
+            values:
+            - ssd
+            - nvme
+```
+
+#### Spread Pods for Storage Load Distribution
+
+```yaml
+# Distribute storage load across nodes
+main:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: kubernetes.io/hostname
+
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - n8n
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - worker
+        topologyKey: kubernetes.io/hostname
+```
+
+#### Zone Distribution for Storage Resilience
+
+```yaml
+# Distribute pods across zones for storage availability
+main:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: topology.kubernetes.io/zone
+
+webhook:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+              - webhook
+          topologyKey: topology.kubernetes.io/zone
+```
+
+#### Node Affinity for Local Storage
+
+```yaml
+# Use local storage nodes when available
+main:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: local-storage
+            operator: In
+            values:
+            - "true"
+
+worker:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: local-storage
+            operator: In
+            values:
+            - "true"
+```
+
+:::info
+**Storage Benefits:** Proper affinity configuration ensures optimal storage performance by placing pods on nodes with appropriate storage capabilities and distributing storage load effectively.
+:::
+
 ## Troubleshooting
 
 ### Common Storage Issues

@@ -192,6 +192,20 @@ helm install my-n8n community-charts/n8n \
 **Security Configuration:** Always configure proper security contexts and RBAC policies for production deployments.
 :::
 
+### Pod Affinity and Anti-Affinity
+- **Advanced Scheduling** - Control pod placement with affinity rules
+- **Node Distribution** - Spread pods across nodes for high availability
+- **Zone Distribution** - Distribute pods across availability zones
+- **Resource Optimization** - Co-locate pods with specific node types
+
+:::tip
+**Affinity Configuration:** Use affinity rules to optimize resource utilization and improve availability. Configure separate affinity rules for main, worker, and webhook nodes.
+:::
+
+:::warning
+**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+:::
+
 ## Unique Features
 
 :::tip

@@ -127,6 +127,158 @@ See [Azure Cache for Redis docs](https://learn.microsoft.com/en-us/azure/azure-c
 
 ---
 
+## Pod Affinity and Anti-Affinity
+
+:::tip
+**Redis Affinity:** Proper affinity configuration can optimize Redis performance by ensuring pods are placed optimally relative to Redis resources.
+:::
+
+:::warning
+**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+:::
+
+### Affinity for Redis Optimization
+
+#### Co-locate with Redis Nodes
+
+```yaml
+# Place pods on nodes close to Redis
+main:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: redis-zone
+            operator: In
+            values:
+            - "primary"
+
+worker:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: redis-zone
+            operator: In
+            values:
+            - "primary"
+```
+
+#### Spread Pods for Redis Load Distribution
+
+```yaml
+# Distribute Redis connections across nodes
+main:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: kubernetes.io/hostname
+
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - n8n
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - worker
+        topologyKey: kubernetes.io/hostname
+```
+
+#### Zone Distribution for Redis Resilience
+
+```yaml
+# Distribute pods across zones for Redis availability
+main:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+          topologyKey: topology.kubernetes.io/zone
+
+webhook:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+              - webhook
+          topologyKey: topology.kubernetes.io/zone
+```
+
+#### Node Affinity for Redis Performance
+
+```yaml
+# Use nodes optimized for Redis workloads
+main:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - redis-optimized
+
+worker:
+  mode: queue
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - redis-optimized
+```
+
+:::info
+**Redis Benefits:** Proper affinity configuration ensures optimal Redis performance by placing pods on nodes with good Redis connectivity and distributing Redis load effectively.
+:::
+
+---
+
 ## Next Steps
 
 - [Database Setup](./database-setup.md)

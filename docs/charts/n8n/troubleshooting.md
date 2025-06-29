@@ -513,6 +513,122 @@ kubectl exec -it <pod-name> -- ls -la /data
 kubectl exec -it <pod-name> -- df -h
 ```
 
+### Affinity Debugging
+
+:::tip
+**Affinity Issues:** Pod affinity and anti-affinity rules can cause scheduling issues. Check affinity configuration when pods are stuck in Pending state.
+:::
+
+#### Check Affinity Configuration
+
+```bash
+# Check current affinity settings
+kubectl get pod <pod-name> -o yaml | grep -A 20 affinity
+
+# Check node labels
+kubectl get nodes --show-labels
+
+# Check pod labels
+kubectl get pods -l app.kubernetes.io/name=n8n --show-labels
+```
+
+#### Common Affinity Issues
+
+**Symptoms:**
+- Pods stuck in Pending state
+- "0/1 nodes are available" errors
+- Scheduling failures due to affinity rules
+
+**Solutions:**
+
+1. **Check Node Availability:**
+```bash
+# Check if nodes match affinity requirements
+kubectl get nodes -l node-type=compute-optimized
+kubectl get nodes -l storage-type=ssd
+```
+
+2. **Verify Topology Keys:**
+```bash
+# Check available topology keys
+kubectl get nodes -o jsonpath='{.items[*].metadata.labels.topology\.kubernetes\.io/zone}' | tr ' ' '\n' | sort | uniq
+kubectl get nodes -o jsonpath='{.items[*].metadata.labels.kubernetes\.io/hostname}' | tr ' ' '\n' | sort | uniq
+```
+
+3. **Check Affinity Rules:**
+```yaml
+# Example: Debug affinity configuration
+main:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - compute-optimized  # Verify this label exists
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: n8n
+        topologyKey: kubernetes.io/hostname  # Verify this topology key exists
+```
+
+4. **Troubleshoot Anti-Affinity Conflicts:**
+```bash
+# Check if anti-affinity rules are too restrictive
+kubectl get pods -l app.kubernetes.io/name=n8n -o wide
+
+# Check node capacity
+kubectl describe node <node-name> | grep -A 10 "Allocated resources"
+```
+
+#### Affinity Configuration Examples
+
+**Fix: Relax Anti-Affinity Rules**
+```yaml
+# Change from required to preferred
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:  # Changed from requiredDuringSchedulingIgnoredDuringExecution
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: n8n
+              app.kubernetes.io/component: worker
+          topologyKey: kubernetes.io/hostname
+```
+
+**Fix: Use Correct Topology Keys**
+```yaml
+# Use available topology keys
+worker:
+  mode: queue
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: n8n
+              app.kubernetes.io/component: worker
+          topologyKey: topology.kubernetes.io/zone  # Use available topology key
+```
+
+:::warning
+**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+:::
+
+:::info
+**Affinity Debugging:** When troubleshooting scheduling issues, always check if affinity rules are preventing pod placement and verify that required node labels and topology keys exist.
+:::
+
 ## Log Analysis
 
 ### Common Log Patterns
