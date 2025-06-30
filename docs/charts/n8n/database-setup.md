@@ -48,9 +48,26 @@ db:
     database: "database.sqlite"
     poolSize: 0  # Disable connection pooling
     vacuum: false  # Disable VACUUM on startup
+
+# Enable persistence for data durability
+main:
+  persistence:
+    enabled: true
+    volumeName: "n8n-sqlite-data"
+    mountPath: "/home/node/.n8n"
+    size: 5Gi
+    accessMode: ReadWriteOnce
 ```
 
-### SQLite with Custom Path
+:::warning
+**Data Persistence:** Without persistence enabled, SQLite data will be lost when the pod is terminated. Enable persistence for any deployment where data retention is important.
+:::
+
+### SQLite with Persistence
+
+:::tip
+**SQLite Persistence:** Enable persistence to store SQLite database in a persistent volume, ensuring data survives pod restarts and deployments.
+:::
 
 ```yaml
 db:
@@ -60,16 +77,44 @@ db:
     poolSize: 0
     vacuum: true  # Enable VACUUM for better performance
 
-# Mount custom volume for database
+# Enable persistence for SQLite storage
 main:
-  volumes:
-    - name: n8n-data
-      persistentVolumeClaim:
-        claimName: n8n-sqlite-pvc
-  volumeMounts:
-    - name: n8n-data
-      mountPath: /home/node/.n8n
+  persistence:
+    enabled: true
+    volumeName: "n8n-sqlite-data"
+    mountPath: "/home/node/.n8n"
+    size: 5Gi
+    accessMode: ReadWriteOnce
+    storageClass: "fast-ssd"
+    annotations:
+      helm.sh/resource-policy: keep
 ```
+
+:::info
+**Persistence Benefits:** With persistence enabled, your SQLite database will be stored in a persistent volume, providing data durability across pod restarts and deployments.
+:::
+
+### SQLite with Custom Path and Existing PVC
+
+```yaml
+db:
+  type: sqlite
+  sqlite:
+    database: "n8n-data.sqlite"
+    poolSize: 0
+    vacuum: true  # Enable VACUUM for better performance
+
+# Use existing PVC for SQLite storage
+main:
+  persistence:
+    enabled: true
+    existingClaim: "n8n-sqlite-pvc"
+    mountPath: "/home/node/.n8n"
+```
+
+:::warning
+**Data Persistence:** Without persistence, SQLite data is ephemeral and will be lost when the pod is terminated. Always enable persistence for production deployments.
+:::
 
 ### SQLite Performance Tuning
 
@@ -406,6 +451,9 @@ psql -h target-host -U n8n -d n8n -f n8n-backup.sql
 3. **Update Configuration**
 
 ```yaml
+db:
+  type: postgresdb
+
 externalPostgresql:
   host: new-postgres-host.com
   port: 5432
@@ -414,164 +462,41 @@ externalPostgresql:
   database: n8n
 ```
 
-## Database Performance Tuning
+## Persistence for Database Configuration
 
-### PostgreSQL Performance
+:::info
+**Persistence:** Use persistence to store database configuration and credentials securely for main and worker nodes. Configure independently from hostAliases.
+:::
 
+### Main Node Persistence Example
 ```yaml
-db:
-  type: postgresdb
-  logging:
-    enabled: true
-    options: error
-    maxQueryExecutionTime: 1000
-
-postgresql:
-  enabled: true
-  auth:
-    username: n8n
-    password: your-secure-password
-    database: n8n
-
-  primary:
-    persistence:
-      enabled: true
-      size: 50Gi  # Larger storage for better performance
-
-    resources:
-      requests:
-        cpu: 500m
-        memory: 1Gi
-      limits:
-        cpu: 2000m
-        memory: 4Gi
-
-    # PostgreSQL configuration
-    configuration: |
-      shared_buffers = 256MB
-      effective_cache_size = 1GB
-      maintenance_work_mem = 64MB
-      checkpoint_completion_target = 0.9
-      wal_buffers = 16MB
-      default_statistics_target = 100
-      random_page_cost = 1.1
-      effective_io_concurrency = 200
-      work_mem = 4MB
-      min_wal_size = 1GB
-      max_wal_size = 4GB
-```
-
-### Connection Pooling
-
-```yaml
-db:
-  type: postgresdb
-  sqlite:
-    poolSize: 10  # Connection pool size for PostgreSQL
-```
-
-## Database Security
-
-### Using Kubernetes Secrets
-
-```yaml
-# Create secret for database credentials
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-secret
-type: Opaque
-data:
-  postgres-password: <base64-encoded-password>
-  postgres-username: <base64-encoded-username>
-```
-
-```yaml
-# Use secret in configuration
-externalPostgresql:
-  host: your-postgres-host.com
-  port: 5432
-  existingSecret: postgres-secret
-```
-
-### Network Policies
-
-```yaml
-# Network policy to restrict database access
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: n8n-db-policy
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: n8n
-  policyTypes:
-    - Egress
-  egress:
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              name: postgresql
-      ports:
-        - protocol: TCP
-          port: 5432
-```
-
-## Database Backup and Recovery
-
-### Automated Backups
-
-```yaml
-# Add backup sidecar container
 main:
-  extraContainers:
-    - name: backup
-      image: postgres:15
-      command:
-        - /bin/sh
-        - -c
-        - |
-          while true; do
-            pg_dump -h $DB_HOST -U $DB_USER -d $DB_NAME > /backup/n8n-$(date +%Y%m%d-%H%M%S).sql
-            sleep 86400  # Daily backup
-          done
-      env:
-        - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: postgres-password
-        - name: DB_HOST
-          value: "your-postgres-host"
-        - name: DB_USER
-          value: "n8n"
-        - name: DB_NAME
-          value: "n8n"
-      volumeMounts:
-        - name: backup-volume
-          mountPath: /backup
-  volumes:
-    - name: backup-volume
-      persistentVolumeClaim:
-        claimName: n8n-backup-pvc
+  count: 1
+  persistence:
+    enabled: true
+    volumeName: "n8n-main-data"
+    mountPath: "/home/node/.n8n"
+    size: 8Gi
+    accessMode: ReadWriteOnce
+    storageClass: "fast-ssd"
+    annotations:
+      helm.sh/resource-policy: keep
 ```
 
-### Manual Backup Commands
-
-```bash
-# PostgreSQL backup
-pg_dump -h your-postgres-host -U n8n -d n8n > n8n-backup-$(date +%Y%m%d).sql
-
-# SQLite backup
-kubectl cp <namespace>/<n8n-pod>:/home/node/.n8n/database.sqlite ./n8n-backup-$(date +%Y%m%d).sqlite
-
-# Restore PostgreSQL
-psql -h your-postgres-host -U n8n -d n8n < n8n-backup-20240101.sql
-
-# Restore SQLite
-kubectl cp ./n8n-backup-20240101.sqlite <namespace>/<n8n-pod>:/home/node/.n8n/database.sqlite
+### Worker Node Persistence Example
+```yaml
+worker:
+  mode: queue
+  persistence:
+    enabled: true
+    volumeName: "n8n-worker-data"
+    mountPath: "/home/node/.n8n"
+    size: 5Gi
+    accessMode: ReadWriteMany  # For autoscaling
+    storageClass: "fast-ssd"
 ```
+
+
 
 ## Troubleshooting
 

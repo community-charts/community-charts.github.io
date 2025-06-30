@@ -425,6 +425,29 @@ kubectl exec -it <n8n-pod> -- curl -s http://localhost:5678/metrics | grep api
 **Routing Logic:** In queue mode, test endpoints (`/mcp-test/`, `/form-test/`) are handled by main nodes, while production endpoints (`/mcp/`, `/form/`) are handled by webhook nodes.
 :::
 
+### Persistence Issues
+
+:::info
+**Enhanced Features:** The chart supports comprehensive persistence for all node types. This feature requires proper configuration to work correctly.
+:::
+
+#### Common Persistence Issues
+- PVC not bound
+- Volume mount errors
+- Data loss after pod restarts
+
+#### Example Checks
+```bash
+# Check PVC status
+kubectl get pvc -l app.kubernetes.io/name=n8n
+
+# Check volume mounts in pods
+kubectl describe pod <n8n-pod> | grep -A 10 "Volumes:"
+
+# Check disk space
+kubectl exec -it <n8n-pod> -- df -h
+```
+
 ### Storage Issues
 
 #### S3 Connection Problems

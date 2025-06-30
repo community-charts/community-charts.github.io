@@ -68,42 +68,59 @@ binaryData:
 
 ### Filesystem with Persistent Volume
 
+:::tip
+**Recommended Approach:** Use the built-in persistence configuration for easier management and automatic PVC creation.
+:::
+
 ```yaml
 binaryData:
   mode: "filesystem"
-  localStoragePath: "/data/n8n"
+  localStoragePath: "/home/node/.n8n/binary-data"
 
-# Mount persistent volume
+# Enable persistence for filesystem storage
 main:
-  volumes:
-    - name: n8n-binary-data
-      persistentVolumeClaim:
-        claimName: n8n-binary-pvc
-  volumeMounts:
-    - name: n8n-binary-data
-      mountPath: /data
+  persistence:
+    enabled: true
+    volumeName: "n8n-binary-data"
+    mountPath: "/home/node/.n8n"
+    size: 10Gi
+    accessMode: ReadWriteOnce
+    storageClass: "fast-ssd"
+    annotations:
+      helm.sh/resource-policy: keep
 ```
+
+:::info
+**Automatic Management:** The chart automatically creates and manages the PersistentVolumeClaim when persistence is enabled.
+:::
 
 ### Filesystem with Custom Storage Class
 
+:::tip
+**Storage Class Configuration:** Use the persistence configuration to specify custom storage classes for optimal performance.
+:::
+
 ```yaml
 binaryData:
   mode: "filesystem"
-  localStoragePath: "/data/n8n"
+  localStoragePath: "/home/node/.n8n/binary-data"
 
-# Create PVC with specific storage class
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: n8n-binary-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: fast-ssd
-  resources:
-    requests:
-      storage: 100Gi
+# Enable persistence with custom storage class
+main:
+  persistence:
+    enabled: true
+    volumeName: "n8n-binary-data"
+    mountPath: "/home/node/.n8n"
+    size: 100Gi
+    accessMode: ReadWriteOnce
+    storageClass: "fast-ssd"  # Custom storage class
+    annotations:
+      helm.sh/resource-policy: keep
 ```
+
+:::info
+**Storage Class Benefits:** Custom storage classes can provide better performance, reliability, or cost optimization based on your infrastructure requirements.
+:::
 
 ## S3-Compatible Storage Configuration
 
@@ -343,50 +360,50 @@ minio:
 
 ### From Default to Filesystem
 
+:::tip
+**Simplified Migration:** Use the built-in persistence configuration for easier migration from default to filesystem storage.
+:::
+
 1. **Backup current data** (if any)
 2. **Update configuration**:
 
 ```yaml
 binaryData:
   mode: "filesystem"
-  localStoragePath: "/data/n8n"
-```
+  localStoragePath: "/home/node/.n8n/binary-data"
 
-3. **Create persistent volume**:
-
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: n8n-binary-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-```
-
-4. **Mount volume**:
-
-```yaml
+# Enable persistence for filesystem storage
 main:
-  volumes:
-    - name: n8n-binary-data
-      persistentVolumeClaim:
-        claimName: n8n-binary-pvc
-  volumeMounts:
-    - name: n8n-binary-data
-      mountPath: /data
+  persistence:
+    enabled: true
+    volumeName: "n8n-binary-data"
+    mountPath: "/home/node/.n8n"
+    size: 10Gi
+    accessMode: ReadWriteOnce
+    storageClass: "fast-ssd"
+    annotations:
+      helm.sh/resource-policy: keep
 ```
+
+:::info
+**Automatic PVC Creation:** The chart automatically creates a PersistentVolumeClaim when persistence is enabled. No manual PVC creation is required.
+:::
+
+:::warning
+**Data Migration:** Ensure your binary data is backed up before switching storage modes, as data may not be automatically migrated between storage types.
+:::
 
 ### From Filesystem to S3
+
+:::tip
+**Cloud Migration:** Migrate from local filesystem storage to S3-compatible storage for better scalability and reliability.
+:::
 
 1. **Backup filesystem data**:
 
 ```bash
 # Copy data from pod
-kubectl cp <namespace>/<n8n-pod>:/data/n8n ./n8n-backup
+kubectl cp <namespace>/<n8n-pod>:/home/node/.n8n/binary-data ./n8n-backup
 ```
 
 2. **Upload to S3**:
@@ -394,6 +411,10 @@ kubectl cp <namespace>/<n8n-pod>:/data/n8n ./n8n-backup
 ```bash
 # Upload to S3 bucket
 aws s3 sync ./n8n-backup s3://n8n-binary-data/
+
+# Or use other S3-compatible tools
+# For MinIO: mc cp ./n8n-backup myminio/n8n-binary-data/
+# For GCS: gsutil -m cp -r ./n8n-backup gs://n8n-binary-data/
 ```
 
 3. **Update configuration**:
@@ -407,313 +428,49 @@ binaryData:
     bucketRegion: us-east-1
     accessKey: your-access-key
     accessSecret: your-secret-key
-```
 
-### From S3 to Different S3
-
-1. **Sync between buckets**:
-
-```bash
-# Sync from old to new bucket
-aws s3 sync s3://old-n8n-bucket s3://new-n8n-bucket
-```
-
-2. **Update configuration**:
-
-```yaml
-binaryData:
-  mode: "s3"
-  s3:
-    host: s3.amazonaws.com
-    bucketName: new-n8n-bucket
-    bucketRegion: us-east-1
-    accessKey: your-access-key
-    accessSecret: your-secret-key
-```
-
-## Performance Tuning
-
-### Filesystem Performance
-
-```yaml
-binaryData:
-  mode: "filesystem"
-  localStoragePath: "/data/n8n"
-
-# Use high-performance storage
+# Optionally disable persistence when using S3
 main:
-  volumes:
-    - name: n8n-binary-data
-      persistentVolumeClaim:
-        claimName: n8n-binary-pvc
-  volumeMounts:
-    - name: n8n-binary-data
-      mountPath: /data
-```
-
-## Security Configuration
-
-### S3 Security Best Practices
-
-```yaml
-binaryData:
-  mode: "s3"
-  s3:
-    host: s3.amazonaws.com
-    bucketName: n8n-binary-data
-    bucketRegion: us-east-1
-    existingSecret: s3-credentials
-
-# Use IAM roles for EKS
-main:
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/n8n-s3-role
-```
-
-### MinIO Security
-
-```yaml
-minio:
-  enabled: true
-  mode: standalone
-  rootUser: minioadmin
-  rootPassword: minioadmin123
   persistence:
-    enabled: true
-    size: 20Gi
-  users:
-    - accessKey: n8n-user
-      secretKey: your-secret-key
-      policy: n8n-policy
-  policies:
-    - name: n8n-policy
-      statements:
-        - actions:
-            - "s3:AbortMultipartUpload"
-            - "s3:GetObject"
-            - "s3:DeleteObject"
-            - "s3:PutObject"
-            - "s3:ListMultipartUploadParts"
-          resources:
-            - "arn:aws:s3:::n8n-bucket/*"
-        - actions:
-            - "s3:GetBucketLocation"
-            - "s3:ListBucket"
-            - "s3:ListBucketMultipartUploads"
-          resources:
-            - "arn:aws:s3:::n8n-bucket"
-```
-
-### Network Policies
-
-```yaml
-# Network policy for S3 access
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: n8n-s3-policy
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: n8n
-  policyTypes:
-    - Egress
-  egress:
-    - to: []
-      ports:
-        - protocol: TCP
-          port: 443  # HTTPS for S3
-        - protocol: TCP
-          port: 80   # HTTP for S3
-```
-
-## Monitoring and Observability
-
-### Storage Metrics
-
-```yaml
-serviceMonitor:
-  enabled: true
-  include:
-    defaultMetrics: true
-    cacheMetrics: true
-```
-
-### Storage Health Checks
-
-```yaml
-main:
-  livenessProbe:
-    httpGet:
-      path: /healthz
-      port: http
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 3
-
-  readinessProbe:
-    httpGet:
-      path: /healthz/readiness
-      port: http
-    initialDelaySeconds: 5
-    periodSeconds: 5
-    timeoutSeconds: 3
-    failureThreshold: 3
-```
-
-## Pod Affinity and Anti-Affinity
-
-:::tip
-**Storage Affinity:** Proper affinity configuration can optimize storage performance by ensuring pods are placed on nodes with optimal storage access.
-:::
-
-:::warning
-**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
-:::
-
-### Affinity for Storage Optimization
-
-#### Co-locate with Storage Nodes
-
-```yaml
-# Place pods on nodes with fast storage
-main:
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        preference:
-          matchExpressions:
-          - key: storage-type
-            operator: In
-            values:
-            - ssd
-            - nvme
-
-worker:
-  mode: queue
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        preference:
-          matchExpressions:
-          - key: storage-type
-            operator: In
-            values:
-            - ssd
-            - nvme
-```
-
-#### Spread Pods for Storage Load Distribution
-
-```yaml
-# Distribute storage load across nodes
-main:
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: app.kubernetes.io/name
-              operator: In
-              values:
-              - n8n
-          topologyKey: kubernetes.io/hostname
-
-worker:
-  mode: queue
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app.kubernetes.io/name
-            operator: In
-            values:
-            - n8n
-          - key: app.kubernetes.io/component
-            operator: In
-            values:
-            - worker
-        topologyKey: kubernetes.io/hostname
-```
-
-#### Zone Distribution for Storage Resilience
-
-```yaml
-# Distribute pods across zones for storage availability
-main:
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: app.kubernetes.io/name
-              operator: In
-              values:
-              - n8n
-          topologyKey: topology.kubernetes.io/zone
-
-webhook:
-  mode: queue
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: app.kubernetes.io/name
-              operator: In
-              values:
-              - n8n
-            - key: app.kubernetes.io/component
-              operator: In
-              values:
-              - webhook
-          topologyKey: topology.kubernetes.io/zone
-```
-
-#### Node Affinity for Local Storage
-
-```yaml
-# Use local storage nodes when available
-main:
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        preference:
-          matchExpressions:
-          - key: local-storage
-            operator: In
-            values:
-            - "true"
-
-worker:
-  mode: queue
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        preference:
-          matchExpressions:
-          - key: local-storage
-            operator: In
-            values:
-            - "true"
+    enabled: false  # Not needed for S3 storage
 ```
 
 :::info
-**Storage Benefits:** Proper affinity configuration ensures optimal storage performance by placing pods on nodes with appropriate storage capabilities and distributing storage load effectively.
+**S3 Benefits:** S3 storage provides better scalability, reliability, and cost-effectiveness for production deployments.
 :::
+
+:::warning
+**Data Verification:** After migration, verify that all binary data is accessible through the new S3 storage before removing the old filesystem data.
+:::
+
+## Node Persistence Configuration
+
+:::info
+**Persistence:** Configure persistent storage for each node type independently. Persistence is used to store n8n data, workflows, and configuration. Configure independently from hostAliases.
+:::
+
+### Main Node Persistence Example
+```yaml
+main:
+  persistence:
+    enabled: true
+    volumeName: "n8n-main-data"
+    mountPath: "/home/node/.n8n"
+    size: 8Gi
+    accessMode: ReadWriteOnce
+```
+
+### Worker Node Persistence Example
+```yaml
+worker:
+  mode: queue
+  persistence:
+    enabled: true
+    volumeName: "n8n-worker-data"
+    mountPath: "/home/node/.n8n"
+    size: 5Gi
+    accessMode: ReadWriteMany  # For autoscaling
+```
 
 ## Troubleshooting
 

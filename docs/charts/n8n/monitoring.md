@@ -362,6 +362,217 @@ webhook:
     failureThreshold: 3
 ```
 
+## Persistence Monitoring
+
+:::info
+**Persistence Monitoring:** Monitor persistent volumes, PVC status, and storage usage for each node type independently. Persistence monitoring is separate from hostAliases monitoring.
+:::
+
+### Volume Health Checks
+```yaml
+# Monitor PVC status and binding
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: n8n-persistence-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: n8n-persistence
+      rules:
+        - alert: N8NPVCNotBound
+          expr: kube_persistentvolumeclaim_status_phase{namespace="n8n"} != 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "n8n PVC not bound"
+            description: "PersistentVolumeClaim {{ $labels.persistentvolumeclaim }} is not bound"
+
+        - alert: N8NVolumeFull
+          expr: kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.85
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "n8n volume nearly full"
+            description: "Volume {{ $labels.persistentvolumeclaim }} is {{ $value | humanizePercentage }} full"
+```
+
+## StatefulSet vs Deployment Monitoring
+
+#### Workload Type Monitoring
+
+```yaml
+# Monitor workload type selection
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: n8n-workload-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: n8n-workload
+      rules:
+        - alert: N8NUnexpectedWorkloadType
+          expr: |
+            (
+              kube_statefulset_status_replicas_ready{namespace="n8n"} > 0
+              and
+              kube_deployment_status_replicas_ready{namespace="n8n"} > 0
+            )
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Unexpected workload type detected"
+            description: "Both StatefulSet and Deployment are running for n8n"
+```
+
+### Persistence Configuration Monitoring
+
+#### Access Mode Validation
+
+```yaml
+# Monitor persistence access modes
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: n8n-persistence-config-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: n8n-persistence-config
+      rules:
+        - alert: N8NInvalidAccessMode
+          expr: |
+            (
+              kube_persistentvolumeclaim_access_mode{namespace="n8n", access_mode="ReadWriteOnce"}
+              and
+              kube_horizontalpodautoscaler_status_current_replicas{namespace="n8n"} > 1
+            )
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Invalid persistence access mode for autoscaling"
+            description: "ReadWriteOnce persistence with autoscaling may cause issues"
+```
+
+### Storage Class Monitoring
+
+#### Storage Class Availability
+
+```yaml
+# Monitor storage class availability
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: n8n-storage-class-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: n8n-storage-class
+      rules:
+        - alert: N8NStorageClassNotFound
+          expr: |
+            (
+              kube_persistentvolumeclaim_info{namespace="n8n"}
+              and
+              kube_storageclass_info == 0
+            )
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Storage class not found"
+            description: "Storage class for n8n PVC is not available"
+```
+
+### Volume Permission Monitoring
+
+#### Permission Health Checks
+
+```yaml
+# Monitor volume permissions
+main:
+  extraContainers:
+    - name: permission-monitor
+      image: busybox:1.35
+      command:
+        - /bin/sh
+        - -c
+        - |
+          while true; do
+            if [ ! -w /home/node/.n8n ]; then
+              echo "Volume not writable"
+              exit 1
+            fi
+            if [ "$(stat -c %u /home/node/.n8n)" != "1000" ]; then
+              echo "Wrong ownership"
+              exit 1
+            fi
+            sleep 60
+          done
+      volumeMounts:
+        - name: n8n-data
+          mountPath: /home/node/.n8n
+```
+
+### Monitoring Best Practices
+
+#### Comprehensive Monitoring Setup
+
+```yaml
+# Complete monitoring configuration
+serviceMonitor:
+  enabled: true
+  include:
+    defaultMetrics: true
+    cacheMetrics: true
+    queueMetrics: true
+  interval: 15s
+  timeout: 5s
+
+# Persistence monitoring
+main:
+  extraContainers:
+    - name: volume-monitor
+      image: busybox:1.35
+      command:
+        - /bin/sh
+        - -c
+        - |
+          while true; do
+            # Check volume space
+            df -h /home/node/.n8n
+            # Check permissions
+            ls -la /home/node/.n8n
+            # Check host aliases
+            cat /etc/hosts | grep -E "(internal-api|database|redis)"
+            sleep 300
+          done
+      volumeMounts:
+        - name: n8n-data
+          mountPath: /home/node/.n8n
+```
+
+:::tip
+**Monitoring Strategy:** Combine Kubernetes-native monitoring with custom health checks to ensure comprehensive coverage of persistence features.
+:::
+
+:::warning
+**Resource Overhead:** Custom monitoring containers add resource overhead. Monitor their impact and adjust resource limits accordingly.
+:::
+
 ## Alerting Rules
 
 ### Basic Alerting Rules

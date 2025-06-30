@@ -402,8 +402,81 @@ webhook:
   url: "https://webhook.yourdomain.com"
   allNodes: true  # Deploy one webhook per node
   autoscaling:
-    enabled: false
+    enabled: false  # Disable autoscaling when using allNodes
 ```
+
+## Persistence in Queue Mode
+
+:::info
+**Persistence:** Configure persistent storage for main and worker nodes independently. Persistence is used to store workflows, configuration, and npm packages. Configure independently from hostAliases.
+:::
+
+### Main Node Persistence Example
+```yaml
+main:
+  count: 1
+  persistence:
+    enabled: true
+    volumeName: "n8n-main-data"
+    mountPath: "/home/node/.n8n"
+    size: 8Gi
+    accessMode: ReadWriteOnce
+    storageClass: "fast-ssd"
+    annotations:
+      helm.sh/resource-policy: keep
+```
+
+### Worker Node Persistence Example
+```yaml
+worker:
+  mode: queue
+  count: 3
+  persistence:
+    enabled: true
+    volumeName: "n8n-worker-data"
+    mountPath: "/home/node/.n8n"
+    size: 5Gi
+    accessMode: ReadWriteOnce
+```
+
+:::warning
+**Autoscaling Limitations:** Worker nodes with `ReadWriteOnce` persistence cannot use autoscaling. Use `ReadWriteMany` for autoscaling or `ReadWriteOnce` with StatefulSets for fixed scaling.
+:::
+
+### Worker Persistence with Autoscaling
+```yaml
+worker:
+  mode: queue
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+  persistence:
+    enabled: true
+    volumeName: "n8n-worker-data"
+    mountPath: "/home/node/.n8n"
+    size: 5Gi
+    accessMode: ReadWriteMany  # For autoscaling
+    storageClass: "fast-ssd"
+```
+
+### Worker Persistence with StatefulSet
+```yaml
+worker:
+  mode: queue
+  count: 3
+  persistence:
+    enabled: true
+    mountPath: "/home/node/.n8n"
+    size: 5Gi
+    accessMode: ReadWriteOnce
+```
+
+:::info
+**Automatic StatefulSet:** When persistence is enabled with `ReadWriteOnce` access mode, the chart automatically deploys worker nodes as StatefulSets. Each pod gets its own persistent volume with a unique name.
+:::
+
+## Resource Management
 
 ### Pod Affinity and Anti-Affinity
 

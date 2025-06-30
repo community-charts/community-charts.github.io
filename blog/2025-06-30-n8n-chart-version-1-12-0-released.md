@@ -24,6 +24,8 @@ The n8n chart version 1.12.0 introduces meaningful enhancements based on communi
 
 For a full breakdown of updates, check out the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.12.0) on GitHub.
 
+<!-- truncate -->
+
 ## Get Started with the n8n Helm Chart
 
 Ready to upgrade or deploy n8n for the first time? Our comprehensive [installation guides](https://community-charts.github.io/docs/category/n8n) will walk you through:

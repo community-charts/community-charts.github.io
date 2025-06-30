@@ -1,84 +1,95 @@
 ---
 id: usage
-title: n8n Chart Usage
+title: n8n Chart Usage Guide
 sidebar_label: Usage Guide
 sidebar_position: 1
-description: Learn how to deploy and configure n8n on Kubernetes using the community-maintained Helm chart
-keywords: [n8n, helm, kubernetes, workflow automation, deployment, configuration]
+description: Deploy and configure n8n on Kubernetes with enterprise-grade features using our community-maintained Helm chart
+keywords: [n8n, helm, kubernetes, workflow automation, deployment, configuration, enterprise]
 ---
 
-# N8N Chart Usage
+# n8n Chart Usage Guide
 
-[n8n](https://n8n.io) is a powerful workflow automation tool that lets you connect apps and automate tasks with a no-code/low-code interface. This chart makes it easy to run n8n on Kubernetes with enterprise-grade features.
+[n8n](https://n8n.io) is a powerful workflow automation platform that enables seamless integration between applications and services through an intuitive visual interface. This Helm chart provides a production-ready deployment solution for running n8n on Kubernetes with enterprise-grade features and scalability.
 
 :::info
-**Quick Links:**
+**Quick Reference:**
 - **Official Website:** [https://n8n.io](https://n8n.io)
 - **GitHub Repository:** [https://github.com/n8n-io/n8n](https://github.com/n8n-io/n8n)
 - **Documentation:** [https://docs.n8n.io](https://docs.n8n.io)
 - **ArtifactHub:** [n8n Helm Chart](https://artifacthub.io/packages/helm/community-charts/n8n)
 :::
 
-## Why use this chart?
+## Why Choose This Chart?
 
 :::tip
-**Enterprise Ready:** This chart provides production-grade features that make n8n suitable for enterprise environments and team collaboration.
+**Enterprise-Grade Solution:** This chart delivers production-ready features that transform n8n into a robust enterprise automation platform.
 :::
 
-- **Production Ready:** Deploy n8n reliably on Kubernetes with enterprise features
-- **Community Maintained:** Regularly updated and well-tested
-- **Scalable Architecture:** Support for queue mode, worker nodes, and webhook nodes
-- **Flexible Configuration:** Multiple database backends, external storage, and monitoring
-- **Security Focused:** Built-in security contexts, secrets management, and RBAC support
-- **Advanced Node Support:** **Unique npm package installation capabilities** - Install custom npm packages and community nodes directly in main and worker pods
-- **External Task Runners:** **Only Helm chart supporting external task runners** - Isolate workflow execution in dedicated sidecar containers for enhanced security and performance
+### Key Advantages
+
+- **Production-Ready Architecture:** Deploy n8n with enterprise-level reliability and performance
+- **Community-Driven Development:** Continuously maintained and thoroughly tested by the community
+- **Scalable Design:** Advanced queue mode with dedicated worker and webhook nodes
+- **Flexible Configuration:** Support for multiple database backends, external storage, and comprehensive monitoring
+- **Security-First Approach:** Built-in security contexts, secrets management, and RBAC integration
+- **Advanced Package Management:** **Exclusive npm package installation capabilities** - Deploy custom npm packages and community nodes directly within main and worker pods
+- **External Task Runners:** **Unique external task runner support** - Execute workflows in isolated sidecar containers for enhanced security and performance
 
 :::info
-**Unique Features:** This chart offers capabilities not available in other n8n Helm charts, making it the preferred choice for advanced deployments.
+**Distinctive Features:** This chart offers capabilities unavailable in other n8n Helm charts, establishing it as the preferred solution for sophisticated deployments.
 :::
 
-## Quick Start
+## Quick Start Guide
 
 ### Prerequisites
 
 :::warning
-**Requirements:** Ensure you have all prerequisites installed and configured before proceeding with the installation.
+**System Requirements:** Ensure all prerequisites are properly installed and configured before proceeding with deployment.
 :::
 
-- Kubernetes cluster (1.19+)
-- Helm 3.0+
-- kubectl configured
-- Storage class for persistent volumes (if using PostgreSQL/MinIO)
-- **If using Google Cloud SQL (PostgreSQL) on GKE:** You must use the Cloud SQL Proxy sidecar. See [Google Cloud SQL (GCP) with Cloud SQL Proxy](./database-setup.md#google-cloud-sql-gcp-with-cloud-sql-proxy) for details.
-- **If using AWS RDS/Aurora or Azure Database for PostgreSQL:** See [AWS RDS/Aurora](./database-setup.md#aws-rdsaurora-postgresql) and [Azure Database for PostgreSQL](./database-setup.md#azure-database-for-postgresql) for cloud-specific setup and troubleshooting.
+#### Required Components
+- Kubernetes cluster (version 1.19 or higher)
+- Helm 3.0 or higher
+- kubectl configured for cluster access
+- Storage class for persistent volumes (required for PostgreSQL/MinIO deployments)
+
+#### Cloud-Specific Requirements
+
+**Google Cloud Platform (GKE):**
+- For Google Cloud SQL (PostgreSQL) deployments, Cloud SQL Proxy sidecar is mandatory
+- Refer to [Google Cloud SQL Setup](./database-setup.md#google-cloud-sql-gcp-with-cloud-sql-proxy) for detailed configuration
+
+**AWS/Azure:**
+- For AWS RDS/Aurora deployments, see [AWS RDS/Aurora Configuration](./database-setup.md#aws-rdsaurora-postgresql)
+- For Azure Database for PostgreSQL, see [Azure Database Setup](./database-setup.md#azure-database-for-postgresql)
 
 :::danger
-**Cluster Compatibility:** Ensure your Kubernetes cluster version is compatible with the chart requirements to avoid deployment issues.
+**Version Compatibility:** Verify your Kubernetes cluster version meets the chart requirements to prevent deployment failures.
 :::
 
-### Basic Installation
+### Basic Deployment
 
 ```bash
-# Add the repository
+# Add the community charts repository
 helm repo add community-charts https://community-charts.github.io/helm-charts
 helm repo update
 
-# Install n8n with default settings (SQLite)
+# Deploy n8n with default configuration (SQLite backend)
 helm install my-n8n community-charts/n8n -n <your-namespace>
 ```
 
 :::tip
-**For Development:** The basic installation with SQLite is perfect for testing and development environments. For production, consider using PostgreSQL with queue mode.
+**Development Environment:** The basic SQLite deployment is ideal for development, testing, and evaluation purposes. For production environments, we recommend PostgreSQL with queue mode.
 :::
 
 :::warning
-**Data Persistence:** SQLite data is stored in the pod and will be lost if the pod is deleted. Use PostgreSQL for production deployments.
+**Data Persistence Warning:** SQLite data is ephemeral and will be lost upon pod termination. Implement PostgreSQL for production deployments requiring data persistence.
 :::
 
-### Production Installation with PostgreSQL
+### Production Deployment with PostgreSQL
 
 ```bash
-# Install with PostgreSQL backend
+# Deploy with PostgreSQL backend for production use
 helm install my-n8n community-charts/n8n \
   --set db.type=postgresdb \
   --set postgresql.enabled=true \
@@ -89,17 +100,17 @@ helm install my-n8n community-charts/n8n \
 ```
 
 :::note
-**Security:** Always use strong, unique passwords for database credentials. Consider using Kubernetes secrets for sensitive data.
+**Security Best Practice:** Always employ strong, unique passwords for database credentials. Consider utilizing Kubernetes secrets for sensitive configuration data.
 :::
 
 :::danger
-**Production Database:** Never use SQLite in production. PostgreSQL provides better performance, reliability, and supports queue mode features.
+**Production Database Requirement:** SQLite is unsuitable for production environments. PostgreSQL delivers superior performance, reliability, and supports advanced queue mode functionality.
 :::
 
-### Installation with Ingress
+### External Access Configuration
 
 ```bash
-# Install with ingress for external access
+# Deploy with ingress for external access
 helm install my-n8n community-charts/n8n \
   --set ingress.enabled=true \
   --set ingress.hosts[0].host=n8n.yourdomain.com \
@@ -109,13 +120,13 @@ helm install my-n8n community-charts/n8n \
 ```
 
 :::warning
-**External Access:** Configure proper TLS certificates and security headers when exposing n8n through ingress.
+**Security Configuration:** When exposing n8n through ingress, ensure proper TLS certificate configuration and security headers are implemented.
 :::
 
-### Queue Mode Installation (Production)
+### Enterprise Queue Mode Deployment
 
 ```bash
-# Install with queue mode for distributed execution
+# Deploy with queue mode for distributed execution and high availability
 helm install my-n8n community-charts/n8n \
   --set db.type=postgresdb \
   --set postgresql.enabled=true \
@@ -129,80 +140,80 @@ helm install my-n8n community-charts/n8n \
 ```
 
 :::tip
-**Production Recommendation:** Queue mode with PostgreSQL and Redis is the recommended setup for production environments. It provides better scalability, reliability, and performance.
+**Production Recommendation:** Queue mode with PostgreSQL and Redis represents the optimal configuration for production environments, providing enhanced scalability, reliability, and performance characteristics.
 :::
 
 :::info
-**Queue Mode Benefits:** Queue mode enables distributed execution, better resource utilization, and improved reliability for high-volume workflows.
+**Queue Mode Benefits:** Queue mode enables distributed workflow execution, improved resource utilization, and enhanced reliability for high-volume automation scenarios.
 :::
 
 :::tip
-**Cloud Redis:** For managed Redis on GCP, AWS, or Azure, see [Cloud Redis Setup](./cloud-redis.md).
+**Managed Redis Services:** For cloud-managed Redis on GCP, AWS, or Azure, refer to [Cloud Redis Configuration](./cloud-redis.md).
 :::
 
-## Key Features
+## Core Features
 
 :::info
-**Feature Overview:** These features make n8n production-ready and suitable for enterprise environments.
+**Feature Overview:** These capabilities transform n8n into a comprehensive enterprise automation platform.
 :::
 
-### Database Support
-- **SQLite** (default) - Simple single-node deployments
-- **PostgreSQL** - Production-ready with Bitnami PostgreSQL or external instances
+### Database Integration
+- **SQLite** (default) - Simplified single-node deployments for development
+- **PostgreSQL** - Enterprise-grade database support with Bitnami PostgreSQL or external instances
 
 :::warning
-**Database Choice:** SQLite is suitable only for development and testing. Use PostgreSQL for all production deployments.
+**Database Selection:** SQLite is appropriate solely for development and testing scenarios. PostgreSQL is mandatory for all production deployments.
 :::
 
-### Deployment Modes
-- **Regular Mode** - Single n8n instance (default)
-- **Queue Mode** - Distributed execution with worker nodes
-- **Webhook Mode** - Dedicated webhook processing nodes
+### Deployment Architectures
+- **Standard Mode** - Single n8n instance deployment (default configuration)
+- **Queue Mode** - Distributed execution architecture with dedicated worker nodes
+- **Webhook Mode** - Specialized webhook processing nodes for high-throughput scenarios
 
 :::tip
-**Mode Selection:** Choose the deployment mode based on your workload requirements and scalability needs.
+**Architecture Selection:** Choose the deployment architecture based on your workload requirements, scalability needs, and performance objectives.
 :::
 
-### Advanced Endpoints (Queue Mode)
-- **MCP Endpoints** - Model Context Protocol integration for AI assistants
-- **Form Endpoints** - Interactive web forms for workflow triggers
-- **Webhook Endpoints** - HTTP webhook processing for external integrations
+### Advanced Endpoint Support (Queue Mode)
+- **MCP Endpoints** - Model Context Protocol integration for AI assistant connectivity
+- **Form Endpoints** - Interactive web form generation for workflow trigger mechanisms
+- **Webhook Endpoints** - High-performance HTTP webhook processing for external system integration
 
 :::info
-**Queue Mode Only:** MCP and Form endpoints are only available in queue mode deployments with PostgreSQL database.
+**Queue Mode Requirement:** MCP and Form endpoints are exclusively available in queue mode deployments utilizing PostgreSQL database.
 :::
 
 :::tip
-**AI Integration:** MCP endpoints enable AI models and assistants to interact with n8n workflows through the Model Context Protocol.
+**AI Integration Capabilities:** MCP endpoints facilitate seamless interaction between AI models, assistants, and n8n workflows through the Model Context Protocol.
 :::
 
-### Storage Options
-- **Default** - In-memory binary data storage
-- **Filesystem** - Local file storage
-- **S3-Compatible** - External object storage (AWS S3, MinIO, etc.)
+### Storage Solutions
+- **Default Storage** - In-memory binary data storage for simple deployments
+- **Filesystem Storage** - Local file system storage for single-node scenarios
+- **S3-Compatible Storage** - External object storage integration (AWS S3, MinIO, and compatible services)
 
 :::info
-**Storage Strategy:** Use S3-compatible storage for production environments to ensure data persistence and enable team collaboration.
+**Storage Strategy:** Implement S3-compatible storage for production environments to ensure data persistence and enable collaborative team workflows.
 :::
 
-### Monitoring & Observability
-- **Prometheus Metrics** - Built-in metrics endpoint
-- **ServiceMonitor** - Prometheus Operator integration
-- **Health Checks** - Liveness and readiness probes
-- **Logging** - Configurable log levels and outputs
+### Monitoring and Observability
+- **Prometheus Metrics** - Comprehensive built-in metrics endpoint
+- **ServiceMonitor Integration** - Seamless Prometheus Operator compatibility
+- **Health Monitoring** - Configurable liveness and readiness probe mechanisms
+- **Logging Framework** - Flexible log level configuration and output management
 
 :::tip
-**Monitoring Setup:** Enable monitoring to track n8n performance, identify bottlenecks, and ensure reliable operation.
+**Monitoring Implementation:** Enable comprehensive monitoring to track n8n performance metrics, identify potential bottlenecks, and ensure operational reliability.
 :::
 
-### Security Features
-- **RBAC Support** - Kubernetes role-based access control
-- **Security Contexts** - Non-root container execution
-- **Secrets Management** - Kubernetes secrets integration
-- **Network Policies** - Pod-to-pod communication control
+### Security Framework
+- **RBAC Integration** - Kubernetes role-based access control implementation
+- **Security Contexts** - Non-root container execution for enhanced security
+- **Secrets Management** - Kubernetes secrets integration for sensitive data
+- **Network Policies** - Pod-to-pod communication control and isolation
 
 :::warning
-**Security Configuration:** Always configure proper security contexts and RBAC policies for production deployments.
+**Security Configuration:** Always implement proper security contexts and RBAC policies for production deployments to ensure compliance and protection.
 :::
 
 ### Pod Affinity and Anti-Affinity
@@ -212,90 +223,105 @@ helm install my-n8n community-charts/n8n \
 - **Resource Optimization** - Co-locate pods with specific node types
 
 :::tip
-**Affinity Configuration:** Use affinity rules to optimize resource utilization and improve availability. Configure separate affinity rules for main, worker, and webhook nodes.
+**Scheduling Strategy:** Utilize affinity rules to optimize resource utilization and improve availability. Configure separate affinity rules for main, worker, and webhook nodes to achieve optimal performance.
 :::
 
 :::warning
-**Deprecation Notice:** The top-level `affinity` field is deprecated. Use the specific affinity configurations under `main`, `worker`, and `webhook` blocks instead.
+**Configuration Deprecation:** The top-level `affinity` field is deprecated. Implement specific affinity configurations under `main`, `worker`, and `webhook` blocks for enhanced control.
+:::
+
+### Enhanced Persistence Support
+- **Multi-Node Persistence** - Complete persistence solution for main, worker, and webhook nodes
+- **StatefulSet Integration** - Automatic StatefulSet selection for optimal persistence configuration
+- **Autoscaling Compatibility** - ReadWriteMany support for dynamic autoscaling deployments
+- **Flexible Storage Options** - Custom storage classes, existing PVC integration, and volume annotations
+- **Access Mode Optimization** - ReadWriteOnce for StatefulSets, ReadWriteMany for autoscaling scenarios
+
+:::info
+**Persistence Architecture:** Main nodes store workflows and configuration data, while worker nodes maintain npm packages for accelerated startup times. Webhook nodes utilize Deployments and do not support persistence.
+:::
+
+:::warning
+**Autoscaling Considerations:** Worker nodes configured with `ReadWriteOnce` persistence cannot utilize autoscaling functionality. Implement `ReadWriteMany` for autoscaling or `ReadWriteOnce` with StatefulSets for fixed scaling deployments.
 :::
 
 ## Unique Features
 
 :::tip
-**Exclusive Capabilities:** These features make this n8n Helm chart stand out from all others available.
+**Distinctive Capabilities:** These exclusive features establish this n8n Helm chart as the premier solution for advanced automation deployments.
 :::
 
 ### Advanced npm Package Management
-This chart provides **exceptional npm package installation capabilities** that set it apart from other n8n Helm charts:
+This chart delivers **unparalleled npm package installation capabilities** that distinguish it from all other n8n Helm charts:
 
-- **Custom npm Packages:** Install any npm package directly in main and worker pods
-- **Community Nodes:** Seamlessly install n8n community nodes for extended functionality
-- **Private Registries:** Support for private npm registries with authentication
-- **Automatic Reinstallation:** Smart package management with automatic reinstallation of missing packages
-- **Built-in Modules:** Configure access to Node.js built-in modules for enhanced Code node capabilities
+- **Custom npm Package Deployment** - Direct installation of any npm package within main and worker pods
+- **Community Node Integration** - Seamless deployment of n8n community nodes for extended functionality
+- **Private Registry Support** - Comprehensive support for private npm registries with authentication
+- **Intelligent Package Management** - Automated package reinstallation for missing dependencies
+- **Built-in Module Access** - Configured access to Node.js built-in modules for enhanced Code node capabilities
 
 :::info
-**Package Management:** This feature enables advanced workflow capabilities by allowing custom npm packages and community nodes.
+**Package Management Benefits:** This capability enables sophisticated workflow automation by facilitating custom npm packages and community node integration.
 :::
 
 ### External Task Runners (Exclusive Feature)
-This is the **only n8n Helm chart** that supports external task runners, providing enhanced security and performance:
+This represents the **only n8n Helm chart** supporting external task runners, delivering enhanced security and performance:
 
-- **Isolated Execution:** Run workflow executions in dedicated sidecar containers
-- **Enhanced Security:** Separate execution environment from the main n8n application
-- **Resource Isolation:** Dedicated resource allocation for task execution
-- **Scalability:** Independent scaling of execution capacity
-- **Enterprise Ready:** Production-grade isolation for sensitive workflows
+- **Execution Isolation** - Workflow execution within dedicated sidecar containers
+- **Security Enhancement** - Complete separation of execution environment from the main n8n application
+- **Resource Isolation** - Dedicated resource allocation for task execution processes
+- **Scalability Optimization** - Independent scaling of execution capacity
+- **Enterprise-Grade Isolation** - Production-level isolation for sensitive workflow execution
 
 :::warning
-**Enterprise Feature:** External task runners are only available in n8n Enterprise. Make sure you have the appropriate license if using this feature.
+**Enterprise License Requirement:** External task runners are exclusively available in n8n Enterprise. Ensure you possess the appropriate license before implementing this feature.
 :::
 
 :::danger
-**License Requirement:** External task runners require an n8n Enterprise license. Verify your license before enabling this feature.
+**License Verification:** External task runners mandate an n8n Enterprise license. Verify your license status before enabling this advanced functionality.
 :::
 
-## Architecture Overview
+## Deployment Architecture Overview
 
 :::info
-**Deployment Options:** Choose the architecture that best fits your use case and requirements.
+**Architecture Selection:** Choose the deployment architecture that optimally aligns with your use case and operational requirements.
 :::
 
-The n8n Helm chart supports three main deployment architectures:
+The n8n Helm chart supports three primary deployment architectures:
 
-### Single Node (Default)
+### Single Node Architecture (Default)
 
 ```mermaid
 architecture-beta
   group k8s(cloud)[Kubernetes Cluster]
 
-  service ui(internet)[User]
+  service ui(internet)[User Interface]
 
-  service main(server)[n8n main Pod] in k8s
-  service pv(disk)[Persistance Volume] in k8s
+  service main(server)[n8n Main Pod] in k8s
+  service pv(disk)[Persistent Volume] in k8s
 
   ui:R --> L:main
   main:R --> L:pv
 ```
 
 :::tip
-**Single Node Use:** Perfect for development, testing, and small-scale deployments with low workflow volumes.
+**Single Node Applications:** Ideal for development, testing, and small-scale deployments with minimal workflow volumes.
 :::
 
-### Queue Mode (Production)
+### Queue Mode Architecture (Production)
 
 ```mermaid
 architecture-beta
   group k8s(cloud)[Kubernetes Cluster]
 
   service ui(internet)[Editor Access]
-  service request(internet)[Webhook Request]
+  service request(internet)[Webhook Requests]
 
   service main(server)[Main Node] in k8s
   service worker(server)[Worker Nodes] in k8s
   service webhook(server)[Webhook Nodes] in k8s
 
-  service db(database)[PostgreSQL DB]
+  service db(database)[PostgreSQL Database]
   service queue(database)[Redis Queue]
 
   junction junctionCenter in k8s
@@ -316,10 +342,10 @@ architecture-beta
 ```
 
 :::info
-**Queue Mode Benefits:** Provides horizontal scaling, better resource utilization, and improved reliability for production workloads.
+**Queue Mode Advantages:** Delivers horizontal scaling capabilities, optimized resource utilization, and enhanced reliability for production workloads.
 :::
 
-### External Task Runners
+### External Task Runner Architecture
 
 ```mermaid
 architecture-beta
@@ -339,84 +365,87 @@ architecture-beta
 ```
 
 :::tip
-**External Runners:** Provides enhanced security and performance isolation for sensitive workflows.
+**External Runner Benefits:** Provides enhanced security and performance isolation for sensitive workflow execution.
 :::
 
-## Examples
+## Implementation Examples
 
 :::info
-**Real-world Scenarios:** These examples demonstrate practical deployment patterns for different use cases.
+**Practical Deployment Patterns:** These examples demonstrate real-world deployment scenarios for various use cases and requirements.
 :::
 
-Check out the [examples directory](https://github.com/community-charts/examples/tree/main/n8n-examples) for complete deployment scenarios:
+Explore the [comprehensive examples directory](https://github.com/community-charts/examples/tree/main/n8n-examples) for complete deployment scenarios:
 
-- [Workers and Webhooks](https://github.com/community-charts/examples/tree/main/n8n-examples/workers-and-webhooks-example) - Queue mode with dedicated nodes
-- [Community Nodes](https://github.com/community-charts/examples/tree/main/n8n-examples/community-nodes-packages-example) - Custom npm packages
-- [External Task Runners](https://github.com/community-charts/examples/tree/main/n8n-examples/internal-and-external-npm-packages-with-external-runner-example) - Isolated execution environments
+- [Workers and Webhooks Configuration](https://github.com/community-charts/examples/tree/main/n8n-examples/workers-and-webhooks-example) - Queue mode with dedicated node architecture
+- [Community Nodes Integration](https://github.com/community-charts/examples/tree/main/n8n-examples/community-nodes-packages-example) - Custom npm package deployment
+- [External Task Runners Setup](https://github.com/community-charts/examples/tree/main/n8n-examples/internal-and-external-npm-packages-with-external-runner-example) - Isolated execution environment configuration
 
 :::tip
-**Example Usage:** Study these examples to understand best practices and common deployment patterns.
+**Example Implementation:** Study these examples to understand industry best practices and common deployment patterns for optimal results.
 :::
 
-## Upgrading
+## System Maintenance
+
+### Upgrade Procedures
 
 ```bash
-# Update the repository
+# Update the repository to latest version
 helm repo update
 
-# Upgrade the release
+# Perform system upgrade
 helm upgrade my-n8n community-charts/n8n -n <your-namespace>
 ```
 
 :::note
-**Backup First:** Always backup your data before upgrading, especially when changing database configurations.
+**Data Protection:** Always perform comprehensive data backups before upgrading, particularly when modifying database configurations.
 :::
 
 :::warning
-**Upgrade Testing:** Test upgrades in a staging environment before applying to production.
+**Upgrade Validation:** Conduct thorough upgrade testing in a staging environment before implementing changes in production.
 :::
 
-## Uninstalling
+### System Removal
 
 ```bash
-# Uninstall the release
+# Remove the n8n deployment
 helm uninstall my-n8n -n <your-namespace>
 
-# Optionally delete PVCs (WARNING: This will delete all data)
+# Optional: Remove persistent volume claims (WARNING: This will permanently delete all data)
 kubectl delete pvc -l app.kubernetes.io/instance=my-n8n -n <your-namespace>
 ```
 
 :::danger
-**Data Loss Warning:** Deleting PVCs will permanently remove all n8n data including workflows, executions, and credentials. Make sure you have backups before proceeding.
+**Data Loss Warning:** Deleting persistent volume claims will permanently remove all n8n data including workflows, executions, and credentials. Ensure comprehensive backups are available before proceeding.
 :::
 
 :::warning
-**Uninstall Confirmation:** Double-check the namespace and release name before uninstalling to avoid accidental data loss.
+**Removal Confirmation:** Verify the namespace and release name before uninstalling to prevent accidental data loss.
 :::
 
-## Support
+## Support and Resources
 
 :::info
-**Need Help?** We're here to help you succeed with your n8n deployment.
+**Community Support:** We're committed to helping you achieve success with your n8n deployment.
 :::
 
+### Support Channels
 - **GitHub Issues:** [Report bugs or request features](https://github.com/community-charts/helm-charts/issues)
-- **Discussions:** [Community discussions](https://github.com/community-charts/helm-charts/discussions)
-- **Documentation:** [n8n official docs](https://docs.n8n.io)
+- **Community Discussions:** [Engage with the community](https://github.com/community-charts/helm-charts/discussions)
+- **Official Documentation:** [n8n official documentation](https://docs.n8n.io)
 
 :::tip
-**Community Support:** Join our community discussions to get help from other users and share your experiences.
+**Community Engagement:** Participate in our community discussions to receive assistance from other users and share your deployment experiences.
 :::
 
 ## Next Steps
 
 :::tip
-**Getting Started:** Follow these guides in order for a complete n8n setup experience.
+**Implementation Guide:** Follow these guides sequentially for a comprehensive n8n deployment experience.
 :::
 
-- [Configuration Guide](./configuration.md) - Detailed configuration options
+- [Configuration Guide](./configuration.md) - Comprehensive configuration options and parameters
 - [Database Setup](./database-setup.md) - PostgreSQL and external database configuration
-- [Queue Mode Setup](./queue-mode.md) - Distributed execution with Redis
-- [Storage Configuration](./storage.md) - Binary data storage options
-- [Monitoring Setup](./monitoring.md) - Metrics and observability
-- [Troubleshooting](./troubleshooting.md) - Common issues and solutions
+- [Queue Mode Setup](./queue-mode.md) - Distributed execution with Redis integration
+- [Storage Configuration](./storage.md) - Binary data storage and persistence options
+- [Monitoring Setup](./monitoring.md) - Metrics, observability, and alerting configuration
+- [Troubleshooting](./troubleshooting.md) - Common issues, solutions, and diagnostic procedures

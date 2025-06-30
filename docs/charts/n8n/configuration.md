@@ -1,22 +1,22 @@
 ---
 id: configuration
-title: n8n Configuration Guide
+title: n8n Configuration Reference
 sidebar_label: Configuration
 sidebar_position: 2
-description: Complete configuration reference for the n8n Helm chart with examples and best practices
-keywords: [n8n, configuration, helm, kubernetes, values, settings, options, environment, secrets]
+description: Comprehensive configuration reference for the n8n Helm chart with detailed examples and enterprise best practices
+keywords: [n8n, configuration, helm, kubernetes, values, settings, options, environment, secrets, enterprise]
 ---
 
-# n8n Configuration Guide
+# n8n Configuration Reference
 
-This guide covers all configuration options available in the n8n Helm chart, organized by category with examples and best practices.
+This comprehensive guide provides detailed coverage of all configuration options available in the n8n Helm chart, systematically organized by functional category with practical examples and enterprise-grade best practices.
 
 :::info
-**Configuration Reference:** This guide provides comprehensive coverage of all available configuration options. Use the table of contents to navigate to specific sections.
+**Configuration Reference:** This guide serves as the definitive reference for all available configuration options. Utilize the table of contents for efficient navigation to specific sections.
 :::
 
 :::tip
-**Best Practices:** Follow the recommendations in this guide to ensure a secure, performant, and reliable n8n deployment.
+**Enterprise Best Practices:** Follow the recommendations outlined in this guide to ensure a secure, performant, and reliable n8n deployment suitable for production environments.
 :::
 
 ## Table of Contents
@@ -26,6 +26,7 @@ This guide covers all configuration options available in the n8n Helm chart, org
 - [Ingress Configuration](#ingress-configuration)
 - [Resources and Scaling](#resources-and-scaling)
 - [Pod Affinity and Anti-Affinity](#pod-affinity-and-anti-affinity)
+- [Persistence Configuration](#persistence-configuration)
 - [Database Configuration](#database-configuration)
 - [Queue Mode Configuration](#queue-mode-configuration)
 - [Storage Configuration](#storage-configuration)
@@ -41,10 +42,10 @@ This guide covers all configuration options available in the n8n Helm chart, org
 ## Image Configuration
 
 :::tip
-**Image Selection:** Choose the appropriate image tag for your environment. Use specific versions for production stability.
+**Image Selection Strategy:** Choose the appropriate image tag for your environment. Implement specific versions for production stability and security.
 :::
 
-### Basic Image Settings
+### Standard Image Configuration
 
 ```yaml
 image:
@@ -54,10 +55,10 @@ image:
 ```
 
 :::warning
-**Image Security:** Always use specific image tags in production to avoid unexpected updates and potential security issues.
+**Production Image Security:** Always utilize specific image tags in production environments to prevent unexpected updates and mitigate potential security vulnerabilities.
 :::
 
-### Private Registry
+### Private Registry Integration
 
 ```yaml
 image:
@@ -70,19 +71,35 @@ imagePullSecrets:
 ```
 
 :::info
-**Private Registry:** Use private registries for enhanced security and control over image distribution.
+**Private Registry Benefits:** Implement private registries for enhanced security posture and centralized control over image distribution.
 :::
 
 ## Service Configuration
 
 :::note
-**Service Types:** Choose the service type based on your networking requirements and infrastructure.
+**Service Architecture:** Select the service type based on your networking requirements and infrastructure architecture.
 :::
 
-### Basic Service
+### Service Disabling
 
 ```yaml
 service:
+  enabled: false
+```
+
+:::info
+**Service Disabling:** Disable service creation when using external load balancers, ingress-only access, or when services are managed externally.
+:::
+
+:::warning
+**Access Considerations:** When services are disabled, ensure alternative access methods (ingress, external load balancers) are properly configured.
+:::
+
+### Standard Service Configuration
+
+```yaml
+service:
+  enabled: true
   type: ClusterIP
   port: 5678
   name: http
@@ -90,13 +107,14 @@ service:
 ```
 
 :::tip
-**Service Configuration:** ClusterIP is suitable for internal access. Use LoadBalancer or NodePort for external access without ingress.
+**Service Selection:** ClusterIP is optimal for internal access scenarios. Implement LoadBalancer or NodePort for external access without ingress configuration.
 :::
 
-### LoadBalancer Service
+### LoadBalancer Service Configuration
 
 ```yaml
 service:
+  enabled: true
   type: LoadBalancer
   port: 5678
   annotations:
@@ -105,16 +123,16 @@ service:
 ```
 
 :::warning
-**LoadBalancer Cost:** LoadBalancer services can incur additional costs in cloud environments. Consider using ingress for cost optimization.
+**Cost Considerations:** LoadBalancer services may incur additional costs in cloud environments. Consider ingress implementation for cost optimization.
 :::
 
 ## Ingress Configuration
 
 :::warning
-**Security:** Always use HTTPS in production. Configure TLS certificates and security headers appropriately.
+**Security Implementation:** Always implement HTTPS in production environments. Configure TLS certificates and security headers appropriately for enhanced protection.
 :::
 
-### Basic Ingress
+### Standard Ingress Configuration
 
 ```yaml
 ingress:
@@ -135,10 +153,10 @@ ingress:
 ```
 
 :::danger
-**TLS Security:** Never expose n8n without TLS in production. Use cert-manager or similar tools for automatic certificate management.
+**TLS Security Requirement:** Never expose n8n without TLS in production environments. Implement cert-manager or similar solutions for automated certificate management.
 :::
 
-### Multiple Hosts
+### Multi-Host Ingress Configuration
 
 ```yaml
 ingress:
@@ -156,18 +174,18 @@ ingress:
 ```
 
 :::tip
-**Host Separation:** Separate API and UI hosts for better security and access control.
+**Host Separation Strategy:** Implement separate API and UI hosts for enhanced security posture and granular access control.
 :::
 
-### Queue Mode Endpoints
+### Queue Mode Advanced Endpoints
 
 :::info
-**Advanced Endpoints:** Queue mode with PostgreSQL database enables additional endpoints for MCP and Form functionality.
+**Advanced Endpoint Capabilities:** Queue mode with PostgreSQL database enables sophisticated endpoints for MCP and Form functionality.
 :::
 
 #### MCP (Model Context Protocol) Endpoints
 
-When using queue mode with PostgreSQL, the following MCP endpoints are automatically configured:
+When implementing queue mode with PostgreSQL, the following MCP endpoints are automatically configured:
 
 ```yaml
 ingress:
@@ -184,16 +202,16 @@ ingress:
 ```
 
 **Available MCP Endpoints:**
-- `/mcp/` - Main MCP server endpoint for AI model integration
-- `/mcp-test/` - Testing endpoint for MCP functionality
+- `/mcp/` - Primary MCP server endpoint for AI model integration
+- `/mcp-test/` - Testing endpoint for MCP functionality validation
 
 :::tip
-**AI Integration:** MCP endpoints enable AI models and assistants to interact with n8n workflows through the Model Context Protocol.
+**AI Integration Capabilities:** MCP endpoints facilitate seamless interaction between AI models, assistants, and n8n workflows through the Model Context Protocol.
 :::
 
 #### Form Endpoints
 
-Queue mode also provides dedicated form endpoints for interactive web forms:
+Queue mode also provides dedicated form endpoints for interactive web form generation:
 
 ```yaml
 webhook:
@@ -403,45 +421,115 @@ worker:
         topologyKey: kubernetes.io/hostname
 ```
 
-#### Co-locate Pods with Specific Nodes
-
-```yaml
-# Place pods on nodes with specific labels
-main:
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: node-type
-            operator: In
-            values:
-            - compute-optimized
-```
-
 #### Zone Distribution
 
 ```yaml
 # Distribute pods across availability zones
-worker:
-  mode: queue
+main:
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 100
         podAffinityTerm:
           labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: n8n
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - n8n
           topologyKey: topology.kubernetes.io/zone
 ```
 
+## Persistence Configuration
+
 :::info
-**Affinity Rules:** Use affinity rules to optimize resource utilization, improve availability, and ensure proper pod distribution across your cluster.
+**Persistence:** Configure persistent storage for each node type independently. Persistence is used to store workflows, configuration, and npm packages. Configure independently from hostAliases.
 :::
 
-:::warning
-**Performance Impact:** Complex affinity rules can impact scheduling performance. Test thoroughly in your environment.
+### Main Node Persistence Example
+```yaml
+main:
+  persistence:
+    enabled: true
+    volumeName: "n8n-main-data"
+    mountPath: "/home/node/.n8n"
+    size: 8Gi
+    accessMode: ReadWriteOnce
+    storageClass: "fast-ssd"
+    annotations:
+      helm.sh/resource-policy: keep
+```
+
+### Worker Node Persistence Example
+```yaml
+worker:
+  mode: queue
+  persistence:
+    enabled: true
+    volumeName: "n8n-worker-data"
+    mountPath: "/home/node/.n8n"
+    size: 5Gi
+    accessMode: ReadWriteMany  # For autoscaling
+    storageClass: "fast-ssd"
+```
+
+---
+
+## Host Aliases Configuration
+
+:::info
+**Host Aliases:** Host aliases provide custom DNS mappings for all node types. Configure hostAliases independently from persistence settings.
+:::
+
+### Main Node Host Aliases Example
+```yaml
+main:
+  hostAliases:
+    - ip: "127.0.0.1"
+      hostnames:
+        - "foo.local"
+        - "bar.local"
+    - ip: "10.1.2.3"
+      hostnames:
+        - "internal-api.local"
+        - "database.local"
+```
+
+### Worker Node Host Aliases Example
+```yaml
+worker:
+  mode: queue
+  hostAliases:
+    - ip: "192.168.1.100"
+      hostnames:
+        - "worker-api.local"
+    - ip: "10.0.0.50"
+      hostnames:
+        - "redis.local"
+        - "postgres.local"
+```
+
+### Webhook Node Host Aliases Example
+```yaml
+webhook:
+  mode: queue
+  hostAliases:
+    - ip: "10.0.0.50"
+      hostnames:
+        - "webhook-service.local"
+    - ip: "172.16.0.10"
+      hostnames:
+        - "external-api.local"
+```
+
+:::tip
+**Separation of Concerns:** Persistence and hostAliases are configured independently and can be used together or separately as needed.
+:::
+
+## Environment Variables
+
+:::info
+**Environment Variables:** Configure environment variables for all node types to customize behavior and integrate with external systems.
 :::
 
 ## Database Configuration
