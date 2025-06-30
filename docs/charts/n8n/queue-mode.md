@@ -61,6 +61,113 @@ architecture-beta
 - **Webhook Nodes**: Process incoming webhook requests
 - **Redis**: Message broker for communication between nodes
 
+## Queue Mode Endpoints
+
+:::info
+**Enhanced Endpoints:** Queue mode supports additional endpoints for advanced workflow automation and AI integration capabilities.
+:::
+
+### MCP (Model Context Protocol) Endpoints
+
+Queue mode includes support for MCP (Model Context Protocol) endpoints, enabling n8n to act as an MCP server for AI model integration:
+
+- **MCP Endpoint**: `https://yourdomain.com/mcp/` - Main MCP server endpoint
+- **MCP Test Endpoint**: `https://yourdomain.com/mcp-test/` - Testing endpoint for MCP functionality
+
+:::tip
+**AI Integration:** MCP endpoints allow AI models and assistants to interact with n8n workflows through the Model Context Protocol, enabling advanced AI-powered automation scenarios.
+:::
+
+#### MCP Server Trigger Node
+
+The MCP Server Trigger node allows n8n to expose workflows as tools to MCP clients:
+
+- **Server-Sent Events (SSE)**: Supports long-lived connections for real-time communication
+- **Streamable HTTP**: Alternative transport method for MCP communication
+- **Authentication**: Bearer token and header-based authentication support
+- **Tool Integration**: Connect workflows with AI assistants and language models
+
+:::warning
+**MCP Requirements:** MCP endpoints require PostgreSQL database and queue mode configuration. They are not available in single-node deployments with SQLite.
+:::
+
+#### MCP Configuration Example
+
+```yaml
+# Enable MCP endpoints in queue mode
+webhook:
+  mode: queue
+  url: "https://yourdomain.com"
+  count: 2
+
+ingress:
+  enabled: true
+  hosts:
+    - host: yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+```
+
+:::info
+**MCP Documentation:** For detailed MCP setup and usage, see the [official n8n MCP documentation](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-langchain.mcptrigger/).
+:::
+
+### Form Endpoints
+
+Queue mode supports dedicated form endpoints for the n8n Form Trigger node:
+
+- **Form Endpoint**: `https://yourdomain.com/form/` - Main form submission endpoint
+- **Form Test Endpoint**: `https://yourdomain.com/form-test/` - Testing endpoint for forms
+- **Form Waiting Endpoint**: `https://yourdomain.com/form-waiting/` - Endpoint for form waiting workflows
+
+:::tip
+**Form Automation:** Form endpoints enable the creation of interactive forms that can trigger n8n workflows, allowing users to submit data through web forms.
+:::
+
+#### Form Trigger Node
+
+The Form Trigger node creates web forms that can:
+
+- **Collect User Input**: Gather data through customizable web forms
+- **Trigger Workflows**: Automatically start workflows when forms are submitted
+- **Data Processing**: Process form submissions and route data to other nodes
+- **User Experience**: Provide a user-friendly interface for workflow interaction
+
+#### Form Configuration Example
+
+```yaml
+# Enable form endpoints in queue mode
+webhook:
+  mode: queue
+  url: "https://yourdomain.com"
+  count: 2
+
+ingress:
+  enabled: true
+  hosts:
+    - host: yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+```
+
+:::info
+**Form Documentation:** For detailed form setup and usage, see the [official n8n Form Trigger documentation](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.formtrigger/).
+:::
+
+### Endpoint Routing
+
+In queue mode, different endpoints are routed to appropriate nodes:
+
+- **Main Node**: Handles UI, API, and test endpoints
+- **Webhook Nodes**: Process webhook, form, and MCP endpoints
+- **Worker Nodes**: Execute workflows triggered by any endpoint
+
+:::tip
+**Load Distribution:** This routing ensures optimal performance by directing traffic to the appropriate node types based on the request type.
+:::
+
 ## Prerequisites
 
 :::warning

@@ -119,6 +119,15 @@ serviceMonitor:
 - `n8n_api_request_duration_seconds` - API request duration
 - `n8n_api_requests_failed_total` - Failed API requests
 
+#### Queue Mode Endpoint Metrics
+- **MCP Endpoints**: Monitor `/mcp/` and `/mcp-test/` endpoint performance
+- **Form Endpoints**: Monitor `/form/`, `/form-test/`, and `/form-waiting/` endpoint performance
+- **Webhook Endpoints**: Monitor `/webhook/` and `/webhook-test/` endpoint performance
+
+:::tip
+**Endpoint Monitoring:** In queue mode, different endpoints are handled by different node types. Monitor webhook nodes for MCP and Form endpoint performance.
+:::
+
 #### Cache Metrics
 - `n8n_cache_hits_total` - Cache hits
 - `n8n_cache_misses_total` - Cache misses

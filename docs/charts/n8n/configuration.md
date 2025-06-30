@@ -159,6 +159,82 @@ ingress:
 **Host Separation:** Separate API and UI hosts for better security and access control.
 :::
 
+### Queue Mode Endpoints
+
+:::info
+**Advanced Endpoints:** Queue mode with PostgreSQL database enables additional endpoints for MCP and Form functionality.
+:::
+
+#### MCP (Model Context Protocol) Endpoints
+
+When using queue mode with PostgreSQL, the following MCP endpoints are automatically configured:
+
+```yaml
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: n8n.yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+        # MCP endpoints are automatically added when webhook.mode=queue
+        # - path: /mcp/
+        # - path: /mcp-test/
+```
+
+**Available MCP Endpoints:**
+- `/mcp/` - Main MCP server endpoint for AI model integration
+- `/mcp-test/` - Testing endpoint for MCP functionality
+
+:::tip
+**AI Integration:** MCP endpoints enable AI models and assistants to interact with n8n workflows through the Model Context Protocol.
+:::
+
+#### Form Endpoints
+
+Queue mode also provides dedicated form endpoints for interactive web forms:
+
+```yaml
+webhook:
+  mode: queue
+  url: "https://n8n.yourdomain.com"
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: n8n.yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+        # Form endpoints are automatically added when webhook.mode=queue
+        # - path: /form/
+        # - path: /form-test/
+        # - path: /form-waiting/
+```
+
+**Available Form Endpoints:**
+- `/form/` - Main form submission endpoint
+- `/form-test/` - Testing endpoint for forms
+- `/form-waiting/` - Endpoint for form waiting workflows
+
+:::warning
+**Queue Mode Required:** MCP and Form endpoints are only available when `webhook.mode=queue` and `db.type=postgresdb` are configured.
+:::
+
+#### Endpoint Routing
+
+In queue mode, different endpoints are routed to appropriate node types:
+
+- **Main Node**: Handles UI, API, and test endpoints (`/mcp-test/`, `/form-test/`)
+- **Webhook Nodes**: Process webhook, form, and MCP endpoints (`/webhook/`, `/form/`, `/mcp/`)
+- **Worker Nodes**: Execute workflows triggered by any endpoint
+
+:::info
+**Load Distribution:** This routing ensures optimal performance by directing traffic to the appropriate node types based on the request type.
+:::
+
 ## Resources and Scaling
 
 :::tip

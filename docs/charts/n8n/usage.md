@@ -163,6 +163,19 @@ helm install my-n8n community-charts/n8n \
 **Mode Selection:** Choose the deployment mode based on your workload requirements and scalability needs.
 :::
 
+### Advanced Endpoints (Queue Mode)
+- **MCP Endpoints** - Model Context Protocol integration for AI assistants
+- **Form Endpoints** - Interactive web forms for workflow triggers
+- **Webhook Endpoints** - HTTP webhook processing for external integrations
+
+:::info
+**Queue Mode Only:** MCP and Form endpoints are only available in queue mode deployments with PostgreSQL database.
+:::
+
+:::tip
+**AI Integration:** MCP endpoints enable AI models and assistants to interact with n8n workflows through the Model Context Protocol.
+:::
+
 ### Storage Options
 - **Default** - In-memory binary data storage
 - **Filesystem** - Local file storage

@@ -279,6 +279,152 @@ worker:
 kubectl exec -it <n8n-pod> -- curl -s http://localhost:5678/metrics | grep queue
 ```
 
+### MCP and Form Endpoint Issues
+
+:::info
+**Advanced Endpoints:** MCP and Form endpoints are only available in queue mode with PostgreSQL database. Verify your configuration meets these requirements.
+:::
+
+#### MCP Endpoint Problems
+
+**Symptoms:**
+- MCP endpoints not accessible
+- AI model integration failures
+- MCP authentication errors
+
+**Solutions:**
+
+1. **Verify Queue Mode Configuration:**
+```yaml
+# Ensure queue mode is enabled
+webhook:
+  mode: queue
+  url: "https://yourdomain.com"
+
+# Ensure PostgreSQL is configured
+db:
+  type: postgresdb
+```
+
+2. **Check MCP Endpoint Accessibility:**
+```bash
+# Test MCP endpoint
+curl -I https://yourdomain.com/mcp/
+
+# Test MCP test endpoint
+curl -I https://yourdomain.com/mcp-test/
+```
+
+3. **Check Ingress Configuration:**
+```bash
+# Verify ingress includes MCP paths
+kubectl get ingress -o yaml | grep -A 10 -B 5 mcp
+```
+
+4. **Check Webhook Node Logs:**
+```bash
+# MCP endpoints are handled by webhook nodes
+kubectl logs -l app.kubernetes.io/component=webhook
+```
+
+5. **Verify MCP Authentication:**
+```yaml
+# If using MCP authentication
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: mcp-auth
+```
+
+:::warning
+**MCP Requirements:** MCP endpoints require PostgreSQL database and queue mode. They are not available with SQLite or single-node deployments.
+:::
+
+#### Form Endpoint Problems
+
+**Symptoms:**
+- Form endpoints not accessible
+- Form submission failures
+- Form waiting workflows not working
+
+**Solutions:**
+
+1. **Verify Form Endpoint Configuration:**
+```yaml
+# Ensure queue mode is enabled
+webhook:
+  mode: queue
+  url: "https://yourdomain.com"
+```
+
+2. **Check Form Endpoint Accessibility:**
+```bash
+# Test form endpoint
+curl -I https://yourdomain.com/form/
+
+# Test form test endpoint
+curl -I https://yourdomain.com/form-test/
+
+# Test form waiting endpoint
+curl -I https://yourdomain.com/form-waiting/
+```
+
+3. **Check Form Trigger Node Configuration:**
+```bash
+# Verify form trigger is properly configured in n8n UI
+# Check workflow execution logs
+kubectl logs -l app.kubernetes.io/name=n8n | grep -i form
+```
+
+4. **Test Form Submission:**
+```bash
+# Test form submission
+curl -X POST https://yourdomain.com/form/ \
+  -H "Content-Type: application/json" \
+  -d '{"test": "data"}'
+```
+
+5. **Check Webhook Node Status:**
+```bash
+# Form endpoints are handled by webhook nodes
+kubectl get pods -l app.kubernetes.io/component=webhook
+kubectl logs -l app.kubernetes.io/component=webhook
+```
+
+:::tip
+**Form Testing:** Use the `/form-test/` endpoint to test form functionality before deploying to production.
+:::
+
+#### Endpoint Routing Issues
+
+**Symptoms:**
+- Endpoints routed to wrong nodes
+- Performance issues with specific endpoints
+
+**Solutions:**
+
+1. **Verify Endpoint Routing:**
+```bash
+# Check which nodes handle which endpoints
+kubectl get pods -l app.kubernetes.io/name=n8n -o wide
+```
+
+2. **Check Service Configuration:**
+```bash
+# Verify service endpoints
+kubectl get endpoints -l app.kubernetes.io/name=n8n
+```
+
+3. **Monitor Endpoint Performance:**
+```bash
+# Check metrics for endpoint performance
+kubectl exec -it <n8n-pod> -- curl -s http://localhost:5678/metrics | grep api
+```
+
+:::info
+**Routing Logic:** In queue mode, test endpoints (`/mcp-test/`, `/form-test/`) are handled by main nodes, while production endpoints (`/mcp/`, `/form/`) are handled by webhook nodes.
+:::
+
 ### Storage Issues
 
 #### S3 Connection Problems
