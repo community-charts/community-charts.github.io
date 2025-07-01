@@ -219,6 +219,18 @@ const config: Config = {
         projectId: 's5ia53rdga',
       },
     ],
+    [
+      '@signalwire/docusaurus-plugin-llms-txt',
+      {
+        siteTitle: 'Community Charts',
+        depth: 3,
+        content: {
+          includeBlog: true,
+          includePages: true,
+          enableLlmsFullTxt: true,
+        }
+      }
+    ],
   ],
 };
 
