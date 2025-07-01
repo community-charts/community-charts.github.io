@@ -3,3 +3,4 @@ Allow: /docs/
 Allow: /blog/
 Disallow: /search
 Sitemap: https://community-charts.github.io/sitemap.xml
+LLM-Content: https://community-charts.github.io/llms.txt
