@@ -308,13 +308,13 @@ worker:
     metrics:
       - type: Resource
         resource:
-          name: cpu
+          name: memory
           target:
             type: Utilization
             averageUtilization: 80
       - type: Resource
         resource:
-          name: memory
+          name: cpu
           target:
             type: Utilization
             averageUtilization: 80

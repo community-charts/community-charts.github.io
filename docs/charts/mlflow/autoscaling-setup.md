@@ -77,16 +77,16 @@ autoscaling:
   metrics:
     - type: Resource
       resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
-    - type: Resource
-      resource:
         name: memory
         target:
           type: Utilization
           averageUtilization: 80
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
 ```
 
 ### 2. Deploy with Autoscaling
@@ -211,16 +211,16 @@ autoscaling:
   metrics:
     - type: Resource
       resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
-    - type: Resource
-      resource:
         name: memory
         target:
           type: Utilization
           averageUtilization: 80
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
   behavior:
     scaleUp:
       stabilizationWindowSeconds: 30
@@ -300,16 +300,16 @@ autoscaling:
   metrics:
     - type: Resource
       resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 75
-    - type: Resource
-      resource:
         name: memory
         target:
           type: Utilization
           averageUtilization: 85
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
 
 resources:
   requests:
