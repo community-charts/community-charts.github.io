@@ -321,7 +321,9 @@ ingress:
 **Scaling Strategy:** Use autoscaling for dynamic workloads and manual scaling for predictable, steady-state workloads.
 :::
 
-### Autoscaling Workers
+### Autoscaling Workers (HPA)
+
+Worker nodes execute workflows and process tasks from the Redis queue. Autoscaling worker pods ensures optimal performance during high workflow execution periods while reducing resource costs during low activity.
 
 ```yaml
 worker:
@@ -362,7 +364,13 @@ worker:
         selectPolicy: Max
 ```
 
-### Autoscaling Webhooks
+:::info
+**Worker Autoscaling:** Horizontal Pod Autoscaler (HPA) automatically scales worker pods based on CPU and memory utilization metrics. Workers handle workflow execution, so scaling them ensures optimal performance during high workload periods while reducing costs during low activity. The behavior configuration controls scaling aggressiveness and stabilization periods.
+:::
+
+### Autoscaling Webhooks (HPA)
+
+Webhook nodes handle incoming webhook requests and form submissions. Autoscaling webhook pods ensures optimal performance during high webhook traffic while reducing resource usage during low activity periods.
 
 ```yaml
 webhook:
@@ -387,6 +395,10 @@ webhook:
             type: AverageValue
             averageValue: 1k
 ```
+
+:::info
+**Webhook Autoscaling:** Horizontal Pod Autoscaler (HPA) automatically scales webhook pods based on CPU utilization and network traffic metrics. Webhook nodes are lightweight and handle HTTP requests, making them ideal for autoscaling based on incoming traffic patterns.
+:::
 
 ### Deploy on All Nodes
 
