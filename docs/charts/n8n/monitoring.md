@@ -687,6 +687,9 @@ spec:
 
 ### Comprehensive n8n Dashboard
 
+<details>
+<summary>Grafana dashboard json file</summary>
+
 ```json
 {
   "annotations": {
@@ -1731,6 +1734,8 @@ spec:
   "version": 1
 }
 ```
+
+</details>
 
 ### Enhanced Prometheus Queries
 
