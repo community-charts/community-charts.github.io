@@ -1,6 +1,7 @@
 ---
 slug: actualbudget-chart-version-1.7.1-released
 title: actualbudget chart version 1.7.1 update now available
+date: 2025-07-02T02:50
 authors: burakince
 tags: [actualbudget, helm, kubernetes, open-source]
 description: Discover what's new in actualbudget Helm chart version 1.7.1 with app version 25.7.0, including key improvements and updates from the open source community.

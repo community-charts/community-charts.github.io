@@ -1,6 +1,7 @@
 ---
 slug: mlflow-chart-version-1.2.0-released
 title: mlflow chart version 1.2.0 released
+date: 2025-06-22T18:11
 authors: burakince
 tags: [mlflow, helm, kubernetes, open-source]
 description: Announcing the release of mlflow chart version 1.2.0 Helm chart, featuring app version 3.1.0, with new features and community-driven improvements.

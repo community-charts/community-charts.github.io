@@ -1,6 +1,7 @@
 ---
 slug: n8n-chart-version-1.8.6-released
 title: n8n chart version 1.8.6 released
+date: 2025-06-22T21:31
 authors: burakince
 tags: [n8n, helm, kubernetes, open-source]
 description: Announcing the release of n8n chart version 1.8.6 Helm chart, featuring app version 1.98.2, with new features and community-driven improvements.
