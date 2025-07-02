@@ -53,6 +53,9 @@ const config: Config = {
             'https://github.com/community-charts/community-charts.github.io/tree/main',
         },
         blog: {
+          blogTitle: 'Community Charts Blog Posts',
+          blogDescription: 'Discover Community Helm Charts blog posts for new chart releases, Kubernetes deployment guides, updates, and tips for open-source DevOps solutions.',
+          blogSidebarCount: 16, // or 'ALL'
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
