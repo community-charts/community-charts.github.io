@@ -66,9 +66,24 @@ azure:
 cloud-databases:
   label: Cloud Databases
   permalink: /cloud-databases
-  description: Best practices for connecting to managed cloud databases and caches on AWS, Azure, GCP, and more.
+  description: Expert guides and best practices for connecting to managed cloud databases and caches on AWS, Azure, GCP, and other leading cloud providers.
 
 redis:
   label: Redis
   permalink: /redis
   description: Configure your applications with Redis for caching, queueing, and real-time data, including managed Redis on major cloud providers.
+
+postgres:
+  label: Postgres
+  permalink: /postgres
+  description: Learn how to configure applications with PostgreSQL for reliable data storage, including guides for managed PostgreSQL on AWS, Google Cloud, and Azure.
+
+devops:
+  label: DevOps
+  permalink: /devops
+  description: Best practices, strategies, and tips for building, deploying, and managing applications using DevOps tools, automation, and modern CI/CD techniques.
+
+ci-cd:
+  label: CI/CD
+  permalink: /ci-cd
+  description: Discover expert CI/CD strategies, automation workflows, and top tools for continuous integration and continuous deployment to accelerate your software delivery pipeline.
