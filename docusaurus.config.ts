@@ -77,10 +77,9 @@ const config: Config = {
           anonymizeIP: true,
         },
         sitemap: {
-          lastmod: 'datetime',
           changefreq: 'weekly',
           priority: 0.5,
-          filename: 'sitemap-0.xml',
+          filename: 'sitemap.xml',
         },
       } satisfies Preset.Options,
     ],
