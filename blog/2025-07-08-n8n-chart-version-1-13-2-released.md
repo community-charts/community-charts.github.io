@@ -9,7 +9,7 @@ description: Discover what's new in n8n Helm chart version 1.13.2, featuring upd
 
 # n8n chart version 1.13.2 released!
 
-We’re excited to announce the release of the **n8n Helm chart version 1.13.2**, available as of **July 8, 2025**, featuring **app version undefined**. This update brings valuable enhancements and community-driven refinements to help you deploy n8n with confidence on Kubernetes.
+We’re excited to announce the release of the **n8n Helm chart version 1.13.2**, available as of **July 8, 2025**, featuring **app version 1.101.1**. This update brings valuable enhancements and community-driven refinements to help you deploy n8n with confidence on Kubernetes.
 
 ## What’s New in n8n 1.13.2
 
