@@ -187,6 +187,73 @@ helm install my-n8n community-charts/n8n \
 **AI Integration Capabilities:** MCP endpoints facilitate seamless interaction between AI models, assistants, and n8n workflows through the Model Context Protocol.
 :::
 
+#### MCP Service and Client Integration
+
+n8n now provides a dedicated MCP webhook service and endpoints for scalable AI/LLM integration:
+
+- **MCP Endpoint:** `/mcp/` (for AI assistants, LLMs, and tool clients)
+- **MCP Test Endpoint:** `/mcp-test/`
+- **MCP Webhook Service:** Deployed automatically when `webhook.mode=queue` and `db.type=postgresdb` and `webhook.mcp.enabled`
+
+##### Example values.yaml for MCP
+
+```yaml
+webhook:
+  mode: queue
+  url: "https://webhook.yourdomain.com"
+  count: 2
+  mcp:
+    enabled: true
+    # Customize resources, affinity, env, etc. under webhook.mcp
+```
+
+##### MCP Client Settings (Claude Desktop, Cursor, etc.)
+
+:::tip
+[Supergateway](https://github.com/supercorp-ai/supergateway) runs MCP stdio-based servers over SSE (Server-Sent Events) with one command.
+:::
+
+```json
+{
+  "mcpServers": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "supergateway",
+      "--sse",
+      "https://webhook.myhost/mcp/ab123c45-d678-9d0e-fg1a-2345bcd6ef7g"
+    ]
+  }
+}
+```
+
+With header authentication:
+
+```json
+{
+  "mcpServers": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "supergateway",
+      "--sse",
+      "https://webhook.myhost/mcp/ab123c45-d678-9d0e-fg1a-2345bcd6ef7g",
+      "--header",
+      "mykey:myvalue"
+    ]
+  }
+}
+```
+
+- Set these in Claude Desktop, Cursor, or any compatible MCP client.
+- Use `--header` for custom authentication (API keys, tokens, etc).
+
+:::tip
+**Scaling:**
+- Scale the MCP service with `webhook.count`, `webhook.autoscaling`, or `webhook.allNodes`.
+- Customize resources, affinity, and environment variables under `webhook.mcp`.
+:::
+
 ### Storage Solutions
 - **Default Storage** - In-memory binary data storage for simple deployments
 - **Filesystem Storage** - Local file system storage for single-node scenarios

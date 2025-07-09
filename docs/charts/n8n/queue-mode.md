@@ -99,6 +99,9 @@ webhook:
   mode: queue
   url: "https://yourdomain.com"
   count: 2
+  mcp:
+    enabled: true
+    # You can add extra env vars, affinity, resources, etc. under webhook.mcp
 
 ingress:
   enabled: true
@@ -108,6 +111,57 @@ ingress:
         - path: /
           pathType: Prefix
 ```
+
+### MCP Client Integration (Claude Desktop, Cursor, etc.)
+
+[Supergateway](https://github.com/supercorp-ai/supergateway) runs MCP stdio-based servers over SSE (Server-Sent Events) with one command. Please download your MCP client ([Claude Desktop](https://claude.ai/download), [Cursor](https://cursor.com/downloads), etc.) and apply the following configuration from client settings.
+
+:::tip
+`https://webhook.myhost/mcp/ab123c45-d678-9d0e-fg1a-2345bcd6ef7g` url must be replaced with your `MCP Server Trigger Production URL`.
+:::
+
+#### Basic MCP Client Settings
+
+```json
+{
+  "mcpServers": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "supergateway",
+      "--sse",
+      "https://webhook.myhost/mcp/ab123c45-d678-9d0e-fg1a-2345bcd6ef7g"
+    ]
+  }
+}
+```
+
+#### With Header Authentication
+
+```json
+{
+  "mcpServers": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "supergateway",
+      "--sse",
+      "https://webhook.myhost/mcp/ab123c45-d678-9d0e-fg1a-2345bcd6ef7g",
+      "--header",
+      "mykey:myvalue"
+    ]
+  }
+}
+```
+
+- You can set these in Claude Desktop, Cursor, or any compatible MCP client.
+- Header authentication is supported for secure access.
+
+:::info
+**Authentication:**
+- Use `--header` to pass custom authentication headers (e.g., API keys, tokens).
+- You can also use Bearer tokens if your n8n instance is configured for it.
+:::
 
 :::info
 **MCP Documentation:** For detailed MCP setup and usage, see the [official n8n MCP documentation](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-langchain.mcptrigger/).

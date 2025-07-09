@@ -134,6 +134,8 @@ service:
 
 ### Standard Ingress Configuration
 
+This configuration sets up a basic Ingress for n8n using the NGINX Ingress controller, with TLS enabled for secure communication.
+
 ```yaml
 ingress:
   enabled: true
@@ -158,6 +160,8 @@ ingress:
 
 ### Multi-Host Ingress Configuration
 
+For enhanced security and access control, you can configure separate hosts for the n8n UI and API. This approach allows for granular management of traffic.
+
 ```yaml
 ingress:
   enabled: true
@@ -177,6 +181,100 @@ ingress:
 **Host Separation Strategy:** Implement separate API and UI hosts for enhanced security posture and granular access control.
 :::
 
+### Webhook Subdomain Ingress Configuration
+
+You can configure webhook endpoints with or without SSL, depending on your needs. Below are examples for both scenarios.
+
+:::tip
+Ensure the correct certificate secret is defined in the `ingress.tls` section when using SSL for webhook endpoints.
+:::
+
+#### Without SSL
+
+```yaml
+ingress:
+  enabled: true
+  hosts:
+    - host: n8n.yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+webhook:
+  ...
+  url: "http://webhook.yourdomain.com"
+  ...
+```
+
+#### With SSL
+
+```yaml
+ingress:
+  enabled: true
+  hosts:
+    - host: n8n.yourdomain.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: n8n-tls
+      hosts:
+        - n8n.yourdomain.com
+        - webhook.yourdomain.com
+
+webhook:
+  ...
+  url: "https://webhook.yourdomain.com"
+  ...
+```
+
+### Different Webhook Domain Ingress Configuration
+
+For setups using different domains for n8n and webhooks, you can configure Ingress accordingly. Below are examples with and without SSL.
+
+:::tip
+When using SSL, verify that the certificate secret in `ingress.tls` matches the correct hostnames.
+:::
+
+#### Without SSL
+
+```yaml
+ingress:
+  enabled: true
+  hosts:
+    - host: n8n.firstdomain.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+webhook:
+  ...
+  url: "http://webhook.seconddomain.com"
+  ...
+```
+
+#### With SSL
+
+```yaml
+ingress:
+  enabled: true
+  hosts:
+    - host: n8n.firstdomain.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: n8n-tls
+      hosts:
+        - n8n.firstdomain.local
+        - webhook.seconddomain.com
+
+webhook:
+  ...
+  url: "https://webhook.seconddomain.com"
+  ...
+```
+
 ### Queue Mode Advanced Endpoints
 
 :::info
@@ -187,26 +285,61 @@ ingress:
 
 When implementing queue mode with PostgreSQL, the following MCP endpoints are automatically configured:
 
+- `/mcp/` — Main MCP endpoint for AI assistants, LLMs, and tool clients
+- `/mcp-test/` — Test endpoint for MCP
+- **MCP Webhook Service** — Dedicated deployment for MCP traffic (enabled when `webhook.count` bigger than 1 or `webhook.autoscaling.enabled=true` or `webhook.allNodes=true`)
+
+##### Example values.yaml for MCP
+
 ```yaml
-ingress:
-  enabled: true
-  className: nginx
-  hosts:
-    - host: n8n.yourdomain.com
-      paths:
-        - path: /
-          pathType: Prefix
-        # MCP endpoints are automatically added when webhook.mode=queue
-        # - path: /mcp/
-        # - path: /mcp-test/
+webhook:
+  mode: queue
+  url: "https://webhook.yourdomain.com"
+  count: 2
+  mcp:
+    enabled: true
+    # Customize resources, affinity, env, etc. under webhook.mcp
 ```
 
-**Available MCP Endpoints:**
-- `/mcp/` - Primary MCP server endpoint for AI model integration
-- `/mcp-test/` - Testing endpoint for MCP functionality validation
+##### MCP Client Integration (Claude Desktop, Cursor, etc.)
+
+Set the following in your client (Claude Desktop, Cursor, etc.):
+
+```json
+{
+  "mcpServers": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "supergateway",
+      "--sse",
+      "https://webhook.myhost/mcp/ab123c45-d678-9d0e-fg1a-2345bcd6ef7g"
+    ]
+  }
+}
+```
+
+With header authentication:
+
+```json
+{
+  "mcpServers": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "supergateway",
+      "--sse",
+      "https://webhook.myhost/mcp/ab123c45-d678-9d0e-fg1a-2345bcd6ef7g",
+      "--header",
+      "mykey:myvalue"
+    ]
+  }
+}
+```
 
 :::tip
-**AI Integration Capabilities:** MCP endpoints facilitate seamless interaction between AI models, assistants, and n8n workflows through the Model Context Protocol.
+**MCP Scaling:**
+- Customize resources, affinity, and environment variables under `webhook.mcp`.
 :::
 
 #### Form Endpoints
