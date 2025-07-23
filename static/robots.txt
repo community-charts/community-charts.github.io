@@ -3,4 +3,7 @@ Allow: /docs/
 Allow: /blog/
 Disallow: /search
 Disallow: /helm-charts
+Disallow: /llms.txt
+Disallow: /llms-full.txt
+Disallow: /*.md
 Sitemap: https://community-charts.github.io/sitemap.xml
