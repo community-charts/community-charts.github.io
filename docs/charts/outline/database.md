@@ -122,7 +122,8 @@ externalPostgresql:
   port: 5432
   database: outline
   username: outline
-  existingSecret: "my-postgresql-secret"  # Must contain postgres-password key
+  existingSecret: "my-postgresql-secret"
+  passwordSecretKey: "postgres-password"
 ```
 
 ### External PostgreSQL Examples
@@ -139,6 +140,7 @@ externalPostgresql:
   database: outline
   username: outline
   existingSecret: "outline-rds-secret"
+  passwordSecretKey: "postgres-password"
 ```
 
 #### Google Cloud SQL
@@ -153,6 +155,7 @@ externalPostgresql:
   database: outline
   username: outline
   existingSecret: "outline-cloudsql-secret"
+  passwordSecretKey: "postgres-password"
 ```
 
 #### Azure Database for PostgreSQL
@@ -167,6 +170,7 @@ externalPostgresql:
   database: outline
   username: "outline@outline-db"
   existingSecret: "outline-azure-secret"
+  passwordSecretKey: "postgres-password"
 ```
 
 ## Database Configuration
@@ -232,7 +236,9 @@ externalRedis:
   port: 6379
   username: "default"
   password: "your-password"
-  existingSecret: "my-redis-secret"  # Must contain redis-password key
+  existingSecret: "my-redis-secret"
+  usernameSecretKey: "redis-username"
+  passwordSecretKey: "redis-password"
 ```
 
 ## Environment Variables
@@ -283,6 +289,7 @@ The chart automatically sets these environment variables based on your database 
      database: outline
      username: outline
      existingSecret: "external-postgresql-secret"
+     passwordSecretKey: "postgres-password"
    ```
 
 ### From External to Built-in

@@ -520,6 +520,14 @@ strategy:
     maxSurge: "25%"
     maxUnavailable: "25%"
 
+secretKeyExternalSecret:
+  name: "my-secret-key-secret"
+  key: "secret-key"
+
+utilsSecretExternalSecret:
+  name: "my-utils-secret-secret"
+  key: "utils-secret"
+
 # Image configuration
 image:
   repository: outlinewiki/outline
