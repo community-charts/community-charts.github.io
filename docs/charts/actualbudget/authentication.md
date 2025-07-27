@@ -130,6 +130,34 @@ login:
 The `clientSecret` will be stored in a Kubernetes Secret. Ensure your cluster has proper RBAC and encryption at rest configured.
 :::
 
+### Existing Secret for OpenID Client Secret
+
+To use OpenID with a Kubernetes Secret for sensitive data:
+
+1. **Create a Secret**:
+
+```bash
+kubectl create secret generic actualbudget-openid-secret \
+  --from-literal=clientId=actualbudget-client \
+  --from-literal=clientSecret=your-client-secret
+```
+
+2. **Update `values.yaml`**:
+
+```yaml
+login:
+  method: "openid"
+  openid:
+    enforce: true
+    providerName: "Keycloak"
+    discoveryUrl: "https://keycloak.example.com/auth/realms/my-realm/.well-known/openid-configuration"
+    tokenExpiration: 3600
+    existingSecret:
+      name: "actualbudget-openid-secret"
+      clientIdKey: "clientId"
+      clientSecretKey: "clientSecret"
+```
+
 ## Multiple Authentication Methods
 
 You can enable multiple authentication methods simultaneously:
@@ -191,6 +219,8 @@ login:
     discoveryUrl: "https://accounts.google.com/.well-known/openid_configuration"
     clientId: "your-google-client-id"
     clientSecret: "your-google-client-secret"
+    authMethod: "openid"
+    tokenExpiration: 3600
 ```
 
 ### Azure AD
@@ -206,6 +236,8 @@ login:
     discoveryUrl: "https://login.microsoftonline.com/your-tenant-id/v2.0/.well-known/openid_configuration"
     clientId: "your-azure-client-id"
     clientSecret: "your-azure-client-secret"
+    authMethod: "openid"
+    tokenExpiration: 3600
 ```
 
 ### Okta
@@ -221,6 +253,8 @@ login:
     discoveryUrl: "https://your-domain.okta.com/.well-known/openid_configuration"
     clientId: "your-okta-client-id"
     clientSecret: "your-okta-client-secret"
+    authMethod: "openid"
+    tokenExpiration: 3600
 ```
 
 ## Troubleshooting Authentication
