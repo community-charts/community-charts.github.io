@@ -81,6 +81,7 @@ binaryData:
 main:
   persistence:
     enabled: true
+    type: dynamic
     volumeName: "n8n-binary-data"
     mountPath: "/home/node/.n8n"
     size: 10Gi
