@@ -185,6 +185,10 @@ const config: Config = {
               href: 'https://x.com/ChartsCommunity',
             },
             {
+              label: 'BlueSky',
+              href: 'https://bsky.app/profile/community-charts.bsky.social',
+            },
+            {
               label: 'Keybase',
               href: 'https://keybase.io/communitycharts',
             },
