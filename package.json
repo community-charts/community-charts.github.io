@@ -36,7 +36,7 @@
     "@docusaurus/tsconfig": "3.9.2",
     "@docusaurus/types": "3.9.2",
     "@signalwire/docusaurus-plugin-llms-txt": "^1.2.2",
-    "@typescript-eslint/eslint-plugin": "^8.50.0",
+    "@typescript-eslint/eslint-plugin": "^8.50.1",
     "@typescript-eslint/parser": "^8.35.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
