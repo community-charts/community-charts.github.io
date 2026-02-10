@@ -54,6 +54,8 @@ Create a database and user for MLflow:
 CREATE DATABASE mlflow;
 CREATE USER mlflow_user WITH PASSWORD 'your_secure_password';
 GRANT ALL PRIVILEGES ON DATABASE mlflow TO mlflow_user;
+\c mlflow
+GRANT USAGE, CREATE ON SCHEMA public TO mlflow_user;
 ```
 
 ### 2. Install MLflow with External PostgreSQL
