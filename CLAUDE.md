@@ -37,7 +37,10 @@ There are no tests. The pre-commit hooks run Prettier and ESLint automatically o
 - **`blog/`** — Markdown blog posts (one per chart release). Auto-processed by `scripts/generateBlogList.js` into `src/data/latestBlogPosts.json` at build time to power the homepage's latest posts widget.
 - **`docs/`** — Docusaurus documentation pages. Sidebar is auto-generated from the directory structure (`sidebars.ts`).
 - **`src/components/`** — Homepage section components (each with `index.tsx` + `styles.module.css`).
-- **`src/theme/`** — Swizzled Docusaurus theme components (blog list page, author pages, tag pages with structured data).
+- **`src/theme/`** — Swizzled Docusaurus theme components. Key overrides for structured data:
+  - `DocBreadcrumbs/StructuredData` — enhances doc page `BreadcrumbList` so each `item` is a `WebPage` object (fixes "Unknown item" in Google Rich Results Test).
+  - `BlogPostPage/StructuredData` — adds a fallback `ImageObject` when a blog post has no image, and emits a `BreadcrumbList` (Home → Blog → Post).
+  - `Blog/Pages/BlogAuthorsPostsPage` — emits `ProfilePage` JSON-LD with the author as `mainEntity Person`.
 - **`static/`** — Static assets served as-is (robots.txt, favicon, search engine verification files).
 
 ### Homepage Flow
@@ -62,6 +65,18 @@ description: ...
 ```
 
 Authors are defined in `blog/authors.yml`; tags must exist in `blog/tags.yml`.
+
+`blog/authors.yml` supports custom fields beyond the Docusaurus standard (`name`, `title`, `url`, `image_url`, `email`, `socials`, `description`) for schema.org enrichment. The `BlogAuthorsPostsPage` wrapper reads these via `AuthorAttributes`'s `[customAuthorAttribute: string]: unknown` index signature:
+
+| Custom field | Type | Purpose |
+|---|---|---|
+| `jobTitle` | string | Person `jobTitle` in JSON-LD |
+| `worksFor` | object | Person `worksFor` Organization in JSON-LD |
+| `gender` | string | Person `gender` in JSON-LD |
+| `schemaImageUrl` | string | Overrides `image_url` for Person `image` in JSON-LD only |
+| `personId` | string | Person `@id` — must differ from the `ProfilePage @id` (the author page URL) |
+| `dateCreated` | ISO string | `ProfilePage dateCreated` |
+| `additionalSameAs` | string[] | Extra URLs appended to Person `sameAs` |
 
 ### Documentation Pages
 
