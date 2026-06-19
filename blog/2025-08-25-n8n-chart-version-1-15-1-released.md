@@ -19,7 +19,7 @@ Version 1.15.1 of the Helm chart includes key enhancements that make deploying a
 
 You can view the full changelog in the [official release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.15.1).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with the n8n 1.15.1 chart
 

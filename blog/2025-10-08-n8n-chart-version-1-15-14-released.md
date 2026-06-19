@@ -24,7 +24,7 @@ The Helm chart version 1.15.14 introduces important updates to both the applicat
 
 For the complete changelog and technical details, check out the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.15.14).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Get Started
 

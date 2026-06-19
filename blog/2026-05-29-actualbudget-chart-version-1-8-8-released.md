@@ -20,7 +20,7 @@ This release encompasses updates to both the Helm chart (version 1.8.8) and the 
 
 For a comprehensive list of changes, please view the [release notes](https://github.com/community-charts/helm-charts/releases/tag/actualbudget-1.8.8) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with the Actualbudget 1.8.8 Chart
 

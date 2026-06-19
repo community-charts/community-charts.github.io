@@ -20,7 +20,7 @@ This release not only updates the Helm chart (version 2.2.8) but also the underl
 
 For a complete breakdown of changes, please refer to the [release notes](https://github.com/community-charts/helm-charts/releases/tag/cloudflared-2.2.8) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with Cloudflared 2.2.8 Chart
 

@@ -19,7 +19,7 @@ This version introduces key improvements across the Helm chart (v0.5.1) and the 
 
 You can view the full list of updates in our [GitHub release notes](https://github.com/community-charts/helm-charts/releases/tag/outline-0.5.1).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with outline 0.5.1
 

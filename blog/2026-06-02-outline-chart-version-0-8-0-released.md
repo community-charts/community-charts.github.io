@@ -19,7 +19,7 @@ The release includes important updates to both the Helm Chart (version 0.8.0) an
 
 For a comprehensive list of updates, please check out the [release notes](https://github.com/community-charts/helm-charts/releases/tag/outline-0.8.0) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with Outline 0.8.0 Chart
 

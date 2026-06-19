@@ -20,7 +20,7 @@ This release focuses on keeping your deployment up to date with the latest from 
 
 To see the full changelog, take a look at the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.12) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Deploy n8n with the 1.16.12 Chart
 

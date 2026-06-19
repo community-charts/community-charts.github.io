@@ -11,7 +11,7 @@ description: The actualbudget chart version 1.8.4 is now available, featuring ap
 
 We’re excited to announce the release of the **actualbudget Helm chart version 1.8.4**, now live as of November 3, 2025, and featuring the latest **application version 25.11.0**. This updated release continues our commitment to easy, reliable deployment of actualbudget on Kubernetes, with meaningful enhancements inspired by the open-source community.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What’s New in 1.8.4
 

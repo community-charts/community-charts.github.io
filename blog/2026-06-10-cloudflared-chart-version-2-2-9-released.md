@@ -21,7 +21,7 @@ This release includes significant updates to both the Helm chart (version 2.2.9)
 
 For a complete list of changes, please view the [release notes](https://github.com/community-charts/helm-charts/releases/tag/cloudflared-2.2.9) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with Cloudflared 2.2.9 Chart
 

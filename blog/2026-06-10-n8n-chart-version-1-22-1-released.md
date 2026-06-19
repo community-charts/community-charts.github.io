@@ -22,7 +22,7 @@ With this release, you will find significant updates to both the Helm chart (ver
 
 For a complete list of changes, be sure to check the [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.22.1) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with n8n 1.22.1 chart
 

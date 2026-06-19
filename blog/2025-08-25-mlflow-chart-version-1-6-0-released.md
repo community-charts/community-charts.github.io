@@ -23,7 +23,7 @@ Version 1.6.0 introduces several key changes and fixes thanks to contributions f
 
 For the full list of updates and technical details, check out the official [mlflow 1.6.0 release notes](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.6.0) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with mlflow 1.6.0
 

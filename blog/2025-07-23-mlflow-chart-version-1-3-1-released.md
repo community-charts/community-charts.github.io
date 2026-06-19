@@ -24,7 +24,7 @@ Helm chart version 1.3.1 introduces several key improvements and version bumps t
 
 For a complete breakdown of changes, see the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.3.1).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with mlflow 1.3.1
 

@@ -11,7 +11,7 @@ description: Discover what's new in actualbudget Helm chart 1.8.5 featuring app 
 
 We’re excited to share the release of the **actualbudget Helm chart version 1.8.5**, officially available as of 2025-12-04! This update includes **application version 25.12.0**, offering important enhancements and valuable contributions from our vibrant open-source community.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Highlights of version 1.8.5
 

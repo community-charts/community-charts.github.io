@@ -11,7 +11,7 @@ description: Discover what's new in n8n Helm chart version 1.15.18 with app vers
 
 We’re excited to announce the release of the updated **n8n Helm chart version 1.15.18**, featuring **app version 1.117.2**, now available as of 2025-10-28. This release includes important updates and enhancements that make deploying n8n on Kubernetes even more seamless for developers and teams.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What’s New in n8n 1.15.18
 

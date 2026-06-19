@@ -11,7 +11,7 @@ description: Discover cloudflared Helm chart 2.0.9 with app version 2025.7.0, fe
 
 We’re excited to announce that the latest release of the **cloudflared Helm chart (v2.0.9)** is now available, officially released on **July 16, 2025**. This version packages **cloudflared app version 2025.7.0**, bringing improved stability and enhanced usability for your Kubernetes deployments.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What’s New in v2.0.9
 

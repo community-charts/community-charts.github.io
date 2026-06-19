@@ -22,7 +22,7 @@ These changes allow for more efficient use of resources and better alignment wit
 
 Explore the full changelog in the [official release notes](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.8.0).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with mlflow 1.8.0
 

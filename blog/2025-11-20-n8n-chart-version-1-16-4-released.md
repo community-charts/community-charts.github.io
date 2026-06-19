@@ -20,7 +20,7 @@ This release updates the Helm chart to version 1.16.4 and bumps the underlying n
 
 To view the full changelog, check out the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.4) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Start using n8n 1.16.4 today
 

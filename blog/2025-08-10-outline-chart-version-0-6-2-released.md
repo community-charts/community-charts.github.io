@@ -24,7 +24,7 @@ Packed with improvements and fresh updates, this release enhances both the Helm 
 
 To dive into the complete list of changes, check out the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/outline-0.6.2).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started
 

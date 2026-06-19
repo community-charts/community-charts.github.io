@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@docusaurus/core": "3.10.1",
+    "@docusaurus/faster": "3.10.1",
     "@docusaurus/preset-classic": "3.10.1",
     "@docusaurus/theme-mermaid": "^3.10.1",
     "@gracefullight/docusaurus-plugin-microsoft-clarity": "^1.0.0",
