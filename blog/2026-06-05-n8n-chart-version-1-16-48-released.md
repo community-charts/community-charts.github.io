@@ -19,7 +19,7 @@ This release encompasses updates to the Helm chart (version 1.16.48) along with 
 
 For a detailed list of changes, please view the [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.48) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with n8n 1.16.48 chart
 

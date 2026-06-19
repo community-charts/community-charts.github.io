@@ -20,7 +20,7 @@ Version 2.1.3 focuses on staying up to date with upstream developments and ensur
 
 Review the full changelog in the [release notes](https://github.com/community-charts/helm-charts/releases/tag/cloudflared-2.1.3) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to get started with cloudflared 2.1.3
 

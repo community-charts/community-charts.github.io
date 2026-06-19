@@ -26,7 +26,7 @@ This release includes updates to both the Helm chart and its dependencies, ensur
 
 🔗 For the complete list of changes, review the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.6.1).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with mlflow 1.6.1
 

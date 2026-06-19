@@ -26,7 +26,7 @@ Here’s a look at what’s included in this release of the n8n Helm chart (v1.1
 
 Curious about all the changes? Head over to the official [n8n 1.13.3 release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.13.3).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with n8n 1.13.3
 

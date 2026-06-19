@@ -29,7 +29,7 @@ This version of the Outline Helm chart is packed with notable updates and small 
 
 For full details, please refer to the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/outline-0.4.2).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting started with Outline 0.4.2
 

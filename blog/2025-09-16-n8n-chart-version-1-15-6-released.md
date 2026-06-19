@@ -20,7 +20,7 @@ This chart update brings you the latest improvements from the n8n community and 
 
 For the complete changelog, view the [official release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.15.6) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with n8n 1.15.6
 

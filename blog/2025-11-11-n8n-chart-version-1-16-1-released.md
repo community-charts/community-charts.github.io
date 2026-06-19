@@ -24,7 +24,7 @@ This release updates both the Helm chart and the underlying app version, incorpo
 
 For the full list of changes, check out the [n8n 1.16.1 release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.1) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Get Started with n8n 1.16.1
 

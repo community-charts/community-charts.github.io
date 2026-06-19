@@ -22,7 +22,7 @@ The latest release includes updates to the Helm chart (version 1.8.6) as well as
 
 For a detailed overview of all changes, check out the [release notes](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.8.6) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with mlflow 1.8.6 chart
 

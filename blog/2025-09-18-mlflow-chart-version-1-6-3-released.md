@@ -20,7 +20,7 @@ Version 1.6.3 delivers important updates both to the Helm chart and the mlflow a
 
 Explore the full changelog in the [official release notes](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.6.3) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with mlflow 1.6.3
 

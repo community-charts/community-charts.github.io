@@ -20,7 +20,7 @@ This version focuses on keeping your deployments up to date with the latest appl
 
 Check out the full changelog in the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.13.7) for a detailed breakdown.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with the n8n 1.13.7 chart
 

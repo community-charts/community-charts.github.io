@@ -22,7 +22,7 @@ This release refreshes both the Helm chart and the application version to bring 
 
 Explore the full details in our [official release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.3).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with the Latest Chart
 

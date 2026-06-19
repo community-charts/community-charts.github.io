@@ -23,7 +23,7 @@ This update brings important changes to both the Helm chart and its dependencies
 
 For full details, check out the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.7.2).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with mlflow 1.7.2
 

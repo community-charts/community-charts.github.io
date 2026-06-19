@@ -20,7 +20,7 @@ This latest release includes updates to both the Helm chart (version 0.1.5) and 
 
 To see the full list of changes, feel free to check the [release notes](https://github.com/community-charts/helm-charts/releases/tag/drone-0.1.5) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with Drone 0.1.5 Chart
 

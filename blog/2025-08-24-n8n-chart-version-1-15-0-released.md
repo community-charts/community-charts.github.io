@@ -29,7 +29,7 @@ This update enhances both the n8n Helm chart and the application it deploys. Her
 
 For the full list of changes, be sure to check out the [official release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.15.0) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Deploy n8n v1.15.0 on Kubernetes
 

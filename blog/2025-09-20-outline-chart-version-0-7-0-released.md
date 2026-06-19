@@ -20,7 +20,7 @@ Version 0.7.0 of the Outline Helm chart introduces key enhancements that focus o
 
 For the full release details, check out the complete [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/outline-0.7.0).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with Outline 0.7.0
 

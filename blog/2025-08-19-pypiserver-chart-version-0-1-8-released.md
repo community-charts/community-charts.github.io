@@ -11,7 +11,7 @@ description: Discover what's new in the pypiserver Helm chart version 0.1.8, fea
 
 We’re excited to announce the release of the latest version of our Helm chart for pypiserver — version 0.1.8 — now available as of August 19, 2025. This release delivers support for app version **v2.4.0**, bringing new features and meaningful improvements to make your Helm-based deployments even more seamless.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What’s New in Chart Version 0.1.8
 

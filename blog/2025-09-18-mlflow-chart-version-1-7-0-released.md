@@ -20,7 +20,7 @@ This release brings several updates to enhance your Kubernetes deployment experi
 
 For the full list of changes in this release, check out the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.7.0).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with mlflow 1.7.0
 

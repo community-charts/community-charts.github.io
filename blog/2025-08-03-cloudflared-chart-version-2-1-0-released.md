@@ -21,7 +21,7 @@ These new capabilities enhance secret management, making production deployments 
 
 Check out the full changelog in the official [GitHub release notes](https://github.com/community-charts/helm-charts/releases/tag/cloudflared-2.1.0).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Get Started
 

@@ -15,7 +15,7 @@ We're thrilled to announce the launch of the **GitHub Community Charts** website
 
 Many open-source projects lose official Helm chart support when companies shift priorities or discontinue contributions. That's where we step in. At GitHub Community Charts, we maintain and enhance Helm charts for essential tools, keeping them up-to-date, well-documented, and production-ready. Our community-driven approach ensures these charts remain relevant, reliable, and easy to use.
 
-<!-- truncate -->
+{/* truncate */}
 
 ### Featured Chart: MLflow
 

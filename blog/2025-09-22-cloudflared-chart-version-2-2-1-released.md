@@ -20,7 +20,7 @@ In this release, we’ve updated the cloudflared image and continued our commitm
 
 You can find the full list of changes and improvements in the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/cloudflared-2.2.1).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with cloudflared
 

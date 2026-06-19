@@ -20,7 +20,7 @@ This version brings the following update:
 
 For a complete list of changes, see the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.13.9) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Get Started
 

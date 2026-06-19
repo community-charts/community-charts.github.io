@@ -23,7 +23,7 @@ This release encompasses updates not only to the Helm chart (version 1.16.47) bu
 
 For a comprehensive overview of all changes, be sure to check out the [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.47) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with the n8n 1.16.47 Chart
 

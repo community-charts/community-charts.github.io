@@ -19,7 +19,7 @@ This release includes updates to both the Helm chart (version 1.8.5) and the und
 
 For a comprehensive list of changes, you can view the [release notes](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.8.5) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with MLflow 1.8.5 Chart
 

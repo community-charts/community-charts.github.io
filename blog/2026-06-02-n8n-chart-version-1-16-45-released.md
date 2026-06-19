@@ -22,7 +22,7 @@ The release of the n8n chart version 1.16.45 includes notable updates to the Hel
 
 For more detailed information, please check out the complete [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.45) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with n8n 1.16.45 chart
 

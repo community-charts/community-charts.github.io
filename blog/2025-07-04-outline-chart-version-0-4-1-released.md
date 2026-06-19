@@ -11,7 +11,7 @@ description: Discover what's new in outline Helm chart 0.4.1 with updated depend
 
 We’re excited to announce the release of the **Outline Helm Chart version 0.4.1**, available as of July 4, 2025. This update delivers important improvements and refreshed dependencies to make deploying Outline on your Kubernetes clusters smoother and more efficient.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What’s New in 0.4.1
 

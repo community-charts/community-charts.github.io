@@ -20,7 +20,7 @@ This release includes important updates to both the Helm chart and the underlyin
 
 Check out the full changelog and details in the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.4.1).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Get Started with mlflow 1.4.1
 

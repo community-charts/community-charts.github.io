@@ -20,7 +20,7 @@ The 1.8.9 release includes significant updates to both the Helm chart and the ap
 
 For a comprehensive list of changes, you can check out the [release notes](https://github.com/community-charts/helm-charts/releases/tag/actualbudget-1.8.9) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with actualbudget 1.8.9 chart
 
