@@ -63,6 +63,16 @@ If you want user access with more limited privileges on the public schema:
 CREATE DATABASE mlflow;
 CREATE USER mlflow_user WITH PASSWORD 'your_secure_password';
 GRANT ALL PRIVILEGES ON DATABASE mlflow TO mlflow_user;
+\c mlflow
+GRANT USAGE, CREATE ON SCHEMA public TO mlflow_user;
+```
+
+Or if you want to use mlflow specific schema, please use:
+
+```sql
+CREATE DATABASE mlflow;
+CREATE USER mlflow_user WITH PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE mlflow TO mlflow_user;
 \c mlflow mlflow_user
 CREATE SCHEMA mlflow;
 ALTER ROLE mlflow_user IN DATABASE mlflow
