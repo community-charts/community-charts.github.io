@@ -23,7 +23,7 @@ Here’s what’s included in this chart release:
 
 To review all the details and contributions, visit the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.7.3).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Install mlflow 1.7.3
 

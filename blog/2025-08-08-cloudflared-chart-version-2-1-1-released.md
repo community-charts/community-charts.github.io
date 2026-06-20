@@ -20,7 +20,7 @@ Chart version 2.1.1 includes important enhancements to streamline your cloudflar
 
 For a complete list of updates and technical details, check out the full [release notes](https://github.com/community-charts/helm-charts/releases/tag/cloudflared-2.1.1) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Get Started
 

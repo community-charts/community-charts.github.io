@@ -22,7 +22,7 @@ With this chart update, actualbudget continues to grow as a Kubernetes-friendly,
 
 To dive into the full list of changes, check out the [official release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/actualbudget-1.8.0).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with actualbudget 1.8.0
 

@@ -11,7 +11,7 @@ description: Discover what's new in cloudflared Helm chart version 2.0.8 with up
 
 We’re excited to announce the release of the **cloudflared Helm chart version 2.0.8**, published on July 4th, 2025! This update brings performance enhancements, added flexibility, and contributions from our open-source community—all designed to make deploying cloudflared on Kubernetes even easier.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What's New in 2.0.8
 

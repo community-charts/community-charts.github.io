@@ -24,7 +24,7 @@ These updates help ensure greater stability, improved performance, and compatibi
 
 Check out the complete release changelog on our [GitHub release page](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.14).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with n8n 1.16.14
 

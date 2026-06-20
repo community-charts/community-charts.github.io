@@ -20,7 +20,7 @@ The actualbudget chart version 1.8.2 introduces an updated container image and i
 
 To view the full list of changes, check out the [actualbudget 1.8.2 release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/actualbudget-1.8.2).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with actualbudget 1.8.2
 

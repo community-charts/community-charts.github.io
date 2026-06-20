@@ -11,7 +11,7 @@ description: Announcing the n8n chart version 1.15.13 with app version 1.114.3, 
 
 We’re excited to announce the release of the **n8n Helm chart version 1.15.13**, available as of October 7, 2025. This update includes **n8n application version 1.114.3**, delivering valuable enhancements, dependency updates, and continued support from our amazing open-source community.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What’s new in n8n chart 1.15.13
 

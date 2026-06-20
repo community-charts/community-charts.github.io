@@ -20,7 +20,7 @@ This release includes updates to both the Helm chart (v1.12.3) and the core appl
 
 For a complete breakdown of updates, check out the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.12.3).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting started with Helm chart 1.12.3
 

@@ -11,7 +11,7 @@ description: Discover what's new in Outline Helm chart 0.7.2 with app version 1.
 
 We’re excited to introduce the release of the **Outline Helm chart version 0.7.2**, published on October 30, 2025. This release includes support for **Outline application version 1.0.1** and brings important updates to chart dependencies—making it easier than ever to run and scale Outline on Kubernetes.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What's new in Outline 0.7.2
 

@@ -11,7 +11,7 @@ description: Discover what's new in the Outline Helm chart v0.6.0 with app versi
 
 We’re excited to announce the release of the **Outline Helm chart v0.6.0**, now available as of **July 25, 2025**, featuring **application version 0.85.1**. This version brings valuable improvements and fixes inspired by community feedback, making it even easier to run Outline on Kubernetes.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What’s new in chart version 0.6.0?
 

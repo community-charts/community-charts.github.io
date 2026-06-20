@@ -24,7 +24,7 @@ The 1.12.1 chart update brings enhancements to both the Helm chart and the assoc
 
 For the full list of updates, check out the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.12.1) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to get started with n8n 1.12.1
 

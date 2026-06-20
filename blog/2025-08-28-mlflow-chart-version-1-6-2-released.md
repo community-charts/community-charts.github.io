@@ -22,7 +22,7 @@ Here’s what’s included in the latest release:
 
 Want to explore everything in this release? Check out the full [changelog on GitHub](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.6.2).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with mlflow chart 1.6.2
 

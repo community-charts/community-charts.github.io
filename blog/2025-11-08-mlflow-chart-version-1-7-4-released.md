@@ -22,7 +22,7 @@ Version 1.7.4 introduces updates focused on improving stability and compatibilit
 
 For the full list of updates and detailed changelog, check out the official [1.7.4 release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/mlflow-1.7.4).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting started with mlflow 1.7.4
 

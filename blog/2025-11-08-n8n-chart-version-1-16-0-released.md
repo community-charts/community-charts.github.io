@@ -20,7 +20,7 @@ This version improves the Helm chart configuration to ensure smoother deployment
 
 To explore everything included in this release, check out the full [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.0) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with the n8n 1.16.0 chart
 

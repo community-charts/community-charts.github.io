@@ -28,7 +28,7 @@ The Helm chart (v1.13.0) includes multiple additions, fixes, and enhancements ba
 
 Find the complete list and technical details in our official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.13.0).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Quick start with Helm chart 1.13.0
 

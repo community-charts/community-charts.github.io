@@ -22,7 +22,7 @@ This release updates both the Helm chart and core application, enhancing stabili
 
 For full details, check out the official [v1.13.4 release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.13.4) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with n8n 1.13.4
 

@@ -20,7 +20,7 @@ This release includes updates to both the Helm chart (v0.6.4) and the Outline ap
 
 Check out the full list of changes in the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/outline-0.6.4).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Quick start with the Outline 0.6.4 chart
 

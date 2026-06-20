@@ -21,7 +21,7 @@ Here’s what’s new in this release of the chart and application:
 
 These changes were driven by feedback and contributions from the open-source community. Explore the full changelog on our [GitHub release page](https://github.com/community-charts/helm-charts/releases/tag/outline-0.4.3).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to get started with Outline 0.4.3
 

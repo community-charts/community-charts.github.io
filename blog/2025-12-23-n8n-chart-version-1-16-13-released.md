@@ -26,7 +26,7 @@ This release introduces important component updates and dependency refinements f
 
 For the full list of enhancements and changes, check out the [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.13).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with n8n 1.16.13
 

@@ -11,7 +11,7 @@ description: Discover the new mlflow Helm chart version 1.7.1 with app version 3
 
 We’re excited to share that the latest release of the **mlflow Helm chart, version 1.7.1**, is now available as of September 20, 2025. This update includes **mlflow app version 3.4.0** and introduces new features focused on flexibility and user-driven improvements—making your Kubernetes deployments even more seamless.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Highlights of the 1.7.1 Release
 
