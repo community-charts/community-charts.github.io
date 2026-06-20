@@ -80,6 +80,10 @@ auth:
   enabled: true
   adminUsername: admin
   adminPassword: your-secure-password
+  existingAdminSecret:
+    name: "mlflow-auth"
+    usernameKey: "admin-user"
+    passwordKey: "admin-password"
   defaultPermission: READ
   appName: basic-auth
   authorizationFunction: mlflow.server.auth:authenticate_request_basic_auth
