@@ -24,7 +24,7 @@ This latest chart release delivers improvements to both the Helm chart and its c
 
 For the full list of updates and technical notes, check out the [official release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.13.2).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with n8n 1.13.2
 

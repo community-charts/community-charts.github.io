@@ -26,7 +26,7 @@ Here’s what’s included in this version:
 
 For a full list of changes, check out the official [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/outline-0.6.3).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with Outline 0.6.3
 

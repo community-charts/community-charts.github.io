@@ -20,7 +20,7 @@ With this release, you’ll benefit from updated components that enhance reliabi
 
 For the full list of changes, view the official [v0.6.5 release notes](https://github.com/community-charts/helm-charts/releases/tag/outline-0.6.5) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with Outline 0.6.5
 

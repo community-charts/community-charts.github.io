@@ -26,7 +26,7 @@ Here’s a breakdown of the key changes included in this release:
 
 For a full list of updates, check out the [official release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.15.2) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to get started
 

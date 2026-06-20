@@ -20,7 +20,7 @@ This release includes updates to both the Helm chart and the bundled n8n applica
 
 For a complete breakdown of the changes, check the official [chart release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.9) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with n8n on Kubernetes
 

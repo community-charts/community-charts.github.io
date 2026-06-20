@@ -24,7 +24,7 @@ In this release, we’ve updated both the Helm chart and key dependencies to enh
 
 Want full details? Check out the [official release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.15.20) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with the n8n 1.15.20 Helm Chart
 

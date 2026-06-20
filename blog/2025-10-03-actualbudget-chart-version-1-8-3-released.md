@@ -20,7 +20,7 @@ This release includes both chart and application updates to keep your deployment
 
 For a full list of changes and enhancements, check out the official [v1.8.3 release notes](https://github.com/community-charts/helm-charts/releases/tag/actualbudget-1.8.3) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with actualbudget 1.8.3
 

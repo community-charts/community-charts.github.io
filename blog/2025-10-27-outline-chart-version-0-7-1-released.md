@@ -26,7 +26,7 @@ This update improves both the Helm chart and important dependencies, aligning wi
 
 See the full changelog in the [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/outline-0.7.1).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting started with Outline 0.7.1
 

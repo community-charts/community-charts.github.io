@@ -22,7 +22,7 @@ In this version, both the chart and its dependencies have been refreshed to deli
 
 For a complete breakdown, see the full [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.13.8) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with n8n 1.13.8
 

@@ -20,7 +20,7 @@ Version 1.14.3 introduces updates to both the Helm chart and the application:
 
 To review all modifications included in this release, please see the full [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.14.3).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with n8n Helm Chart
 

@@ -20,7 +20,7 @@ This release introduces key updates to both the Helm chart and the n8n applicati
 
 For a detailed breakdown, check out the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.15.9) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## How to Get Started
 

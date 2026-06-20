@@ -20,7 +20,7 @@ This update brings improvements to the Helm chart along with the bump to the lat
 
 Check out the full changelog in the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.8) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with n8n Helm Chart
 

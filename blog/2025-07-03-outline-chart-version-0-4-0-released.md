@@ -11,7 +11,7 @@ description: Discover what's new in Outline chart 0.4.0—including expanded ext
 
 We’re excited to announce the release of the **Outline Helm chart version 0.4.0**, now available as of July 3, 2025. This release includes major improvements and expanded functionality that make deploying Outline on Kubernetes even more seamless and secure.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## What’s New in Outline 0.4.0
 

@@ -20,7 +20,7 @@ The 1.16.7 chart update focuses on keeping your n8n deployments up to date and r
 
 Explore the full [changelog on GitHub](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.16.7) to see all technical details and contributions.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Start Using n8n 1.16.7 Today
 

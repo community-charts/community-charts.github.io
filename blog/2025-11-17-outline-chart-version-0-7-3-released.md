@@ -24,7 +24,7 @@ This release introduces meaningful enhancements both to the Helm chart and to th
 
 For a full breakdown of changes, head over to the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/outline-0.7.3) on GitHub.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting Started with Outline 0.7.3
 

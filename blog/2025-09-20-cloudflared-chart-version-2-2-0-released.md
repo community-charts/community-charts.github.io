@@ -22,7 +22,7 @@ These updates improve security and reliability while simplifying configuration.
 
 Read the full list of changes in the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/cloudflared-2.2.0).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get Started with cloudflared 2.2.0
 

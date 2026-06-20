@@ -20,7 +20,7 @@ This version includes an updated application version and key refinements aimed a
 
 To see the complete release changelog, check out the [official release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.13.10).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting started with version 1.13.10
 

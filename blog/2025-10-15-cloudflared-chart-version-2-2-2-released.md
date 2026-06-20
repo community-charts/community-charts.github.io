@@ -20,7 +20,7 @@ This minor release updates both the Helm chart and the underlying container imag
 
 To learn more about this release, view the full [release notes on GitHub](https://github.com/community-charts/helm-charts/releases/tag/cloudflared-2.2.2).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with cloudflared 2.2.2
 

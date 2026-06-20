@@ -1,11 +1,28 @@
 burakince:
   name: Burak Ince
   title: Software Developer
-  url: https://www.linkedin.com/in/inceburak/
+  description: "Burak Ince, Lead Consultant Developer at Thoughtworks with 13+ years delivering cloud-native engineering, AI systems, and data platforms for enterprises."
+  url: https://www.linkedin.com/in/inceburak
   image_url: https://github.com/burakince.png
   page: true
   socials:
     x: burakinc
+    twitter: burakinc
+    bluesky: burakince.bsky.social
     linkedin: inceburak
     github: burakince
     newsletter: https://www.burakince.com
+    keybase: https://keybase.io/burakince
+    huggingface: https://huggingface.co/burakince
+  jobTitle: Lead Consultant Developer
+  worksFor:
+    "@type": Organization
+    "@id": https://www.thoughtworks.com
+    name: Thoughtworks
+    url: https://www.thoughtworks.com
+  gender: male
+  schemaImageUrl: https://www.burakince.com/assets/me/burakince.webp
+  personId: https://www.burakince.com/me/
+  dateCreated: "2025-06-07T16:10:22.000Z"
+  additionalSameAs:
+    - https://www.burakince.com/me/

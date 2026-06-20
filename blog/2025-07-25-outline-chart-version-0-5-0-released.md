@@ -23,7 +23,7 @@ This release enhances both the Helm chart (v0.5.0) and the Outline application (
 
 For the full list of changes and technical details, check out the official [release notes](https://github.com/community-charts/helm-charts/releases/tag/outline-0.5.0).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Getting started with Outline 0.5.0
 

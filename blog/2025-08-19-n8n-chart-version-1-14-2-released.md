@@ -26,7 +26,7 @@ This Helm chart update introduces several important changes that improve compati
 
 See the full list of changes in our official [release notes](https://github.com/community-charts/helm-charts/releases/tag/n8n-1.14.2).
 
-<!-- truncate -->
+{/* truncate */}
 
 ## Get started with n8n 1.14.2 on Kubernetes
 
