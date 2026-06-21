@@ -23,3 +23,6 @@ yarn-error.log*
 
 # Ignore generated blog post list
 src/data/latestBlogPosts.json
+
+# Playwright MCP
+.playwright-mcp
