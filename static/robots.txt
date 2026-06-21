@@ -3,7 +3,6 @@ Allow: /docs/
 Allow: /blog/
 Disallow: /search
 Disallow: /helm-charts
-Content-Signal: ai-train=no, search=yes, ai-input=yes
 Sitemap: https://community-charts.github.io/sitemap.xml
 
 User-agent: GPTBot
