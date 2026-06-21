@@ -12,6 +12,7 @@ const config: Config = {
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    experimental_vcs: 'git-ad-hoc', // enables per-file git dates for sitemap <lastmod>
   },
 
   // Set the production url of your site here
@@ -82,6 +83,7 @@ const config: Config = {
           changefreq: 'weekly',
           priority: 0.5,
           filename: 'sitemap.xml',
+          lastmod: 'date',
         },
       } satisfies Preset.Options,
     ],
@@ -93,6 +95,24 @@ const config: Config = {
       attributes: {
         rel: 'preconnect',
         href: 'https://community-charts.github.io',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'alternate',
+        type: 'application/rss+xml',
+        title: 'Community Charts Blog Posts RSS',
+        href: 'https://community-charts.github.io/blog/rss.xml',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'alternate',
+        type: 'application/atom+xml',
+        title: 'Community Charts Blog Posts Atom',
+        href: 'https://community-charts.github.io/blog/atom.xml',
       },
     },
     {
