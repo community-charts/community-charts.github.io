@@ -4,10 +4,46 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { useBlogListPageStructuredData } from "@docusaurus/plugin-content-blog/client";
 import type { Props } from "@theme/BlogListPage/StructuredData";
 
+const DEFAULT_IMAGE_PATH = "/img/social-card.png";
+
+type BlogPosting = {
+  "@type": string;
+  headline?: string;
+  image?: object;
+  [key: string]: unknown;
+};
+
+type BlogStructuredData = {
+  blogPost?: BlogPosting[];
+  [key: string]: unknown;
+};
+
 export default function BlogListPageStructuredData(props: Props): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   const siteUrl = siteConfig.url;
-  const structuredData = useBlogListPageStructuredData(props);
+  const rawStructuredData = useBlogListPageStructuredData(
+    props
+  ) as unknown as BlogStructuredData;
+
+  const imageUrl = `${siteUrl}${DEFAULT_IMAGE_PATH}`;
+
+  const structuredData: BlogStructuredData = {
+    ...rawStructuredData,
+    blogPost: rawStructuredData.blogPost?.map((post) =>
+      post.image
+        ? post
+        : {
+            ...post,
+            image: {
+              "@type": "ImageObject",
+              "@id": imageUrl,
+              url: imageUrl,
+              contentUrl: imageUrl,
+              caption: `title image for the blog post: ${post.headline ?? ""}`,
+            },
+          }
+    ),
+  };
 
   const breadcrumb = {
     "@context": "https://schema.org",

@@ -16,6 +16,7 @@ function HomepageStructuredData(): ReactNode {
   const breadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    name: "Home",
     itemListElement: [
       {
         "@type": "ListItem",
