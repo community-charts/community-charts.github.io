@@ -40,12 +40,15 @@ There are no tests. The pre-commit hooks run Prettier and ESLint automatically o
 - **`src/theme/`** — Swizzled Docusaurus theme components. Key overrides for structured data:
   - `DocBreadcrumbs/StructuredData` — enhances doc page `BreadcrumbList` so each `item` is a `WebPage` object (fixes "Unknown item" in Google Rich Results Test).
   - `BlogPostPage/StructuredData` — adds a fallback `ImageObject` when a blog post has no image, and emits a `BreadcrumbList` (Home → Blog → Post).
+  - `BlogListPage/StructuredData` — extends the default `Blog` schema to also emit a `BreadcrumbList` (Home → Blog).
   - `Blog/Pages/BlogAuthorsPostsPage` — emits `ProfilePage` JSON-LD with the author as `mainEntity Person`.
 - **`static/`** — Static assets served as-is (robots.txt, favicon, search engine verification files).
 
 ### Homepage Flow
 
-`src/pages/index.tsx` composes six homepage section components in order: `HomepageHeader` → `HomepageWhatWeOffer` → `HomepageFeaturedCharts` → `HomepageHowToGetStarted` → `HomepageCommunity` → `HomepageLatestBlogPosts`. The last one reads from the generated `src/data/latestBlogPosts.json`.
+`src/pages/index.tsx` renders `HomepageStructuredData` first (injects canonical URL, `FAQPage` JSON-LD, and root `BreadcrumbList` via `<Head>`), then composes six section components: `HomepageHeader` → `HomepageWhatWeOffer` → `HomepageFeaturedCharts` → `HomepageHowToGetStarted` → `HomepageCommunity` → `HomepageLatestBlogPosts`. The last one reads from the generated `src/data/latestBlogPosts.json`.
+
+Note: Docusaurus auto-injects canonical URLs for content pages (docs, blog) via their plugins, but NOT for custom `src/pages/` files — those need an explicit `<link rel="canonical">` in a `<Head>` component.
 
 ## Content Conventions
 
@@ -106,6 +109,10 @@ The blog truncate marker must be `{/* truncate */}` — not `<!-- truncate -->`.
 `docusaurus.config.ts` has `future.v4: true`, which:
 - Enables the Rspack bundler — requires `@docusaurus/faster` as a dependency (must match `@docusaurus/core` version)
 - Enforces strict MDX parsing across all content files
+
+`future.experimental_vcs: 'git-ad-hoc'` is enabled so the sitemap plugin can emit per-file `<lastmod>` dates from git history. The CI workflow already uses `fetch-depth: 0` (full history). Pair with `sitemap.lastmod: 'date'` in the preset config.
+
+`headTags` in `docusaurus.config.ts` includes global `<link rel="alternate">` tags for RSS and Atom feeds so they are discoverable from every page, not just blog pages.
 
 `onBrokenMarkdownLinks` belongs under `markdown.hooks`, not at the top level of `siteConfig`.
 
