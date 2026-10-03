@@ -54,6 +54,7 @@ Create a database and user for MLflow:
 CREATE DATABASE mlflow;
 CREATE USER mlflow_user WITH PASSWORD 'your_secure_password';
 GRANT ALL PRIVILEGES ON DATABASE mlflow TO mlflow_user;
+\c mlflow
 GRANT ALL PRIVILEGES ON SCHEMA public TO mlflow_user;
 ```
 
