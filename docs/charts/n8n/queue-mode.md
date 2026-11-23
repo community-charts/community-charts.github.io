@@ -1093,6 +1093,8 @@ worker:
       memory: 4Gi
 ```
 
+> **Measured starting point:** on n8n 2.40.7 with 2 workers on 4 vCPUs at 50 requests/s, concurrency 5 answered 426 executions/min with 238 errors, the default of 10 answered 519 with none, and 20 gave no extra throughput because CPU was the limit. ([test method and raw results](https://selfhost.dev/blog/n8n-queue-mode/#worker-concurrency))
+
 #### Redis Performance
 
 ```yaml
@@ -1117,6 +1119,8 @@ redis:
       save 300 10
       save 60 10000
 ```
+
+> **Note on eviction:** n8n's Bull queue keeps jobs in ordinary Redis keys, so an evicting policy such as `allkeys-lru` can delete queued jobs, and neither n8n nor Redis warns about the setting. `noeviction` avoids that. In a test with 20 executions waiting, killing Redis with AOF on (`--appendonly yes`) lost none; with persistence off, all 20 ended as crashed. RDB snapshots like the ones above were not tested. ([details](https://selfhost.dev/blog/n8n-queue-mode/#eviction))
 
 #### Database Performance
 
